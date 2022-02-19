@@ -5,6 +5,7 @@
 ## Python
 - Use 3.10.2
 - Code to PEP-8
+- Use pylint
 
 ## Django
 - Use 4.0.2
