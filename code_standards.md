@@ -3,7 +3,7 @@
 - JavaScript, React, HTML, CSS frontend
 
 ## Python
-- Use 3.10.2
+- Use 3.10.x
 - Code to PEP-8
 - Use pylint
 
