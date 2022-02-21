@@ -2,6 +2,8 @@
 from django.http import HttpResponse
 
 # Create your views here.
+
+
 def login(request):
     print(request)
     return HttpResponse("<h1>LOGIN</h1>")
