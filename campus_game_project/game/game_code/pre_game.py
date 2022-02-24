@@ -89,7 +89,7 @@ class Game:
         files = listdir("active_games")
         codes = [int(x[:4]) for x in files]
 
-        self.code = choice([i for i in range(1000,10000) if i not in codes])
+        self.code = choice([i for i in range(1000, 10000) if i not in codes])
 
     def print_players(self):
         """
@@ -155,7 +155,7 @@ def join_lobby(request, code):
                 The http request containing the session data.
             code : int:
                 The 6 digit code for the lobby.
-        
+
         Returns:
             False: error occurred
             True: run as normal

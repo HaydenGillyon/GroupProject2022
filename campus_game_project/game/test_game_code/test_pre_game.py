@@ -56,14 +56,13 @@ class TestCreatingLobby(unittest.TestCase):
 
 
 class TestLobbyJoin(unittest.TestCase):
-    
+
     def setUp(self):
         self.t1 = TestRequest("test")
         self.t2 = TestRequest("test")
         self.t3 = TestRequest("test")
 
         self.host = TestRequest("host")
-        
 
     def test_null_code(self):
         assert pre_game.join_lobby(self.t1, None) is False, "Joined lobby with null code"
@@ -87,6 +86,7 @@ class TestRequest:
 
     def __init__(self, name):
         self.session = {'username': name}
+
 
 if __name__ == "__main__":
     unittest.main()
