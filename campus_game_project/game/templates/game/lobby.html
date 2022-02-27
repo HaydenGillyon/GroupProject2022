@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8"/>
+    <title>Lobby</title>
+</head>
+<body>
+    <textarea id="log" cols="100" rows="20"></textarea><br>
+    <input id="ready" type="button" value="Ready">
+    {{ lobby_code|json_script:"lobby-code" }}
+    {{ username|json_script:"username" }}
+    <script>
+        const code = JSON.parse(document.getElementById('lobby-code').textContent);
+        const username = JSON.parse(document.getElementById('username').textContent);
+
+        const lobbySocket = new WebSocket(
+            'ws://'
+            + window.location.host
+            + '/ws/game/'
+            + code
+            + '/'
+        );
+
+        lobbySocket.onmessage = function(e) {
+            const data = JSON.parse(e.data);
+            document.querySelector('#log').value += (data.message + '\n')
+        }
+
+        document.querySelector('#ready').onclick = function(e) {
+            ready = "ready"
+            lobbySocket.send(JSON.stringify({
+                'ready':ready,
+                'username':username,
+            }));
+        };
+    </script>
+</body>
+</html>
