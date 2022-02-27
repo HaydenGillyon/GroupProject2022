@@ -1,7 +1,7 @@
 from django.db import models
 
-class Game(models.Model):
 
+class Game(models.Model):
 
     lobby_code = models.IntegerField()
     player_num = models.IntegerField()

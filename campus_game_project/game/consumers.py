@@ -2,8 +2,8 @@ import json
 from asgiref.sync import async_to_sync
 from channels.generic.websocket import WebsocketConsumer
 
-class PlayerConsumer(WebsocketConsumer):
 
+class PlayerConsumer(WebsocketConsumer):
 
     def connect(self):
         self.lobby_code = self.scope['url_route']['kwargs']['lobby_code']
