@@ -13,6 +13,7 @@
         const code = JSON.parse(document.getElementById('lobby-code').textContent);
         const username = JSON.parse(document.getElementById('username').textContent);
 
+        // Establishes the websocket connection
         const lobbySocket = new WebSocket(
             'ws://'
             + window.location.host
@@ -21,11 +22,14 @@
             + '/'
         );
 
+        // When the websocket receives a message
         lobbySocket.onmessage = function(e) {
             const data = JSON.parse(e.data);
+            // Displays the message on screen
             document.querySelector('#log').value += (data.message + '\n')
         }
 
+        // Send a message to the socket when the player is ready
         document.querySelector('#ready').onclick = function(e) {
             ready = "ready"
             lobbySocket.send(JSON.stringify({

@@ -18,11 +18,16 @@ def join(request):
 @csrf_exempt
 def lobby(request, lobby_code):
     try:
+        # If the lobby is being created, enters with a default code of 0
         if request.POST['create'] == "True":
             code = generate_code()
+
+            # Adds the game to the database
             Game(lobby_code=code, player_num=0).save()
             print(request.POST)
             request.session['username'] = request.POST['uname']
+
+            # Redirects to url with correct code
             return redirect('/game/' + str(code) + '/', request=request)
 
         else:
@@ -35,13 +40,11 @@ def lobby(request, lobby_code):
                 return render(request, 'game/error.html')
 
             username = request.POST['uname']
-
             request.session['username'] = username
 
+            # Add the player to the database
             game = Game.objects.filter(lobby_code=lobby_code)[0]
-
             Player(username=username, game=game, seeker=False, ready=False).save()
-
             game.player_num += 1
             game.save()
 
@@ -49,14 +52,13 @@ def lobby(request, lobby_code):
                 'lobby_code': lobby_code,
                 'username': username,
             })
-
+    # This error is thrown if there has been a redirect when creating the lobby
     except MultiValueDictKeyError:
         username = request.session['username']
 
+        # Adds the player to the database
         game = Game.objects.filter(lobby_code=lobby_code)[0]
-
         Player(username=username, game=game, seeker=False, ready=False).save()
-
         game.player_num += 1
         game.save()
 
@@ -68,6 +70,7 @@ def lobby(request, lobby_code):
 
 def generate_code():
     codes = []
+    # Gets all the currently running lobbies
     for x in Game.objects.all():
         codes.append(x.lobby_code)
 
