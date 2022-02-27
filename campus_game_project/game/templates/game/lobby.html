@@ -33,6 +33,8 @@
                 case "join":
                     var list = document.getElementById('players');
                     var player;
+
+                    // If the user is joining, display all users currently in the lobby
                     if (document.getElementById('players').childElementCount == 0) {
                         for (var i = 0; i < data.players.length; i++) {
                             player = document.createElement('li');
@@ -46,6 +48,7 @@
                             }
                             list.appendChild(player);
                         }
+                    // If a new user joins, display them
                     } else {
                         player = document.createElement('li');
                         player.id = data.username;
@@ -56,11 +59,13 @@
                     break;
 
                 case "leave":
+                    // If a user leaves, remove them from the display
                     var item = document.getElementById(data.username);
                     item.remove()
                     break;
 
                 case "ready":
+                    // Changes colour of user in the display if they are ready or not ready
                     if (data.ready) {
                         document.getElementById('ready').value = 'Unready';
                         document.getElementById(data.username).style.color = "green";

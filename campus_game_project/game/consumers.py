@@ -21,15 +21,15 @@ class PlayerConsumer(WebsocketConsumer):
 
         players = []
 
+        # Gets a list of all players currently in the game
         g = Game.objects.get(lobby_code=int(self.lobby_code))
-
         for y in Player.objects.filter(game=g):
             players.append({
                 "username": y.username,
                 "ready": y.ready
                 })
 
-        # Sends message to group
+        # Sends data to group
         async_to_sync(self.channel_layer.group_send)(
             self.lobby_code,
             {
@@ -45,7 +45,7 @@ class PlayerConsumer(WebsocketConsumer):
     def disconnect(self, close_code):
         message = self.scope['session']['username'] + " has left."
 
-        # Sends message to group
+        # Sends data to group
         async_to_sync(self.channel_layer.group_send)(
             self.lobby_code,
             {
@@ -57,6 +57,7 @@ class PlayerConsumer(WebsocketConsumer):
             }
         )
 
+        # Deletes the user from the database
         g = Game.objects.get(lobby_code=self.lobby_code)
         Player.objects.get(game=g, username=self.scope['session']['username']).delete()
 
@@ -78,6 +79,7 @@ class PlayerConsumer(WebsocketConsumer):
         else:
             ready = True
 
+        # Sets the player to ready
         g = Game.objects.get(lobby_code=self.lobby_code)
         p = Player.objects.get(game=g, username=username)
         p.ready = ready
@@ -94,6 +96,7 @@ class PlayerConsumer(WebsocketConsumer):
             }
         )
 
+    # A user joins or leaves
     def lobby_event(self, event):
         msg_type = event['msg_type']
         message = event['message']
@@ -107,6 +110,7 @@ class PlayerConsumer(WebsocketConsumer):
             'players': players
         }))
 
+    # A user readys or unreadys
     def ready_event(self, event):
         message = event['message']
         username = event['username']
