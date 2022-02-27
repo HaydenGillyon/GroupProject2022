@@ -4,6 +4,7 @@ from channels.generic.websocket import WebsocketConsumer
 
 class PlayerConsumer(WebsocketConsumer):
 
+
     def connect(self):
         self.lobby_code = self.scope['url_route']['kwargs']['lobby_code']
         message = self.scope['session']['username'] + " has joined."
@@ -23,7 +24,6 @@ class PlayerConsumer(WebsocketConsumer):
             }
         )
 
-
     def disconnect(self, close_code):
         message = self.scope['session']['username'] + " has left."
 
@@ -40,7 +40,6 @@ class PlayerConsumer(WebsocketConsumer):
             self.channel_name
         )
 
-
     def receive(self, text_data):
         text_data_json = json.loads(text_data)
         ready = text_data_json['ready']
@@ -54,7 +53,6 @@ class PlayerConsumer(WebsocketConsumer):
                 'message': message
             }
         )
-
 
     def lobby_event(self, event):
         message = event['message']

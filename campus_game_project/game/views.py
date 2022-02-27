@@ -31,21 +31,20 @@ def lobby(request, lobby_code):
                 if lobby_code == x.lobby_code:
                     exists = True
             # Error page if lobby doesn't exist
-            if exists == False:
+            if not exists:
                 return render(request, 'game/error.html')
 
             username = request.POST['uname']
 
             request.session['username'] = username
 
-            game = Game.objects.filter(lobby_code = lobby_code)[0]
+            game = Game.objects.filter(lobby_code=lobby_code)[0]
 
             Player(username=username, game=game, seeker=False, ready=False).save()
 
             game.player_num += 1
             game.save()
 
-            
             return render(request, 'game/lobby.html', {
                 'lobby_code': lobby_code,
                 'username': username,
@@ -54,14 +53,13 @@ def lobby(request, lobby_code):
     except MultiValueDictKeyError:
         username = request.session['username']
 
-        game = Game.objects.filter(lobby_code = lobby_code)[0]
+        game = Game.objects.filter(lobby_code=lobby_code)[0]
 
         Player(username=username, game=game, seeker=False, ready=False).save()
 
         game.player_num += 1
         game.save()
 
-        
         return render(request, 'game/lobby.html', {
             'lobby_code': lobby_code,
             'username': username,
