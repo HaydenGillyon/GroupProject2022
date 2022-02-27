@@ -6,7 +6,10 @@
 </head>
 <body>
     <textarea id="log" cols="100" rows="20"></textarea><br>
-    <input id="ready" type="button" value="Ready">
+    <input id="ready" type="button" value="Ready"><br><br>
+    Players:
+    <ul id="players">
+    </ul>
     {{ lobby_code|json_script:"lobby-code" }}
     {{ username|json_script:"username" }}
     <script>
@@ -25,13 +28,56 @@
         // When the websocket receives a message
         lobbySocket.onmessage = function(e) {
             const data = JSON.parse(e.data);
+
+            switch(data.msg_type) {
+                case "join":
+                    var list = document.getElementById('players');
+                    var player;
+                    if (document.getElementById('players').childElementCount == 0) {
+                        for (var i = 0; i < data.players.length; i++) {
+                            player = document.createElement('li');
+                            player.id = data.players[i].username;
+                            player.innerText = data.players[i].username;
+                            console.log(data.players[i].ready);
+                            if (data.players[i].ready) {
+                                player.style.color = 'green';
+                            } else {
+                                player.style.color = 'red';
+                            }
+                            list.appendChild(player);
+                        }
+                    } else {
+                        player = document.createElement('li');
+                        player.id = data.username;
+                        player.innerText = data.username;
+                        player.style.color = "red";
+                        list.appendChild(player);
+                    }
+                    break;
+
+                case "leave":
+                    var item = document.getElementById(data.username);
+                    item.remove()
+                    break;
+
+                case "ready":
+                    if (data.ready) {
+                        document.getElementById('ready').value = 'Unready';
+                        document.getElementById(data.username).style.color = "green";
+                    } else {
+                        document.getElementById('ready').value = 'Ready';
+                        document.getElementById(data.username).style.color = "red";
+                    }
+                    break;
+            }
+
             // Displays the message on screen
             document.querySelector('#log').value += (data.message + '\n')
         }
 
         // Send a message to the socket when the player is ready
         document.querySelector('#ready').onclick = function(e) {
-            ready = "ready"
+            ready = document.getElementById('ready').value
             lobbySocket.send(JSON.stringify({
                 'ready':ready,
                 'username':username,
