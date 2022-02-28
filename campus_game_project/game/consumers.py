@@ -10,7 +10,8 @@ class PlayerConsumer(WebsocketConsumer):
     # Behaviour when the user connects
     def connect(self):
         self.lobby_code = self.scope['url_route']['kwargs']['lobby_code']
-        message = self.scope['session']['username'] + " has joined."
+        self.username = self.scope['session']['username']
+        message = self.username + " has joined."
 
         # Adds the websocket to a group, named the lobby code
         async_to_sync(self.channel_layer.group_add)(
@@ -134,18 +135,19 @@ class PlayerConsumer(WebsocketConsumer):
     # A user readys or unreadys
     def ready_event(self, event):
         message = event['message']
-        username = event['username']
+        ready_user = event['username']
+        username = self.username
         ready = event['ready']
 
         self.send(text_data=json.dumps({
             'msg_type': 'ready',
             'message': message,
             'username': username,
+            'ready_user': ready_user,
             'ready': ready
         }))
 
     def start_game(self, event):
-        print("Hello World")
         self.send(text_data=json.dumps({
             'msg_type': 'start'
         }))

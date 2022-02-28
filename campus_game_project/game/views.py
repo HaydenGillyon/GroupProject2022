@@ -17,7 +17,6 @@ def join(request):
 
 @csrf_exempt
 def lobby(request, lobby_code):
-    print(request.POST)
     try:
         # If the lobby is being created, enters with a default code of 0
         if request.POST['create'] == "True":
@@ -25,7 +24,6 @@ def lobby(request, lobby_code):
 
             # Adds the game to the database
             Game(lobby_code=code, player_num=0).save()
-            print(request.POST)
             request.session['username'] = request.POST['uname']
 
             # Redirects to url with correct code
@@ -39,8 +37,6 @@ def lobby(request, lobby_code):
             # Error page if lobby doesn't exist
             if not exists:
                 return render(request, 'game/error.html')
-
-            print("Hello")
 
             username = request.POST['uname']
             request.session['username'] = username

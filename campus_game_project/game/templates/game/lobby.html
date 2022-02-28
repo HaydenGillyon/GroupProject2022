@@ -42,7 +42,6 @@
                             player = document.createElement('li');
                             player.id = data.players[i].username;
                             player.innerText = data.players[i].username;
-                            console.log(data.players[i].ready);
                             if (data.players[i].ready) {
                                 player.style.color = 'green';
                             } else {
@@ -68,12 +67,18 @@
 
                 case "ready":
                     // Changes colour of user in the display if they are ready or not ready
+                    console.log("Username: " + data.username);
+                    console.log("Ready User: " + data.ready_user);
                     if (data.ready) {
-                        document.getElementById('ready').value = 'Unready';
-                        document.getElementById(data.username).style.color = "green";
+                        if (data.username == data.ready_user) {
+                            document.getElementById('ready').value = 'Unready';
+                        }
+                        document.getElementById(data.ready_user).style.color = "green";
                     } else {
-                        document.getElementById('ready').value = 'Ready';
-                        document.getElementById(data.username).style.color = "red";
+                        if (data.username == data.ready_user) {
+                            document.getElementById('ready').value = 'Ready';
+                        }
+                        document.getElementById(data.ready_user).style.color = "red";
                     }
                     break;
 
