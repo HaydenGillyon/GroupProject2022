@@ -16,6 +16,8 @@
         const code = JSON.parse(document.getElementById('lobby-code').textContent);
         const username = JSON.parse(document.getElementById('username').textContent);
 
+        document.title = code;
+
         // Establishes the websocket connection
         const lobbySocket = new WebSocket(
             'ws://'
@@ -73,6 +75,11 @@
                         document.getElementById('ready').value = 'Ready';
                         document.getElementById(data.username).style.color = "red";
                     }
+                    break;
+
+                case "start":
+                    console.log("Hello World");
+                    window.location= "../../game/running/" + code;
                     break;
             }
 

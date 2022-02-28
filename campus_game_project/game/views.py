@@ -79,6 +79,12 @@ def lobby(request, lobby_code):
         })
 
 
+def running(request, lobby_code):
+    return render(request, 'game/running.html', {
+        'lobby_code': lobby_code
+    })
+
+
 def generate_code():
     codes = []
     # Gets all the currently running lobbies

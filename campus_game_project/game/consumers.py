@@ -85,6 +85,14 @@ class PlayerConsumer(WebsocketConsumer):
         p.ready = ready
         p.save()
 
+        if g.all_ready():
+            async_to_sync(self.channel_layer.group_send)(
+                self.lobby_code,
+                {
+                    'type': 'start_game'
+                }
+            )
+
         # Sends message to group
         async_to_sync(self.channel_layer.group_send)(
             self.lobby_code,
@@ -121,4 +129,10 @@ class PlayerConsumer(WebsocketConsumer):
             'message': message,
             'username': username,
             'ready': ready
+        }))
+
+    def start_game(self, event):
+        print("Hello World")
+        self.send(text_data=json.dumps({
+            'msg_type': 'start'
         }))

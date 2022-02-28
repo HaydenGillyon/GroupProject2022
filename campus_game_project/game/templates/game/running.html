@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8"/>
+    <title></title>
+</head>
+<body>
+    <h1 id="content"></h1>
+    {{ lobby_code|json_script:"lobby-code" }}
+    <script>
+        const code = JSON.parse(document.getElementById('lobby-code').textContent);
+        document.getElementById("content").innerText = code + " is running.";
+        document.title = code;
+    </script>
+</body>
+</html>
