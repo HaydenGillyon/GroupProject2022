@@ -1,0 +1,9 @@
+
+app_id: "9274739e-2110-4e0f-a0ea-8a602e375d61"
+app_secret: "lBo7Q~Zl4EObSANCeA4LJKtpfy~hi96FHklBO"
+redirect: "http://localhost:8000/callback"
+scopes:
+  - user.read
+  - mailboxsettings.read
+  - calendars.readwrite
+authority: "https://login.microsoftonline.com/UniversityofExeterUK.onmicrosoft.com"
