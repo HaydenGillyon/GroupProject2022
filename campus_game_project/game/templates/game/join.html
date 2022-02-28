@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8"/>
+    <title>Join Lobby</title>
+</head>
+<body>
+    <form id="form" method="post">
+        <input name="uname" type="text" value="Username">
+        <input id="lobby-code" type="text" value="Code" onchange="document.getElementById('form').action = '/game/' + this.value + '/';">
+        <input id="join" type="submit" value="Join">
+        <input type="hidden" name="create" value="False">
+    </form>
+</body>
+</html>

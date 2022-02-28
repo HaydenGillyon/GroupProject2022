@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8"/>
+    <title>Lobby</title>
+</head>
+<body>
+    <textarea id="log" cols="100" rows="20"></textarea><br>
+    <input id="ready" type="button" value="Ready"><br><br>
+    Players:
+    <ul id="players">
+    </ul>
+    {{ lobby_code|json_script:"lobby-code" }}
+    {{ username|json_script:"username" }}
+    <script>
+        const code = JSON.parse(document.getElementById('lobby-code').textContent);
+        const username = JSON.parse(document.getElementById('username').textContent);
+
+        // Establishes the websocket connection
+        const lobbySocket = new WebSocket(
+            'ws://'
+            + window.location.host
+            + '/ws/game/'
+            + code
+            + '/'
+        );
+
+        // When the websocket receives a message
+        lobbySocket.onmessage = function(e) {
+            const data = JSON.parse(e.data);
+
+            switch(data.msg_type) {
+                case "join":
+                    var list = document.getElementById('players');
+                    var player;
+
+                    // If the user is joining, display all users currently in the lobby
+                    if (document.getElementById('players').childElementCount == 0) {
+                        for (var i = 0; i < data.players.length; i++) {
+                            player = document.createElement('li');
+                            player.id = data.players[i].username;
+                            player.innerText = data.players[i].username;
+                            console.log(data.players[i].ready);
+                            if (data.players[i].ready) {
+                                player.style.color = 'green';
+                            } else {
+                                player.style.color = 'red';
+                            }
+                            list.appendChild(player);
+                        }
+                    // If a new user joins, display them
+                    } else {
+                        player = document.createElement('li');
+                        player.id = data.username;
+                        player.innerText = data.username;
+                        player.style.color = "red";
+                        list.appendChild(player);
+                    }
+                    break;
+
+                case "leave":
+                    // If a user leaves, remove them from the display
+                    var item = document.getElementById(data.username);
+                    item.remove()
+                    break;
+
+                case "ready":
+                    // Changes colour of user in the display if they are ready or not ready
+                    if (data.ready) {
+                        document.getElementById('ready').value = 'Unready';
+                        document.getElementById(data.username).style.color = "green";
+                    } else {
+                        document.getElementById('ready').value = 'Ready';
+                        document.getElementById(data.username).style.color = "red";
+                    }
+                    break;
+            }
+
+            // Displays the message on screen
+            document.querySelector('#log').value += (data.message + '\n')
+        }
+
+        // Send a message to the socket when the player is ready
+        document.querySelector('#ready').onclick = function(e) {
+            ready = document.getElementById('ready').value
+            lobbySocket.send(JSON.stringify({
+                'ready':ready,
+                'username':username,
+            }));
+        };
+    </script>
+</body>
+</html>
