@@ -49,8 +49,8 @@ def lobby(request, lobby_code):
             game = Game.objects.get(lobby_code=lobby_code)
             if len(Player.objects.filter(game=game)):
                 for x in Player.objects.filter(game=game):
-                        if x.username == username:
-                            return render(request, 'game/error.html')
+                    if x.username == username:
+                        return render(request, 'game/error.html')
             Player(username=username, game=game, seeker=False, ready=False).save()
             game.player_num += 1
             game.save()
@@ -67,8 +67,8 @@ def lobby(request, lobby_code):
         game = Game.objects.get(lobby_code=lobby_code)
         if len(Player.objects.filter(game=game)):
             for x in Player.objects.filter(game=game):
-                    if x.username == username:
-                        return render(request, 'game/error.html')
+                if x.username == username:
+                    return render(request, 'game/error.html')
         Player(username=username, game=game, seeker=False, ready=False).save()
         game.player_num += 1
         game.save()
