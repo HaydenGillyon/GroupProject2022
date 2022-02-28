@@ -17,6 +17,7 @@ def join(request):
 
 @csrf_exempt
 def lobby(request, lobby_code):
+    print(request.POST)
     try:
         # If the lobby is being created, enters with a default code of 0
         if request.POST['create'] == "True":
@@ -39,11 +40,17 @@ def lobby(request, lobby_code):
             if not exists:
                 return render(request, 'game/error.html')
 
+            print("Hello")
+
             username = request.POST['uname']
             request.session['username'] = username
 
             # Add the player to the database
-            game = Game.objects.filter(lobby_code=lobby_code)[0]
+            game = Game.objects.get(lobby_code=lobby_code)
+            if len(Player.objects.filter(game=game)):
+                for x in Player.objects.filter(game=game):
+                        if x.username == username:
+                            return render(request, 'game/error.html')
             Player(username=username, game=game, seeker=False, ready=False).save()
             game.player_num += 1
             game.save()
@@ -57,7 +64,11 @@ def lobby(request, lobby_code):
         username = request.session['username']
 
         # Adds the player to the database
-        game = Game.objects.filter(lobby_code=lobby_code)[0]
+        game = Game.objects.get(lobby_code=lobby_code)
+        if len(Player.objects.filter(game=game)):
+            for x in Player.objects.filter(game=game):
+                    if x.username == username:
+                        return render(request, 'game/error.html')
         Player(username=username, game=game, seeker=False, ready=False).save()
         game.player_num += 1
         game.save()
