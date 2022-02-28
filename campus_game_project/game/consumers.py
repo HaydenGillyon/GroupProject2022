@@ -94,7 +94,7 @@ class PlayerConsumer(WebsocketConsumer):
             p.ready = ready
             p.save()
 
-            if g.all_ready():
+            if g.all_ready() and g.player_num > 1:
                 players = Player.objects.filter(game=g)
                 p = players[randint(0, len(players)-1)]
                 p.seeker = True
