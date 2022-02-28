@@ -78,7 +78,9 @@
                     break;
 
                 case "start":
-                    console.log("Hello World");
+                lobbySocket.send(JSON.stringify({
+                    'msg_type': "playing",
+                }))
                     window.location= "../../game/running/" + code;
                     break;
             }
@@ -91,6 +93,7 @@
         document.querySelector('#ready').onclick = function(e) {
             ready = document.getElementById('ready').value
             lobbySocket.send(JSON.stringify({
+                'msg_type': "ready",
                 'ready':ready,
                 'username':username,
             }));
