@@ -8,7 +8,7 @@ from channels.generic.websocket import WebsocketConsumer
 from game.models import Game, Player
 from random import randint
 
-#cretes web sockets so that the users can be connected whilst playing.
+# Cretes web sockets so that the users can be connected whilst playing.
 class PlayerConsumer(WebsocketConsumer):
 
     # Behaviour when the user connects
@@ -259,8 +259,8 @@ class GameConsumer(WebsocketConsumer):
                 self.check_found_hiders()
                 return "You found " + matched.username
 
-    #checks the condition of there being no players on the hiding team
-    #This should complete the game
+    # Checks the condition of there being no players on the hiding team
+    # This should complete the game
     def check_found_hiders(self):
         game = Game.objects.filter(lobby_code=self.lobby_code).first()
         hiders = Player.objects.filter(game=game, seeker=False, found=False)
