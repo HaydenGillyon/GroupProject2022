@@ -8,7 +8,7 @@ from channels.generic.websocket import WebsocketConsumer
 from game.models import Game, Player
 from random import randint
 
-# Cretes web sockets so that the users can be connected whilst playing.
+# Creates web sockets so that the users can be connected whilst playing.
 class PlayerConsumer(WebsocketConsumer):
 
     # Behaviour when the user connects
