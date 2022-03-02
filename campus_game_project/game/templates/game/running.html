@@ -92,6 +92,10 @@
             switch(data.msg_type) {
                 case 'code_result':
                     document.getElementById('code-result').innerText = data.result;
+                    break;
+                case 'end':
+                    window.location= "../../end/" + code;
+                    break;
             }
         }
     </script>

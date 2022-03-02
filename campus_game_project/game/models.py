@@ -8,6 +8,7 @@ class Game(models.Model):
     player_num = models.IntegerField()
     game_start_time = models.DateTimeField(default=timezone.now)
     running = models.BooleanField(default=False)
+    winner = models.CharField(max_length=20, default='N')
 
     def __str__(self):
         return str(self.lobby_code)

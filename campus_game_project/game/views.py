@@ -110,6 +110,15 @@ def running(request, lobby_code):
     return render(request, 'game/running.html', data_dict)
 
 
+def end(request, lobby_code):
+    g = Game.objects.get(lobby_code=lobby_code)
+    result = g.winner
+    return render(request, 'game/end.html', {
+        'lobby_code': lobby_code,
+        'result': result,
+    })
+
+
 def generate_code():
     codes = []
     # Gets all the currently running lobbies

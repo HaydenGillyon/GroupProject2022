@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8"/>
+    <title>End</title>
+</head>
+<body>
+    <h1 id="winner"></h1>
+    <input id="return" type="button" value="return">
+    {{ lobby_code|json_script:"lobby-code" }}
+    {{ result|json_script:"result" }}
+    <script>
+        const code = JSON.parse(document.getElementById('lobby-code').textContent);
+        const result = JSON.parse(document.getElementById('result').textContent);
+
+        document.title = code;
+
+        switch(result){
+            case 'seeker':
+                document.getElementById('winner').innerText = "Seekers Win!";
+                break;
+            case 'hiders':
+                document.getElementById('winner').innerText = "Hiders Win!";
+                break;
+        }
+        
+
+        document.querySelector('#return').onclick = function(e) {
+            window.location= "../../../home/";
+        };
+    </script>
+</body>
+</html>
