@@ -58,8 +58,8 @@ def lobby(request, lobby_code):
             game.save()
 
             return render(request, 'game/lobby.html', {
-                'lobby_code': lobby_code,
-                'username': username,
+                'lobby_code':lobby_code,
+                'username':username,
             })
     # This error is thrown if there has been a redirect when creating the lobby
     except MultiValueDictKeyError:
@@ -76,8 +76,8 @@ def lobby(request, lobby_code):
         game.save()
 
         return render(request, 'game/lobby.html', {
-            'lobby_code': lobby_code,
-            'username': username,
+            'lobby_code':lobby_code,
+            'username':username,
         })
 
 
@@ -94,10 +94,10 @@ def running(request, lobby_code):
     game.save()
 
     data_dict = {
-        'lobby_code' : lobby_code,
-        'username' : username,
-        'seeker' : player.seeker,    # True if they were selected as a seeker
-        'start_time' : game.game_start_time
+        'lobby_code':lobby_code,
+        'username':username,
+        'seeker':player.seeker,    # True if they were selected as a seeker
+        'start_time':game.game_start_time
     }
     if (not player.seeker) and (player.hider_code is None):
         hider_code = token_hex(2)  # 4 character secret hex code

@@ -1,37 +1,37 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <meta charset='utf-8'/>
+    <meta charset="utf-8"/>
     <title>Running</title>
 </head>
 <body>
-    <h1 id='content'></h1>
-    <h1 id='time' style='color: crimson;'></h1>
-    <h2 id='player_msg'></h2>
-    <h2 id='hcode'></h2>
+    <h1 id="content"></h1>
+    <h1 id="time" style="color: crimson;"></h1>
+    <h2 id="player-msg"></h2>
+    <h2 id="hcode"></h2>
     {% if not hider_code %}
         <h2>Enter a Hider Code:</h2>
-        <input style='border: 1px solid black; font-size: larger;' type='text' id='code_attempt_box'>
-        <button style='font-size: larger;' id='do_attempt'>Try Code</button>
-        <h2 id='code_result'></h2>
+        <input style="border: 1px solid black; font-size: larger;" type="text" id="code-attempt-box">
+        <button style="font-size: larger;" id="do-attempt">Try Code</button>
+        <h2 id="code_result"></h2>
     {% endif %}
 
     {{ lobby_code|json_script:"lobby-code" }}
     {{ username|json_script:"username" }}
     {{ seeker|json_script:"seeker" }}
-    {{ hider_code|json_script:"hider_code"}}
-    {{ start_time|json_script:"start_time"}}
+    {{ hider_code|json_script:"hider-code"}}
+    {{ start_time|json_script:"start-time"}}
     <script>
         const code = JSON.parse(document.getElementById('lobby-code').textContent);
         const username = JSON.parse(document.getElementById('username').textContent);
         const seeker = JSON.parse(document.getElementById('seeker').textContent);
-        const hider_code = JSON.parse(document.getElementById('hider_code').textContent);
-        const start_time = new Date(JSON.parse(document.getElementById('start_time').textContent));
+        const hider_code = JSON.parse(document.getElementById('hider-code').textContent);
+        const start_time = new Date(JSON.parse(document.getElementById('start-time').textContent));
 
         document.getElementById('content').innerText = 'Hide and Seek - Game ' + code;
         
         const player_type = seeker ? 'seeking!' : 'hiding!';
-        const player_msg = document.getElementById('player_msg')
+        const player_msg = document.getElementById('player-msg')
         player_msg.innerText = username + ', you are ' + player_type;
 
         if (hider_code) {
@@ -53,8 +53,8 @@
         </script>
         {% if not hider_code %}
         <script>
-        document.getElementById('do_attempt').onclick = function(e) {
-            let attempt_code = document.getElementById('code_attempt_box').value
+        document.getElementById('do-attempt').onclick = function(e) {
+            let attempt_code = document.getElementById('code-attempt-box').value
             lobbySocket.send(JSON.stringify({
                 'msg_type' : 'hider_code_attempt',
                 'attempt_code' : attempt_code,
