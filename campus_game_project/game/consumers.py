@@ -31,19 +31,19 @@ class PlayerConsumer(WebsocketConsumer):
         g = Game.objects.get(lobby_code=int(self.lobby_code))
         for y in Player.objects.filter(game=g):
             players.append({
-                "username":y.username,
-                "ready":y.ready
+                "username": y.username,
+                "ready": y.ready
                 })
 
         # Sends data to group
         async_to_sync(self.channel_layer.group_send)(
             self.lobby_code,
             {
-                'type':'lobby_event',
-                'msg_type':'join',
-                'message':message,
-                'username':self.scope['session']['username'],
-                'players':players
+                'type': 'lobby_event',
+                'msg_type': 'join',
+                'message': message,
+                'username': self.scope['session']['username'],
+                'players': players
             }
         )
 
@@ -57,11 +57,11 @@ class PlayerConsumer(WebsocketConsumer):
             async_to_sync(self.channel_layer.group_send)(
                 self.lobby_code,
                 {
-                    'type':'lobby_event',
-                    'msg_type':'leave',
-                    'message':message,
-                    'username':self.scope['session']['username'],
-                    'players':None
+                    'type': 'lobby_event',
+                    'msg_type': 'leave',
+                    'message': message,
+                    'username': self.scope['session']['username'],
+                    'players': None
                 }
             )
 
@@ -109,7 +109,7 @@ class PlayerConsumer(WebsocketConsumer):
                 async_to_sync(self.channel_layer.group_send)(
                     self.lobby_code,
                     {
-                        'type':'start_game'
+                        'type': 'start_game'
                     }
                 )
 
@@ -117,10 +117,10 @@ class PlayerConsumer(WebsocketConsumer):
             async_to_sync(self.channel_layer.group_send)(
                 self.lobby_code,
                 {
-                    'type':'ready_event',
-                    'message':message,
-                    'username':self.scope['session']['username'],
-                    'ready':ready
+                    'type': 'ready_event',
+                    'message': message,
+                    'username': self.scope['session']['username'],
+                    'ready': ready
                 }
             )
 
@@ -132,10 +132,10 @@ class PlayerConsumer(WebsocketConsumer):
         players = event['players']
 
         self.send(text_data=json.dumps({
-            'msg_type':msg_type,
-            'message':message,
-            'username':username,
-            'players':players
+            'msg_type': msg_type,
+            'message': message,
+            'username': username,
+            'players': players
         }))
 
     # A user readys or unreadys
@@ -146,16 +146,16 @@ class PlayerConsumer(WebsocketConsumer):
         ready = event['ready']
 
         self.send(text_data=json.dumps({
-            'msg_type':'ready',
-            'message':message,
-            'username':username,
-            'ready_user':ready_user,
-            'ready':ready
+            'msg_type': 'ready',
+            'message': message,
+            'username': username,
+            'ready_user': ready_user,
+            'ready': ready
         }))
 
     def start_game(self, event):
         self.send(text_data=json.dumps({
-            'msg_type':'start'
+            'msg_type': 'start'
         }))
 
 
@@ -193,15 +193,15 @@ class GameConsumer(WebsocketConsumer):
         if text_data_json['msg_type'] == 'hider_code_attempt':
             result = self.check_code(text_data_json['attempt_code'])
             self.send(text_data=json.dumps({
-                'msg_type':'code_result',
-                'result':result,
+                'msg_type': 'code_result',
+                'result': result,
             }))
         elif text_data_json['msg_type'] == 'seeking_over':
             # Hiders won
             # Sends message to group to call game_finish
             event = {
-                    'type':'game_finish',
-                    'who_won':'hiders'
+                    'type': 'game_finish',
+                    'who_won': 'hiders'
                 }
             async_to_sync(self.channel_layer.group_send)(
                 self.lobby_code,
@@ -257,8 +257,8 @@ class GameConsumer(WebsocketConsumer):
         # All found so seeker wins
         # Sends message to group to call game_finish
         event = {
-                'type':'game_finish',
-                'who_won':'seeker'
+                'type': 'game_finish',
+                'who_won': 'seeker'
             }
         async_to_sync(self.channel_layer.group_send)(
             self.lobby_code,

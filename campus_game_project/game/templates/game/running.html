@@ -13,7 +13,7 @@
         <h2>Enter a Hider Code:</h2>
         <input style="border: 1px solid black; font-size: larger;" type="text" id="code-attempt-box">
         <button style="font-size: larger;" id="do-attempt">Try Code</button>
-        <h2 id="code_result"></h2>
+        <h2 id="code-result"></h2>
     {% endif %}
 
     {{ lobby_code|json_script:"lobby-code" }}
@@ -91,7 +91,7 @@
 
             switch(data.msg_type) {
                 case 'code_result':
-                    document.getElementById('code_result').innerText = data.result;
+                    document.getElementById('code-result').innerText = data.result;
             }
         }
     </script>
