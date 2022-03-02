@@ -7,7 +7,7 @@ from game.models import Game, Player
 from random import choice
 from secrets import token_hex
 
-
+#renders html templates
 def create(request):
     return render(request, 'game/create.html')
 
@@ -16,6 +16,7 @@ def join(request):
     return render(request, 'game/join.html')
 
 
+#code for enabling lobby functionality, teh part of hide and seek before the game
 @csrf_exempt
 def lobby(request, lobby_code):
     try:
@@ -81,6 +82,8 @@ def lobby(request, lobby_code):
         })
 
 
+#enables the player of a lobby to play the hide and seek game.
+#represents the actual game functionality of hide and seek
 def running(request, lobby_code):
     username = request.session['username']
     game = Game.objects.get(lobby_code=lobby_code)
@@ -109,7 +112,7 @@ def running(request, lobby_code):
 
     return render(request, 'game/running.html', data_dict)
 
-
+#Ends the lobby of the game being played
 def end(request, lobby_code):
     g = Game.objects.get(lobby_code=lobby_code)
     result = g.winner
@@ -129,6 +132,7 @@ def end(request, lobby_code):
     })
 
 
+#generates a unique code for a currently ongoing game
 def generate_code():
     codes = []
     # Gets all the currently running lobbies
