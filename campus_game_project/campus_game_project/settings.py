@@ -33,6 +33,8 @@ ALLOWED_HOSTS = []
 INSTALLED_APPS = [
     'channels',
     'game',
+    'home',
+    'welcome',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
