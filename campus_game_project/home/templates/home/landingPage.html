@@ -4,15 +4,15 @@
 <div class="jumbotron text-center">
   <p class="lead"></p>
     <h3>Welcome {{ user.name }}!</h3>
-    <h4>Click on the link below to begin to Play!</h4>
+    <h4>Click on the link below to begin to play!</h4>
     
 
     <div class="text-center">
-      <a class="btn btn-dark " href="{% url 'game:create' %}" >Create a lobby</a>
+      <a class="btn btn-dark " href="{% url 'game:create' %}" >Create Lobby</a>
       <br>
       <br>
-      <a class="btn btn-dark" href="{% url 'game:join' %}" >Join a game lobby</a>
-      <h5>Rules and Synopsis of the game</h5>
+      <a class="btn btn-dark" href="{% url 'game:join' %}" >Join Lobby</a>
+      <!--<h5>Rules and Synopsis of the game</h5>-->
     </div>
     
 </div>
