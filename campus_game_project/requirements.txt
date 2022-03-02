@@ -6,3 +6,4 @@ pytest==6.2.4
 pytest-django==4.5.0
 channels-redis==3.3.1
 channels==3.0.4
+pytz==2021.3

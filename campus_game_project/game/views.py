@@ -5,6 +5,7 @@ from django.utils.datastructures import MultiValueDictKeyError
 from game.models import Game, Player
 
 from random import choice
+from secrets import token_hex
 
 
 def create(request):
@@ -34,6 +35,11 @@ def lobby(request, lobby_code):
             for x in Game.objects.all():
                 if lobby_code == x.lobby_code:
                     exists = True
+
+                    # Error page if lobby already in-game
+                    if x.running:
+                        return render(request, 'game/error.html')
+
             # Error page if lobby doesn't exist
             if not exists:
                 return render(request, 'game/error.html')
@@ -76,9 +82,32 @@ def lobby(request, lobby_code):
 
 
 def running(request, lobby_code):
-    return render(request, 'game/running.html', {
-        'lobby_code': lobby_code
-    })
+    username = request.session['username']
+    game = Game.objects.get(lobby_code=lobby_code)
+    player = Player.objects.filter(username=username, game=game).first()
+
+    # Error thrown if the player matching lobby_code and username can't be found
+    if not player:
+        return render(request, 'game/error.html')
+
+    game.running = True
+    game.save()
+
+    data_dict = {
+        'lobby_code': lobby_code,
+        'username': username,
+        'seeker': player.seeker,    # True if they were selected as a seeker
+        'start_time': game.game_start_time
+    }
+    if (not player.seeker) and (player.hider_code is None):
+        hider_code = token_hex(2)  # 4 character secret hex code
+        player.hider_code = hider_code
+        player.save()
+        data_dict['hider_code'] = hider_code
+    elif (not player.seeker):
+        data_dict['hider_code'] = player.hider_code
+
+    return render(request, 'game/running.html', data_dict)
 
 
 def generate_code():
