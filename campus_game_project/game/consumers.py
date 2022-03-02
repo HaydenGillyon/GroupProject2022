@@ -189,7 +189,6 @@ class GameConsumer(WebsocketConsumer):
             g.save()
         except Game.DoesNotExist:
             pass
-        
 
     # Behaviour when the websocket receives a message
     def receive(self, text_data):
