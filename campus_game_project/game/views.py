@@ -113,6 +113,16 @@ def running(request, lobby_code):
 def end(request, lobby_code):
     g = Game.objects.get(lobby_code=lobby_code)
     result = g.winner
+
+    g.players_finished += 1
+    g.save()
+
+    if g.players_finished == g.player_num:
+        for x in Player.objects.filter(game=g):
+            x.delete()
+
+        g.delete()
+
     return render(request, 'game/end.html', {
         'lobby_code': lobby_code,
         'result': result,

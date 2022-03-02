@@ -182,10 +182,14 @@ class GameConsumer(WebsocketConsumer):
             self.channel_name
         )
         # Deletes the user from the database
-        g = Game.objects.get(lobby_code=self.lobby_code)
-        Player.objects.get(game=g, username=self.scope['session']['username']).delete()
-        g.player_num -= 1
-        g.save()
+        try:
+            g = Game.objects.get(lobby_code=self.lobby_code)
+            Player.objects.get(game=g, username=self.scope['session']['username']).delete()
+            g.player_num -= 1
+            g.save()
+        except Game.DoesNotExist:
+            pass
+        
 
     # Behaviour when the websocket receives a message
     def receive(self, text_data):
