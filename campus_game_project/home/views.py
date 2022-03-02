@@ -1,19 +1,21 @@
 # from django.shortcuts import render
 from django.http import HttpResponse
-
+from django.shortcuts import render
 # Create your views here.
 
 
 def home(request):
-    print(request)
-    return HttpResponse("<h1>HOME</h1>")
+    return render(request,'home/landingPage.html')
 
 
 def leaderboard(request):
-    print(request)
-    return HttpResponse("<h1>LEADERBOARD</h1>")
+    return render(request,"home/leaderboard.html")
 
 
 def shop(request):
     print(request)
-    return HttpResponse("<h1>SHOP</h1>")
+    return render(request,"home/shop.html")
+
+def  profile(request):
+        print(request)
+        return render(request,"home/profile.html")

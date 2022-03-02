@@ -1,0 +1,19 @@
+{% extends "home/layout.html" %}
+{% load static %}
+{% block content %}
+<div class="jumbotron text-center">
+  <p class="lead"></p>
+    <h3>Welcome {{ user.name }}!</h3>
+    <h4>Click on the link below to begin to play!</h4>
+    
+
+    <div class="text-center">
+      <a class="btn btn-dark " href="{% url 'game:create' %}" >Create Lobby</a>
+      <br>
+      <br>
+      <a class="btn btn-dark" href="{% url 'game:join' %}" >Join Lobby</a>
+      <!--<h5>Rules and Synopsis of the game</h5>-->
+    </div>
+    
+</div>
+{% endblock %}
