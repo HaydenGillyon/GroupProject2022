@@ -16,7 +16,7 @@ def join(request):
     return render(request, 'game/join.html')
 
 
-# Code for enabling lobby functionality, teh part of hide and seek before the game
+# Code for enabling lobby functionality, the part of hide and seek before the game
 @csrf_exempt
 def lobby(request, lobby_code):
     try:
