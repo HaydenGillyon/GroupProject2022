@@ -151,3 +151,68 @@ class PlayerConsumer(WebsocketConsumer):
         self.send(text_data=json.dumps({
             'msg_type': 'start'
         }))
+
+class GameConsumer(WebsocketConsumer):
+
+    # Behaviour when the user connects
+    def connect(self):
+        self.lobby_code = self.scope['url_route']['kwargs']['lobby_code']
+        self.username = self.scope['session']['username']
+        message = self.username + " has joined."
+
+        # Adds the websocket to a group, named the lobby code
+        async_to_sync(self.channel_layer.group_add)(
+            self.lobby_code,
+            self.channel_name
+        )
+
+        self.accept()
+
+    # Behaviour when the user disconnects
+    def disconnect(self, close_code):
+        pass
+
+    # Behaviour when the websocket receives a message
+    def receive(self, text_data):
+        text_data_json = json.loads(text_data)
+        if text_data_json['msg_type'] == "playing":
+            self.scope['session']['playing'] = True
+        elif text_data_json['msg_type'] == "ready":
+            ready = text_data_json['ready'].lower()
+            username = text_data_json['username']
+            message = username + " is " + ready + "."
+
+            if ready == "unready":
+                ready = False
+            else:
+                ready = True
+
+            # Sets the player to ready
+            g = Game.objects.get(lobby_code=self.lobby_code)
+            p = Player.objects.get(game=g, username=username)
+            p.ready = ready
+            p.save()
+
+            if g.all_ready() and g.player_num > 1:
+                players = Player.objects.filter(game=g)
+                p = players[randint(0, len(players)-1)]
+                p.seeker = True
+                p.save()
+
+                async_to_sync(self.channel_layer.group_send)(
+                    self.lobby_code,
+                    {
+                        'type': 'start_game'
+                    }
+                )
+
+            # Sends message to group
+            async_to_sync(self.channel_layer.group_send)(
+                self.lobby_code,
+                {
+                    'type': 'ready_event',
+                    'message': message,
+                    'username': self.scope['session']['username'],
+                    'ready': ready
+                }
+            )

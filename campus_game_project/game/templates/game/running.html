@@ -6,11 +6,39 @@
 </head>
 <body>
     <h1 id="content"></h1>
+    <h2 id="player_msg"></h2>
+    <h2 id="hcode"></h2>
     {{ lobby_code|json_script:"lobby-code" }}
+    {{ username|json_script:"username" }}
+    {{ seeker|json_script:"seeker" }}
+    {{ hider_code|json_script:"hider_code"}}
     <script>
         const code = JSON.parse(document.getElementById('lobby-code').textContent);
-        document.getElementById("content").innerText = code + " is running.";
+        const username = JSON.parse(document.getElementById('username').textContent);
+        const seeker = JSON.parse(document.getElementById('seeker').textContent);
+        const hider_code = JSON.parse(document.getElementById('hider_code').textContent);
+
+        document.getElementById("content").innerText = "Hide and Seek - Game " + code;
+        
+        const player_type = seeker ? "seeking!" : "hiding!"
+        document.getElementById("player_msg").innerText = username + ", you are " + player_type;
+        if (hider_code) {
+            hider_code_element = document.getElementById("hcode")
+            hider_code_element.innerText = "Secret Hider Code: " + hider_code;
+            hider_code_element.style.border = "1px solid black";
+        }
         document.title = code;
+
+        // Establishes the websocket connection
+        const lobbySocket = new WebSocket(
+            'ws://'
+            + window.location.host
+            + '/ws/game/running/'
+            + code
+            + '/'
+        );
+
+
     </script>
 </body>
 </html>
