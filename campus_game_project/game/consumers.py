@@ -182,10 +182,13 @@ class GameConsumer(WebsocketConsumer):
             self.channel_name
         )
         # Deletes the user from the database
-        g = Game.objects.get(lobby_code=self.lobby_code)
-        Player.objects.get(game=g, username=self.scope['session']['username']).delete()
-        g.player_num -= 1
-        g.save()
+        try:
+            g = Game.objects.get(lobby_code=self.lobby_code)
+            Player.objects.get(game=g, username=self.scope['session']['username']).delete()
+            g.player_num -= 1
+            g.save()
+        except Game.DoesNotExist:
+            pass
 
     # Behaviour when the websocket receives a message
     def receive(self, text_data):
@@ -211,8 +214,14 @@ class GameConsumer(WebsocketConsumer):
     # Final method that will be called upon the game finishing
     def game_finish(self, event):
         # IMPLEMENT POST-GAME PAGE SWITCH FROM HERE
-        print("FINISH")
-        pass
+        result = event['who_won']
+        g = Game.objects.get(lobby_code=self.lobby_code)
+        g.winner = result
+        g.save()
+        self.send(text_data=json.dumps({
+                'msg_type': 'end',
+                'lobby_code': self.lobby_code
+        }))
 
     def check_code(self, attempt_code):
         game = Game.objects.filter(lobby_code=self.lobby_code).first()
