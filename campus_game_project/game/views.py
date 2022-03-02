@@ -7,6 +7,7 @@ from game.models import Game, Player
 from random import choice
 from secrets import token_hex
 
+
 def create(request):
     return render(request, 'game/create.html')
 
@@ -38,7 +39,7 @@ def lobby(request, lobby_code):
                     # Error page if lobby already in-game
                     if x.running:
                         return render(request, 'game/error.html')
-            
+
             # Error page if lobby doesn't exist
             if not exists:
                 return render(request, 'game/error.html')
@@ -89,20 +90,25 @@ def running(request, lobby_code):
     if not player:
         return render(request, 'game/error.html')
 
+    game.running = True
+    game.save()
+
     data_dict = {
-        'lobby_code': lobby_code,
+        'lobby_code' : lobby_code,
         'username' : username,
-        'seeker' : player.seeker    # True if they were selected as a seeker
+        'seeker' : player.seeker,    # True if they were selected as a seeker
+        'start_time' : game.game_start_time
     }
-    if (not player.seeker) and (player.hider_code == None):
+    if (not player.seeker) and (player.hider_code is None):
         hider_code = token_hex(2)  # 4 character secret hex code
         player.hider_code = hider_code
         player.save()
         data_dict['hider_code'] = hider_code
     elif (not player.seeker):
         data_dict['hider_code'] = player.hider_code
-    
+
     return render(request, 'game/running.html', data_dict)
+
 
 def generate_code():
     codes = []

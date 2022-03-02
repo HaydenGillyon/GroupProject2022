@@ -1,32 +1,45 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <meta charset="utf-8"/>
+    <meta charset='utf-8'/>
     <title>Running</title>
 </head>
 <body>
-    <h1 id="content"></h1>
-    <h2 id="player_msg"></h2>
-    <h2 id="hcode"></h2>
+    <h1 id='content'></h1>
+    <h1 id='time' style='color: crimson;'></h1>
+    <h2 id='player_msg'></h2>
+    <h2 id='hcode'></h2>
+    {% if not hider_code %}
+        <h2>Enter a Hider Code:</h2>
+        <input style='border: 1px solid black; font-size: larger;' type='text' id='code_attempt_box'>
+        <button style='font-size: larger;' id='do_attempt'>Try Code</button>
+        <h2 id='code_result'></h2>
+    {% endif %}
+
     {{ lobby_code|json_script:"lobby-code" }}
     {{ username|json_script:"username" }}
     {{ seeker|json_script:"seeker" }}
     {{ hider_code|json_script:"hider_code"}}
+    {{ start_time|json_script:"start_time"}}
     <script>
         const code = JSON.parse(document.getElementById('lobby-code').textContent);
         const username = JSON.parse(document.getElementById('username').textContent);
         const seeker = JSON.parse(document.getElementById('seeker').textContent);
         const hider_code = JSON.parse(document.getElementById('hider_code').textContent);
+        const start_time = new Date(JSON.parse(document.getElementById('start_time').textContent));
 
-        document.getElementById("content").innerText = "Hide and Seek - Game " + code;
+        document.getElementById('content').innerText = 'Hide and Seek - Game ' + code;
         
-        const player_type = seeker ? "seeking!" : "hiding!"
-        document.getElementById("player_msg").innerText = username + ", you are " + player_type;
+        const player_type = seeker ? 'seeking!' : 'hiding!';
+        const player_msg = document.getElementById('player_msg')
+        player_msg.innerText = username + ', you are ' + player_type;
+
         if (hider_code) {
-            hider_code_element = document.getElementById("hcode")
-            hider_code_element.innerText = "Secret Hider Code: " + hider_code;
-            hider_code_element.style.border = "1px solid black";
+            hider_code_element = document.getElementById('hcode')
+            hider_code_element.innerText = 'Secret Hider Code: ' + hider_code;
+            hider_code_element.style.border = '1px solid black';
         }
+
         document.title = code;
 
         // Establishes the websocket connection
@@ -37,8 +50,50 @@
             + code
             + '/'
         );
+        </script>
+        {% if not hider_code %}
+        <script>
+        document.getElementById('do_attempt').onclick = function(e) {
+            let attempt_code = document.getElementById('code_attempt_box').value
+            lobbySocket.send(JSON.stringify({
+                'msg_type' : 'hider_code_attempt',
+                'attempt_code' : attempt_code,
+                'username': username,
+            }));
+        };
+        </script>
+        {% endif %}
+        <script>
+        // Game Timer
+        const time_left_text = document.getElementById('time');
+        const hiding_duration = 60000;
+        const seeking_duration = 600000;
+        const total_duration = hiding_duration + seeking_duration;
+        (function checkTime() {
+            let time = Date.now() - 30000;  // Remove uneven 30 seconds from time
+            let elapsed = time - start_time;
+            time_left_text.innerText = Math.floor((total_duration - elapsed)/1000) + " seconds remaining";
 
+            if (elapsed > total_duration) {
+                // End game, seeker loses, inform other clients
+                lobbySocket.send(JSON.stringify({
+                'msg_type' : 'seeking_over',
+                }));
+            } else if (elapsed > hiding_duration) {
+                player_msg.innerText = username + ', you are ' + player_type
+                    + ' Searching has begun!';
+            }
+            setTimeout(checkTime, 500);
+        })();
 
+        lobbySocket.onmessage = function(e) {
+            const data = JSON.parse(e.data);
+
+            switch(data.msg_type) {
+                case 'code_result':
+                    document.getElementById('code_result').innerText = data.result;
+            }
+        }
     </script>
 </body>
 </html>
