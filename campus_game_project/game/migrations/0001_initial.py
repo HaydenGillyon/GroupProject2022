@@ -4,14 +4,14 @@ from django.db import migrations, models
 import django.db.models.deletion
 import django.utils.timezone
 
-
+# Sets up the models so that data is automatically set into the database
 class Migration(migrations.Migration):
 
     initial = True
-
     dependencies = [
     ]
 
+    # Sets up game model
     operations = [
         migrations.CreateModel(
             name='Game',
@@ -23,6 +23,7 @@ class Migration(migrations.Migration):
                 ('running', models.BooleanField(default=False)),
             ],
         ),
+        # Sets up player model
         migrations.CreateModel(
             name='Player',
             fields=[

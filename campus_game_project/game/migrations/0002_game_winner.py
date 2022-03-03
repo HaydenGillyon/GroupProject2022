@@ -9,6 +9,7 @@ class Migration(migrations.Migration):
         ('game', '0001_initial'),
     ]
 
+    # Updates the game models after a game is won
     operations = [
         migrations.AddField(
             model_name='game',
