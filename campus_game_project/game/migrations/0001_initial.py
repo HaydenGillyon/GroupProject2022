@@ -4,11 +4,10 @@ from django.db import migrations, models
 import django.db.models.deletion
 import django.utils.timezone
 
-# Sets up the models so that data is automatically set into the database 
+# Sets up the models so that data is automatically set into the database
 class Migration(migrations.Migration):
 
     initial = True
-
     dependencies = [
     ]
 
