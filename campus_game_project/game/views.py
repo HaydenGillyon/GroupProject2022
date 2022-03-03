@@ -101,7 +101,7 @@ def running(request, lobby_code):
     data_dict = {
         'lobby_code': lobby_code,
         'username': username,
-        'seeker': player.seeker,    
+        'seeker': player.seeker,
         'start_time': game.game_start_time
     }
     if (not player.seeker) and (player.hider_code is None):
