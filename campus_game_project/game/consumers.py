@@ -9,6 +9,7 @@ from game.models import Game, Player
 from random import randint
 
 
+# Creates web sockets so that the users can be connected whilst playing.
 class PlayerConsumer(WebsocketConsumer):
 
     # Behaviour when the user connects
@@ -223,6 +224,7 @@ class GameConsumer(WebsocketConsumer):
                 'lobby_code': self.lobby_code
         }))
 
+    # Checks if a current game should be aborted due to time limit
     def check_code(self, attempt_code):
         game = Game.objects.filter(lobby_code=self.lobby_code).first()
         # Check that time isn't up or in hiding phase
@@ -258,6 +260,8 @@ class GameConsumer(WebsocketConsumer):
                 self.check_found_hiders()
                 return "You found " + matched.username
 
+    # Checks the condition of there being no players on the hiding team
+    # This should complete the game
     def check_found_hiders(self):
         game = Game.objects.filter(lobby_code=self.lobby_code).first()
         hiders = Player.objects.filter(game=game, seeker=False, found=False)
