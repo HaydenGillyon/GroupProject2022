@@ -8,6 +8,7 @@ from channels.generic.websocket import WebsocketConsumer
 from game.models import Game, Player
 from random import randint
 
+
 # Creates web sockets so that the users can be connected whilst playing.
 class PlayerConsumer(WebsocketConsumer):
 
@@ -223,7 +224,7 @@ class GameConsumer(WebsocketConsumer):
                 'lobby_code': self.lobby_code
         }))
 
-    #checks if a current game should be aborted due to timwe limit
+    # Checks if a current game should be aborted due to time limit
     def check_code(self, attempt_code):
         game = Game.objects.filter(lobby_code=self.lobby_code).first()
         # Check that time isn't up or in hiding phase
