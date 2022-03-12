@@ -1,4 +1,3 @@
-from django.utils import timezone
 from django.db import models
 
 
@@ -7,7 +6,7 @@ class Game(models.Model):
     lobby_code = models.IntegerField()
     player_num = models.IntegerField()
     players_finished = models.IntegerField(default=0)
-    game_start_time = models.DateTimeField(default=timezone.now)
+    game_start_time = models.FloatField(default=0)
     running = models.BooleanField(default=False)
     winner = models.CharField(max_length=20, default='N')
 

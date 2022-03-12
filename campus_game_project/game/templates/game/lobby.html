@@ -100,9 +100,11 @@
                     window.location= "../../game/running/" + code;
                     break;
             }
-
-            // Displays the message on screen
-            document.querySelector('#log').value += (data.message + '\n')
+            
+            // Displays the message on screen if one exists
+            if (data.message) {
+                document.querySelector('#log').value += (data.message + '\n')
+            }
         }
 
         // Send a message to the socket when the player is ready
