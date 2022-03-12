@@ -57,6 +57,6 @@ Parameters:
 
 Returns:
 
-    {return} : {return type}
+    return : {return type}
         {description of return}
 """
