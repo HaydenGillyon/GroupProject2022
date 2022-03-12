@@ -36,8 +36,8 @@
             const username = JSON.parse(document.getElementById('username').textContent);
             const seeker = JSON.parse(document.getElementById('seeker').textContent);
             const hider_code = JSON.parse(document.getElementById('hider-code').textContent);
-            const start_time = new Date(JSON.parse(document.getElementById('start-time').textContent));
-
+            const start_time = JSON.parse(document.getElementById('start-time').textContent);
+            
             document.getElementById('content').innerText = 'Hide and Seek - Game ' + code;
             
             const player_type = seeker ? 'seeking!' : 'hiding!';
@@ -76,13 +76,13 @@
             <script>
             // Game Timer
             const time_left_text = document.getElementById('time');
-            const hiding_duration = 60000;
-            const seeking_duration = 600000;
+            const hiding_duration = 60;
+            const seeking_duration = 600;
             const total_duration = hiding_duration + seeking_duration;
             (function checkTime() {
-                let time = Date.now() - 30000;  // Remove uneven 30 seconds from time
+                let time = Date.now() / 1000
                 let elapsed = time - start_time;
-                time_left_text.innerText = Math.floor((total_duration - elapsed)/1000) + " seconds remaining";
+                time_left_text.innerText = Math.floor((total_duration - elapsed)) + " seconds remaining";
 
                 if (elapsed > total_duration) {
                     // End game, seeker loses, inform other clients

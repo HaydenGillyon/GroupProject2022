@@ -1,6 +1,4 @@
-from django.utils import timezone
-import pytz
-from datetime import datetime
+import time
 import re
 import json
 from asgiref.sync import async_to_sync
@@ -105,8 +103,10 @@ class PlayerConsumer(WebsocketConsumer):
                 p.seeker = True
                 p.save()
 
-                g.game_start_time = timezone.now()
-
+                # Set game start time in seconds since epoch
+                g.game_start_time = time.time()
+                g.save()
+                
                 async_to_sync(self.channel_layer.group_send)(
                     self.lobby_code,
                     {
@@ -228,14 +228,11 @@ class GameConsumer(WebsocketConsumer):
     def check_code(self, attempt_code):
         game = Game.objects.filter(lobby_code=self.lobby_code).first()
         # Check that time isn't up or in hiding phase
-        hiding_duration = 60000
-        seeking_duration = 600000
+        hiding_duration = 60
+        seeking_duration = 600
         total_duration = hiding_duration + seeking_duration
-        current_time = timezone.now()
-        epoch = datetime.utcfromtimestamp(0).replace(tzinfo=pytz.utc)
-        time_ms = int((current_time - epoch).total_seconds() * 1000.0)
-        game_start_time_ms = int((game.game_start_time - epoch).total_seconds() * 1000.0)
-        elapsed = time_ms - game_start_time_ms
+        current_time = time.time()
+        elapsed = current_time - game.game_start_time
 
         if elapsed > total_duration:
             # Time is up
@@ -245,7 +242,7 @@ class GameConsumer(WebsocketConsumer):
             return "Stay still! The hiding phase is still active!"
 
         # Check if valid 4 digit hex code
-        if not re.match('^[A-Fa-f0-9]+$', attempt_code) or len(attempt_code) != 4:
+        if (not re.match('^[A-Fa-f0-9]+$', attempt_code)) or len(attempt_code) != 4:
             return "Not a valid code! Please try again."
 
         # Check if player code exists and if it is already found
