@@ -7,7 +7,7 @@ NOTE: Do not refresh pages while running a lobby or game. The application does n
 ## Install
 1. Make a python virtual environment in this folder by running this in your console of choice:
 
-        py -m venv env
+        python -m venv env
 
 2. Enter this by running an activate script:
     - env\Scripts\Activate.ps1 for Windows PowerShell
@@ -18,7 +18,7 @@ NOTE: Do not refresh pages while running a lobby or game. The application does n
 
 4. Install dependencies by running the following:
 
-        py -m pip install -r requirements.txt
+        python -m pip install -r requirements.txt
 
 5. Download and install Docker Desktop from the [Docker Website](https://www.docker.com/)
 
@@ -28,7 +28,7 @@ NOTE: Do not refresh pages while running a lobby or game. The application does n
 
 7. Finally, run the server with the following command:
 
-        py manage.py runserver
+        python manage.py runserver
 
 ## Usage
 Go to http://127.0.0.1:8000/.
