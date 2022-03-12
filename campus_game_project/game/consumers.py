@@ -106,7 +106,7 @@ class PlayerConsumer(WebsocketConsumer):
                 # Set game start time in seconds since epoch
                 g.game_start_time = time.time()
                 g.save()
-                
+
                 async_to_sync(self.channel_layer.group_send)(
                     self.lobby_code,
                     {

@@ -96,7 +96,7 @@ def running(request, lobby_code):
 
     game.running = True
     game.save()
-    
+
     # player.seeker is True if the player was selected as the seeker
     data_dict = {
         'lobby_code': lobby_code,
@@ -119,15 +119,15 @@ def running(request, lobby_code):
 # Ends the lobby of the game being played
 def end(request, lobby_code):
     g = Game.objects.filter(lobby_code=lobby_code).first()
-    if g: # Keep for None safety as game could already be deleted
+    if g:   # Keep for None safety as game could already be deleted
         result = g.winner
 
         g.players_finished += 1
         g.save()
-    
-        if g.player_num < 1: # Player number is decremented upon leaving running stage
+
+        if g.player_num < 1:    # Player number is decremented upon leaving running stage
             g.delete()
-    else: # If game has already been deleted
+    else:   # If game has already been deleted
         result = 'unknown'
     return render(request, 'game/end.html', {
         'lobby_code': lobby_code,
