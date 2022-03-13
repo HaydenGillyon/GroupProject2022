@@ -16,16 +16,37 @@
   </head>
 
   <body>
-    <textarea id="log" cols="100" rows="20"></textarea><br>
-    <input id="ready" type="button" value="Ready"><br><br>
-    Players:
-    <ul id="players">
-    </ul>
+    <div id="wrapper">
+        <div id="content">
+            <textarea id="log" cols="100" rows="20"></textarea><br>
+            <input id="ready" type="button" value="Ready"><br><br>
+            Players:
+            <ul id="players">
+            </ul>
+        </div>
+        <div id="settings">
+            <h1>Current Settings</h1><br>
+            <label id="hiding-time-label">Hiding Time:</label><br>
+            <label id="seeking-time-label">Seeking Time:</label><br>
+            <label id="seeker-num-label">Number of Seekers:</label><br>
+            <label id="map">{Display Map Here}</label>
+        </div>
+    </div>
     {{ lobby_code|json_script:"lobby-code" }}
     {{ username|json_script:"username" }}
+    {{ hiding_time|json_script:"hiding-time" }}
+    {{ seeking_time|json_script:"seeking-time" }}
+    {{ seeker_num|json_script:"seeker-num" }}
     <script>
         const code = JSON.parse(document.getElementById('lobby-code').textContent);
         const username = JSON.parse(document.getElementById('username').textContent);
+        const hiding_time = JSON.parse(document.getElementById('hiding-time').textContent);
+        const seeking_time = JSON.parse(document.getElementById('seeking-time').textContent);
+        const seeker_num = JSON.parse(document.getElementById('seeker-num').textContent);
+
+        document.getElementById('hiding-time-label').innerText += ' ' + hiding_time;
+        document.getElementById('seeking-time-label').innerText += ' ' + seeking_time;
+        document.getElementById('seeker-num-label').innerText += ' ' + seeker_num;
 
         document.title = code;
 
