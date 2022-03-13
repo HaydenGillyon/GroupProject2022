@@ -23,10 +23,16 @@ def lobby(request, lobby_code):
     try:
         # If the lobby is being created, enters with a default code of 0
         if request.POST['create'] == "True":
+            h_time = int(request.POST['hiding_time'])
+            s_time = int(request.POST['seeking_time'])
+            s_num = int(request.POST['seeker_num'])
+            radius = int(request.POST['radius'])
+
             code = generate_code()
 
             # Adds the game to the database
-            Game(lobby_code=code, player_num=0).save()
+            Game(lobby_code=code, player_num=0, hiding_time=h_time, seeking_time=s_time, seeker_num=s_num, radius=radius).save()
+
             request.session['username'] = request.POST['uname']
 
             # Redirects to url with correct code

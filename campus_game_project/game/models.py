@@ -9,6 +9,10 @@ class Game(models.Model):
     game_start_time = models.FloatField(default=0)
     running = models.BooleanField(default=False)
     winner = models.CharField(max_length=20, default='N')
+    hiding_time = models.IntegerField(default=60)
+    seeking_time = models.IntegerField(default=600)
+    seeker_num = models.IntegerField(default=1)
+    radius = models.IntegerField(default=100)
 
     def __str__(self):
         return str(self.lobby_code)
