@@ -1,6 +1,5 @@
 from django.views.decorators.csrf import csrf_exempt
-from django.shortcuts import render, redirect
-from django.utils.datastructures import MultiValueDictKeyError
+from django.shortcuts import render
 
 from game.models import Game, Player
 
@@ -123,6 +122,7 @@ def generate_code():
 
     return choice([i for i in range(1000, 10000) if i not in codes])
 
+
 def validate_inputs(post):
     h_time = post['hiding_time']
     s_time = post['seeking_time']
@@ -131,7 +131,7 @@ def validate_inputs(post):
 
     # Input not a number
     if not ((h_time.isdigit() or len(h_time) == 0) and (s_time.isdigit() or len(s_time) == 0)
-    and (s_num.isdigit() or len(s_num) == 0) and (radius.isdigit() or len(radius) == 0)):
+        and (s_num.isdigit() or len(s_num) == 0) and (radius.isdigit() or len(radius) == 0)):
         return False
 
     if len(h_time) > 0:
@@ -159,6 +159,7 @@ def validate_inputs(post):
             return False
 
     return True
+
 
 def create_game(post, code):
 
@@ -192,8 +193,9 @@ def create_game(post, code):
 
     # Adds the game to the database
     Game(lobby_code=code, player_num=0, hiding_time=h_time, seeking_time=s_time, seeker_num=s_num, radius=radius).save()
-    
+
     return True
+
 
 def create_player(game, username):
     if len(Player.objects.filter(game=game)) > 0:

@@ -26,10 +26,10 @@
         </div>
         <div id="settings">
             <h1>Current Settings</h1><br>
-            <label id="hiding_time_label">Hiding Time:</label><br>
-            <label id="seeking_time_label">Seeking Time:</label><br>
-            <label id="seeker_num_label">Number of Seekers:</label><br>
-            <label id="Map">{Display Map Here}</label>
+            <label id="hiding-time-label">Hiding Time:</label><br>
+            <label id="seeking-time-label">Seeking Time:</label><br>
+            <label id="seeker-num-label">Number of Seekers:</label><br>
+            <label id="map">{Display Map Here}</label>
         </div>
     </div>
     {{ lobby_code|json_script:"lobby-code" }}
@@ -44,9 +44,9 @@
         const seeking_time = JSON.parse(document.getElementById('seeking-time').textContent);
         const seeker_num = JSON.parse(document.getElementById('seeker-num').textContent);
 
-        document.getElementById('hiding_time_label').innerText += ' ' + hiding_time;
-        document.getElementById('seeking_time_label').innerText += ' ' + seeking_time;
-        document.getElementById('seeker_num_label').innerText += ' ' + seeker_num;
+        document.getElementById('hiding-time-label').innerText += ' ' + hiding_time;
+        document.getElementById('seeking-time-label').innerText += ' ' + seeking_time;
+        document.getElementById('seeker-num-label').innerText += ' ' + seeker_num;
 
         document.title = code;
 
