@@ -25,7 +25,8 @@ def join(request):
 def lobby(request, lobby_code):
     if request.POST['create'] == "True":
 
-        create_game(request.POST, lobby_code)
+        if not (create_game(request.POST, lobby_code)):
+            return render(request, 'game/error.html')
 
     else:
         exists = False
@@ -52,6 +53,9 @@ def lobby(request, lobby_code):
     return render(request, 'game/lobby.html', {
         'lobby_code': lobby_code,
         'username': username,
+        'hiding_time': game.hiding_time,
+        'seeking_time': game.seeking_time,
+        'seeker_num': game.seeker_num,
     })
 
 
@@ -119,14 +123,77 @@ def generate_code():
 
     return choice([i for i in range(1000, 10000) if i not in codes])
 
+def validate_inputs(post):
+    h_time = post['hiding_time']
+    s_time = post['seeking_time']
+    s_num = post['seeker_num']
+    radius = post['radius']
+
+    # Input not a number
+    if not ((h_time.isdigit() or len(h_time) == 0) and (s_time.isdigit() or len(s_time) == 0)
+    and (s_num.isdigit() or len(s_num) == 0) and (radius.isdigit() or len(radius) == 0)):
+        return False
+
+    if len(h_time) > 0:
+        h_time = int(h_time)
+        # Range for hiding time between 20 and 120 seconds
+        if h_time < 20 or h_time > 120:
+            return False
+
+    if len(s_time) > 0:
+        s_time = int(s_time)
+        # Range for seeking time between 120 and 1200 seconds
+        if s_time < 120 or s_time > 1200:
+            return False
+
+    if len(s_num) > 0:
+        s_num = int(s_num)
+        # Range for number of seekers between 1 and 8
+        if s_num < 1 or s_num > 8:
+            return False
+
+    if len(radius) > 0:
+        radius = int(radius)
+        # Range for radius between 50 and 1000 meters
+        if radius < 50 or radius > 1000:
+            return False
+
+    return True
+
 def create_game(post, code):
-    h_time = int(post['hiding_time'])
-    s_time = int(post['seeking_time'])
-    s_num = int(post['seeker_num'])
-    radius = int(post['radius'])
+
+    if not validate_inputs(post):
+        return False
+
+    h_time = post['hiding_time']
+    s_time = post['seeking_time']
+    s_num = post['seeker_num']
+    radius = post['radius']
+
+    if len(h_time) == 0:
+        h_time = 60
+    else:
+        h_time = int(h_time)
+
+    if len(s_time) == 0:
+        s_time = 600
+    else:
+        s_time = int(s_time)
+
+    if len(s_num) == 0:
+        s_num = 1
+    else:
+        s_num = int(s_num)
+
+    if len(radius) == 0:
+        radius = 100
+    else:
+        radius = int(radius)
 
     # Adds the game to the database
     Game(lobby_code=code, player_num=0, hiding_time=h_time, seeking_time=s_time, seeker_num=s_num, radius=radius).save()
+    
+    return True
 
 def create_player(game, username):
     if len(Player.objects.filter(game=game)) > 0:
