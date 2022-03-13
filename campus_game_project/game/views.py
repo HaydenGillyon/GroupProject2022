@@ -108,8 +108,11 @@ def running(request, lobby_code):
         'lobby_code': lobby_code,
         'username': username,
         'seeker': player.seeker,
-        'start_time': game.game_start_time
+        'start_time': game.game_start_time,
+        'hiding_time': game.hiding_time,
+        'seeking_time': game.seeking_time,
     }
+
     if (not player.seeker) and (player.hider_code is None):
         # 4 character secret hex code
         hider_code = token_hex(2)

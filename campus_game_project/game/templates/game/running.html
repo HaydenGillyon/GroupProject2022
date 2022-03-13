@@ -31,6 +31,8 @@
         {{ seeker|json_script:"seeker" }}
         {{ hider_code|json_script:"hider-code"}}
         {{ start_time|json_script:"start-time"}}
+        {{ hiding_time|json_script:"hiding-time" }}
+        {{ seeking_time|json_script:"seeking-time" }}
         <script>
             const code = JSON.parse(document.getElementById('lobby-code').textContent);
             const username = JSON.parse(document.getElementById('username').textContent);
@@ -76,8 +78,9 @@
             <script>
             // Game Timer
             const time_left_text = document.getElementById('time');
-            const hiding_duration = 60;
-            const seeking_duration = 600;
+            const hiding_duration = parseInt(JSON.parse(document.getElementById('hiding-time').textContent));
+            console.log(JSON.parse(document.getElementById('hiding-time').textContent));
+            const seeking_duration = parseInt(JSON.parse(document.getElementById('seeking-time').textContent));
             const total_duration = hiding_duration + seeking_duration;
             (function checkTime() {
                 let time = Date.now() / 1000

@@ -97,11 +97,13 @@ class PlayerConsumer(WebsocketConsumer):
             p.ready = ready
             p.save()
 
-            if g.all_ready() and g.player_num > 1:
-                players = Player.objects.filter(game=g)
-                p = players[randint(0, len(players)-1)]
-                p.seeker = True
-                p.save()
+            if g.all_ready() and g.player_num > 1 and g.player_num > g.seeker_num:
+                players = [p for p in Player.objects.filter(game=g)]
+                for i in range(g.seeker_num):
+                    p = players[randint(0, len(players)-1)]
+                    p.seeker = True
+                    p.save()
+                    players.remove(p)
 
                 # Set game start time in seconds since epoch
                 g.game_start_time = time.time()
@@ -228,8 +230,8 @@ class GameConsumer(WebsocketConsumer):
     def check_code(self, attempt_code):
         game = Game.objects.filter(lobby_code=self.lobby_code).first()
         # Check that time isn't up or in hiding phase
-        hiding_duration = 60
-        seeking_duration = 600
+        hiding_duration = game.hiding_time
+        seeking_duration = game.seeking_time
         total_duration = hiding_duration + seeking_duration
         current_time = time.time()
         elapsed = current_time - game.game_start_time
