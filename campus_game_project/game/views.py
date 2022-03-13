@@ -10,7 +10,10 @@ from secrets import token_hex
 
 # Renders html templates
 def create(request):
-    return render(request, 'game/create.html')
+    code = generate_code()
+    return render(request, 'game/create.html', {
+        "lobby_code": code,
+    })
 
 
 def join(request):
@@ -20,73 +23,36 @@ def join(request):
 # Code for enabling lobby functionality, the part of hide and seek before the game
 @csrf_exempt
 def lobby(request, lobby_code):
-    try:
-        # If the lobby is being created, enters with a default code of 0
-        if request.POST['create'] == "True":
-            h_time = int(request.POST['hiding_time'])
-            s_time = int(request.POST['seeking_time'])
-            s_num = int(request.POST['seeker_num'])
-            radius = int(request.POST['radius'])
+    if request.POST['create'] == "True":
 
-            code = generate_code()
+        create_game(request.POST, lobby_code)
 
-            # Adds the game to the database
-            Game(lobby_code=code, player_num=0, hiding_time=h_time, seeking_time=s_time, seeker_num=s_num, radius=radius).save()
+    else:
+        exists = False
+        for x in Game.objects.all():
+            if lobby_code == x.lobby_code:
+                exists = True
 
-            request.session['username'] = request.POST['uname']
-
-            # Redirects to url with correct code
-            return redirect('/game/' + str(code) + '/', request=request)
-
-        else:
-            exists = False
-            for x in Game.objects.all():
-                if lobby_code == x.lobby_code:
-                    exists = True
-
-                    # Error page if lobby already in-game
-                    if x.running:
-                        return render(request, 'game/error.html')
-
-            # Error page if lobby doesn't exist
-            if not exists:
-                return render(request, 'game/error.html')
-
-            username = request.POST['uname']
-            request.session['username'] = username
-
-            # Add the player to the database
-            game = Game.objects.get(lobby_code=lobby_code)
-            if len(Player.objects.filter(game=game)):
-                for x in Player.objects.filter(game=game):
-                    if x.username == username:
-                        return render(request, 'game/error.html')
-            Player(username=username, game=game, seeker=False, ready=False).save()
-            game.player_num += 1
-            game.save()
-
-            return render(request, 'game/lobby.html', {
-                'lobby_code': lobby_code,
-                'username': username,
-            })
-    # This error is thrown if there has been a redirect when creating the lobby
-    except MultiValueDictKeyError:
-        username = request.session['username']
-
-        # Adds the player to the database
-        game = Game.objects.get(lobby_code=lobby_code)
-        if len(Player.objects.filter(game=game)):
-            for x in Player.objects.filter(game=game):
-                if x.username == username:
+                # Error page if lobby already in-game
+                if x.running:
                     return render(request, 'game/error.html')
-        Player(username=username, game=game, seeker=False, ready=False).save()
-        game.player_num += 1
-        game.save()
 
-        return render(request, 'game/lobby.html', {
-            'lobby_code': lobby_code,
-            'username': username,
-        })
+        # Error page if lobby doesn't exist
+        if not exists:
+            return render(request, 'game/error.html')
+
+    username = request.POST['uname']
+    request.session['username'] = username
+
+    # Add the player to the database
+    game = Game.objects.get(lobby_code=lobby_code)
+    if not create_player(game, username):
+        return render(request, 'game/error.html')
+
+    return render(request, 'game/lobby.html', {
+        'lobby_code': lobby_code,
+        'username': username,
+    })
 
 
 # Enables the player of a lobby to play the hide and seek game
@@ -152,3 +118,24 @@ def generate_code():
         codes.append(x.lobby_code)
 
     return choice([i for i in range(1000, 10000) if i not in codes])
+
+def create_game(post, code):
+    h_time = int(post['hiding_time'])
+    s_time = int(post['seeking_time'])
+    s_num = int(post['seeker_num'])
+    radius = int(post['radius'])
+
+    # Adds the game to the database
+    Game(lobby_code=code, player_num=0, hiding_time=h_time, seeking_time=s_time, seeker_num=s_num, radius=radius).save()
+
+def create_player(game, username):
+    if len(Player.objects.filter(game=game)) > 0:
+        for x in Player.objects.filter(game=game):
+            if x.username == username:
+                return False
+
+    Player(username=username, game=game, seeker=False, ready=False).save()
+    game.player_num += 1
+    game.save()
+
+    return True
