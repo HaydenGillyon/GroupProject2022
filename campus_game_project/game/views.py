@@ -112,6 +112,10 @@ def end(request, lobby_code):
         'result': result,
     })
 
+# Shows an error page
+def error(request):
+    return render(request, 'game/error.html')
+
 
 # Generates a unique code for a currently ongoing game
 def generate_code():
