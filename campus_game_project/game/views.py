@@ -112,6 +112,7 @@ def end(request, lobby_code):
         'result': result,
     })
 
+
 # Shows an error page
 def error(request):
     return render(request, 'game/error.html')
@@ -135,7 +136,7 @@ def validate_inputs(post):
 
     # Input not a number
     if not ((h_time.isdigit() or len(h_time) == 0) and (s_time.isdigit() or len(s_time) == 0)
-        and (s_num.isdigit() or len(s_num) == 0) and (radius.isdigit() or len(radius) == 0)):
+            and (s_num.isdigit() or len(s_num) == 0) and (radius.isdigit() or len(radius) == 0)):
         return False
 
     if len(h_time) > 0:
