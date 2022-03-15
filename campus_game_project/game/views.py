@@ -137,7 +137,7 @@ def validate_inputs(post):
     radius = post['radius']
 
     # Input not a number
-    if not ((h_time.isdigit() or len(h_time) == 0) and (s_time.isdigit() or len(s_time) == 0) 
+    if not ((h_time.isdigit() or len(h_time) == 0) and (s_time.isdigit() or len(s_time) == 0)
             and (s_num.isdigit() or len(s_num) == 0) and (radius.isdigit() or len(radius) == 0)):
         return False
 
@@ -206,7 +206,7 @@ def create_game(post, code):
 
     # Adds the game to the database
     Game(lobby_code=code, player_num=0, hiding_time=h_time, seeking_time=s_time, seeker_num=s_num,
-        radius=radius, lobby_latitude=latit, lobby_longitude=longit).save()
+            radius=radius, lobby_latitude=latit, lobby_longitude=longit).save()
 
     return True
 
