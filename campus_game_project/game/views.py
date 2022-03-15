@@ -55,6 +55,8 @@ def lobby(request, lobby_code):
         'hiding_time': game.hiding_time,
         'seeking_time': game.seeking_time,
         'seeker_num': game.seeker_num,
+        'lobby_longitude': game.lobby_longitude,
+        'lobby_latitude': game.lobby_latitude,
     })
 
 
@@ -175,6 +177,8 @@ def create_game(post, code):
     s_time = post['seeking_time']
     s_num = post['seeker_num']
     radius = post['radius']
+    latit = post['lobby_latitude']
+    longit = post['lobby_longitude']
 
     if len(h_time) == 0:
         h_time = 60
@@ -196,8 +200,13 @@ def create_game(post, code):
     else:
         radius = int(radius)
 
+    latit = float(latit)
+
+    longit = float(longit)
+
     # Adds the game to the database
-    Game(lobby_code=code, player_num=0, hiding_time=h_time, seeking_time=s_time, seeker_num=s_num, radius=radius).save()
+    Game(lobby_code=code, player_num=0, hiding_time=h_time, seeking_time=s_time, seeker_num=s_num,
+         radius=radius, lobby_latitude=latit, lobby_longitude=longit).save()
 
     return True
 
