@@ -291,7 +291,6 @@ class GameConsumer(WebsocketConsumer):
         a = math.sin(dlat/2)**2 + math.cos(lobby_latitude)*math.cos(player_latitude)*math.sin(dlon/2)**2
         c = 2*math.asin(math.sqrt(a))
         player_distance = 6371000*c
-        ## Compare player_distance to radius
+        # Compare player_distance to radius
         if player_distance > game_radius:
             return "Player out of bounds!"
-
