@@ -29,7 +29,9 @@
             <label id="hiding-time-label">Hiding Time:</label><br>
             <label id="seeking-time-label">Seeking Time:</label><br>
             <label id="seeker-num-label">Number of Seekers:</label><br>
-            <label id="map">{Display Map Here}</label>
+            <label id="map">{Display Map Here}</label><br>
+            <label id="starting-longitude-label">Starting longitude:</label><br>
+            <label id="starting-latitude-label">Starting latitude:</label>
         </div>
     </div>
     {{ lobby_code|json_script:"lobby-code" }}
@@ -37,16 +39,23 @@
     {{ hiding_time|json_script:"hiding-time" }}
     {{ seeking_time|json_script:"seeking-time" }}
     {{ seeker_num|json_script:"seeker-num" }}
+    {{ lobby_longitude|json_script:"lobby-longitude"}}
+    {{ lobby_latitude|json_script:"lobby-latitude"}}
     <script>
         const code = JSON.parse(document.getElementById('lobby-code').textContent);
         const username = JSON.parse(document.getElementById('username').textContent);
         const hiding_time = JSON.parse(document.getElementById('hiding-time').textContent);
         const seeking_time = JSON.parse(document.getElementById('seeking-time').textContent);
         const seeker_num = JSON.parse(document.getElementById('seeker-num').textContent);
+        const lobby_longitude = JSON.parse(document.getElementById('lobby-longitude').textContent);
+        const lobby_latitude = JSON.parse(document.getElementById('lobby-latitude').textContent);
 
         document.getElementById('hiding-time-label').innerText += ' ' + hiding_time;
         document.getElementById('seeking-time-label').innerText += ' ' + seeking_time;
         document.getElementById('seeker-num-label').innerText += ' ' + seeker_num;
+        document.getElementById('starting-latitude-label').innerText += ' ' + lobby_latitude;
+        document.getElementById('starting-longitude-label').innerText += ' ' + lobby_longitude;
+
 
         document.title = code;
 

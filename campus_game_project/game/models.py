@@ -13,6 +13,8 @@ class Game(models.Model):
     seeking_time = models.IntegerField(default=600)
     seeker_num = models.IntegerField(default=1)
     radius = models.IntegerField(default=100)
+    lobby_longitude = models.FloatField(default=0.0)
+    lobby_latitude = models.FloatField(default=0.0)
 
     def __str__(self):
         return str(self.lobby_code)

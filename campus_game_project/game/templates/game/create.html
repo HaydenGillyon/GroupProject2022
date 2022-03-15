@@ -26,6 +26,26 @@
       </div>
     </nav>
 
+    <script>
+      current_position = {
+        latitude: 0.0,
+        longitude: 0.0
+      };
+      navigator.geolocation.watchPosition(showPositionLatitude);
+      navigator.geolocation.watchPosition(showPositionLongitude);
+
+      function showPositionLatitude(position) {
+        current_position.latitude = position.coords.latitude;
+        document.getElementById("form").lobby_latitude.value = current_position.latitude;
+      }
+
+      function showPositionLongitude(position) {
+        current_position.longitude = position.coords.longitude;
+        document.getElementById("form").lobby_longitude.value = current_position.longitude;
+        console.log(current_position.latitude + ", " + current_position.longitude)
+      }
+    </script>
+
     <div class="container-fluid">
       <section class="col-12 col-sm-6 col-md-3">
         <div class="decor">
@@ -39,7 +59,9 @@
             <label>Number of Seekers: </label>
             <input name="seeker_num" type="text">
             <label>Radius of Area (meters): </label>
-            <input name="radius" type="text"> 
+            <input name="radius" type="text">
+            <input name="lobby_longitude" type="hidden">
+            <input name="lobby_latitude" type="hidden"> 
             <input class="btn btn-dark" id="create" type="submit" value="Create">
             <input type="hidden" name="create" value="True">
           </form>
