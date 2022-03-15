@@ -206,7 +206,7 @@ def create_game(post, code):
 
     # Adds the game to the database
     Game(lobby_code=code, player_num=0, hiding_time=h_time, seeking_time=s_time, seeker_num=s_num,
-        radius=radius, lobby_latitude=latit, lobby_longitude=longit).save()
+         radius=radius, lobby_latitude=latit, lobby_longitude=longit).save()
 
     return True
 
