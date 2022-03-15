@@ -1,6 +1,7 @@
 import time
 import re
 import json
+import math
 from asgiref.sync import async_to_sync
 from channels.generic.websocket import WebsocketConsumer
 from game.models import Game, Player
@@ -276,3 +277,25 @@ class GameConsumer(WebsocketConsumer):
             self.lobby_code,
             event
         )
+
+    ## Checks if a player is inbounds or not
+    def check_if_player_inbounds(self, player_latitude, player_longitude):
+        game = Game.objects.get(lobby_code=self.lobby_code)
+        ## Get game radius and coordinates of player and game
+        game_radius = g.radius
+        lobby_latitude = g.lobby_latitude
+        lobby_longitude = g.lobby_longitude
+        player = Player.objects.get(game=game, username=username)
+        ## calculate player distance from centre of game
+        dlon = player_longitude - lobby_longitude
+        dlat = player_latitude - lobby_latitude
+        a = math.sin(dlat/2)**2 + math.cos(lobby_latitude)*math.cos(player_latitude)*math.sin(dlon/2)**2
+        c = 2*math.asin(math.sqrt(a))
+        player_distance = 6371000*c
+        ## Compare player_distance to radius
+        if player_distance > game_radius
+            return "Player out of bounds!"
+
+
+        
+        
