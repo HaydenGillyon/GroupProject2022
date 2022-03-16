@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+{% extends "welcome/layout.html" %}
+{% load static %}
+{% block content %}
+
+<div>
+<h2>Sign In</h2>
+<!--method="POST" action="signin" name="signin-form" id="signin-form" -->
+<form>
+{% csrf_token%} 
+  <label for="email">Enter Email</label><br>
+  <input type="email" id="email" name="email" required pattern=".+@exeter.ac.uk"><br>
+  <label for="password">Enter Password</label><br>
+  <input type="password" id="pass" name="pass"><br><br>
+  <input type="submit" value="Submit">
+</form> 
+</div>
+{% endblock %}
