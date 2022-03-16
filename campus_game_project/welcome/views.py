@@ -27,11 +27,12 @@ def signup(request):
                     messages.error(request, 'email already exists!')
                     return render(request, 'welcome/signup.html')
                 else:
-                    obj = User()
+                    '''obj = User(name=uname,email=email,password=hashpass)
                     obj.name = uname
                     obj.password = hashpass
-                    obj.email = email
-                    obj.save()
+                    obj.email = email'''
+                    user = User(name=uname,email=email,password=hashpass)
+                    user.save()
                     request.session['login'] = 1
                     request.session['user'] = uname
                     return redirect('signin')

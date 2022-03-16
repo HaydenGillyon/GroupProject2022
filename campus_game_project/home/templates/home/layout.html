@@ -39,6 +39,11 @@
               <a class="nav-link px-3 px-lg-2 active" href={% url 'home:leaderboard' %}>Leaderboard</a>
             </li>
         </ul>
+        <ul class="navbar-nav mr-lg-auto mb-2 mb-lg-0 ">
+          <li class="nav-item" data-turbolinks="false">
+            <a class="nav-link px-3 px-lg-2 active" href={% url 'home:logout' %}>Logout</a>
+          </li>
+      </ul>
           <ul class="navbar-nav justify-content-end mr-lg-auto mb-2 mb-lg-0 ">
             {% if user.is_authenticated %}
               <li class="nav-item dropdown">
