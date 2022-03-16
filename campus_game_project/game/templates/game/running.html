@@ -25,7 +25,7 @@
             <button style="font-size: larger;" id="do-attempt">Try Code</button>
             <h2 id="code-result"></h2>
         {% endif %}
-        <h2 id="warningbox_outbounds"></h2>
+        <h2 id="warningbox-outbounds"></h2>
 
         {{ lobby_code|json_script:"lobby-code" }}
         {{ username|json_script:"username" }}
@@ -46,7 +46,7 @@
             const player_type = seeker ? 'seeking!' : 'hiding!';
             const player_msg = document.getElementById('player-msg')
             player_msg.innerText = username + ', you are ' + player_type;
-            const warningbox_outbounds = document.getElementById('warningbox_outbounds');
+            const warningbox_outbounds = document.getElementById('warningbox-outbounds');
 
             if (hider_code) {
                 hider_code_element = document.getElementById('hcode')

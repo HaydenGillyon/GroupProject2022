@@ -218,7 +218,7 @@ class GameConsumer(WebsocketConsumer):
             # Regular position check to see if player is out of bounds
             latit = text_data_json['player_latitude']
             longit = text_data_json['player_longitude']
-            
+
             if not self.check_if_player_inbounds(latit, longit):
                 self.send(text_data=json.dumps({
                     'msg_type': 'outbounds_alert'
