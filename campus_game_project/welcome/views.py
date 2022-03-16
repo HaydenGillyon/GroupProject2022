@@ -10,8 +10,7 @@ def welcome(request):
 
 def signup(request):
     if request.session.has_key('login'):
-        print("this")
-        return redirect(welcome)
+        return redirect('home/')
     else:    
         if request.POST:
             uname = request.POST['uname']
@@ -21,12 +20,12 @@ def signup(request):
             user = User.objects.filter(name=uname)
             if user:
                 messages.error(request, 'username already exists!')
-                return render(request, 'welcome/registration.html')
+                return render(request, 'welcome/signup.html')
             else:  
                 user = User.objects.filter(email=email)
                 if user:
                     messages.error(request, 'email already exists!')
-                    return render(request, 'welcome/registration.html')
+                    return render(request, 'welcome/signup.html')
                 else:
                     obj = User()
                     obj.name = uname
@@ -35,7 +34,7 @@ def signup(request):
                     obj.save()
                     request.session['login'] = 1
                     request.session['user'] = uname
-                    return redirect(welcome)
+                    return redirect('signin')
         else:
             return render(request, 'welcome/signup.html')
 
@@ -44,26 +43,27 @@ def signin(request):
         return redirect("/home")
     else:    
         if request.POST:
-            uname = request.POST['uname']
+            email = request.POST['email']
             passw = request.POST['pass']
             hashpass = sha256(passw.encode()).hexdigest()
-            user = User.objects.filter(name=uname,password=hashpass)
+            user = User.objects.filter(email=email,password=hashpass)
+            #List not empty
             if user:
-                user = User.objects.get(name=uname)
+                user = User.objects.get(email=email)
                 if user.status == 1:
                     request.session['login'] = 1
-                    request.session['user'] = uname
+                    request.session['user'] = email
                     return redirect("/home")
                 else:
                     request.session['blockerror'] = 1   
-                    return redirect(welcome)   
+                    return redirect("/")   
             else:
                 request.session['logerror'] = 1
-                return redirect(welcome)
+                return redirect("/")
         else:
             return render(request,'welcome/signin.html')
 
 
 def logout(request):
     request.session.flush()
-    return redirect(welcome)
+    return redirect("/")
