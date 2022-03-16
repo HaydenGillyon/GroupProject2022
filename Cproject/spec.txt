@@ -1,0 +1,10 @@
+Task
+ 
+design and build a simulation 
+
+there are 2 tasks
+	1. Create a simulator for system
+	2. Run the simulator multiple times to establish how it operates under different traffic conditions and traffic light timings.
+
+there are 2 parts to be devoloped:
+runOneSimulation , accepting the four
