@@ -124,9 +124,9 @@
                     break;
 
                 case "start":
-                lobbySocket.send(JSON.stringify({
-                    'msg_type': "playing",
-                }))
+                    lobbySocket.send(JSON.stringify({
+                        'msg_type': "playing",
+                    }))
                     window.location= "../../game/running/" + code;
                     break;
             }

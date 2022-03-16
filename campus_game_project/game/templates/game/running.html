@@ -25,6 +25,7 @@
             <button style="font-size: larger;" id="do-attempt">Try Code</button>
             <h2 id="code-result"></h2>
         {% endif %}
+        <h2 id="warningbox-outbounds"></h2>
 
         {{ lobby_code|json_script:"lobby-code" }}
         {{ username|json_script:"username" }}
@@ -45,6 +46,7 @@
             const player_type = seeker ? 'seeking!' : 'hiding!';
             const player_msg = document.getElementById('player-msg')
             player_msg.innerText = username + ', you are ' + player_type;
+            const warningbox_outbounds = document.getElementById('warningbox-outbounds');
 
             if (hider_code) {
                 hider_code_element = document.getElementById('hcode')
@@ -75,12 +77,10 @@
             };
             </script>
             {% endif %}
-            <p id="demo"></p>
             <script>
             // Game Timer
             const time_left_text = document.getElementById('time');
             const hiding_duration = parseInt(JSON.parse(document.getElementById('hiding-time').textContent));
-            console.log(JSON.parse(document.getElementById('hiding-time').textContent));
             const seeking_duration = parseInt(JSON.parse(document.getElementById('seeking-time').textContent));
             const total_duration = hiding_duration + seeking_duration;
             (function checkTime() {
@@ -110,19 +110,72 @@
                     case 'end':
                         window.location= "../../end/" + code;
                         break;
+                    case 'outbounds_alert':
+                        // Alert player they are out of bounds and will be kicked soon
+                        outboundsWarning(true);
+                        current_position.outbounds_timestamp = current_position.timestamp;
+                        break;
+                    case 'inbounds_alert':
+                        // If player returns into the radius of the map
+                        outboundsWarning(false);
+                        current_position.outbounds_timestamp = 0;
+                        break;
+                    case 'outbounds_kick':
+                        // If out of bounds for too long
+                        window.location="../../error/";
+                        break;
                 }
             }
 
             // Tracker Code
-            current_position = {
+            const current_position = {
                 latitude: 0,
-                longitude: 0
+                longitude: 0,
+                timestamp: 0,
+                outbounds_timestamp: 0
             };
-            navigator.geolocation.watchPosition(showPosition, positionError, {timeout: 3000});
+
+            // Wait for socket to open before sending position updates
+            lobbySocket.onopen = () => {
+                navigator.geolocation.watchPosition(showPosition, positionError, {enableHighAccuracy : true});
+            }
 
             function showPosition(position) {
-                current_position.latitude = position.coords.latitude;
-                current_position.longitude = position.coords.longitude;
+                // Do not update position more than once every four seconds
+                if (position.timestamp - current_position.timestamp > 4000) {
+                    current_position.latitude = position.coords.latitude;
+                    current_position.longitude = position.coords.longitude;
+                    current_position.timestamp = position.timestamp;
+
+                    if (current_position.outbounds_timestamp) {
+                        // Checks if player is still out of bounds
+                        lobbySocket.send(JSON.stringify({
+                            'msg_type' : 'outbounds_update',
+                            'player_latitude' : current_position.latitude,
+                            'player_longitude' : current_position.longitude,
+                            'timestamp' : current_position.timestamp,
+                            'outbounds_timestamp' : current_position.outbounds_timestamp
+                        }));
+                    } else {
+                        // Normal position update
+                        lobbySocket.send(JSON.stringify({
+                            'msg_type' : 'position_update',
+                            'player_latitude' : current_position.latitude,
+                            'player_longitude' : current_position.longitude
+                        }));
+                    }
+                }
+            }
+            function outboundsWarning(display_warning) {
+                if (display_warning) {
+                    warningbox_outbounds.style.backgroundColor = "Yellow";
+                    warningbox_outbounds.innerText
+                            = "You are out of bounds! Return soon or the radiation will get you!";
+                } else {
+                    warningbox_outbounds.style.backgroundColor = null;
+                    warningbox_outbounds.innerText
+                            = null;
+                }
             }
             function positionError(err) {
                 // If location permission revoked

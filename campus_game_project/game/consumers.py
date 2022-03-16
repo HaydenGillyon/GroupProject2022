@@ -214,6 +214,33 @@ class GameConsumer(WebsocketConsumer):
                 self.lobby_code,
                 event
             )
+        elif text_data_json['msg_type'] == 'position_update':
+            # Regular position check to see if player is out of bounds
+            latit = text_data_json['player_latitude']
+            longit = text_data_json['player_longitude']
+
+            if not self.check_if_player_inbounds(latit, longit):
+                self.send(text_data=json.dumps({
+                    'msg_type': 'outbounds_alert'
+                }))
+        elif text_data_json['msg_type'] == 'outbounds_update':
+            # Check if player is still out of bounds after countdown
+            latit = text_data_json['player_latitude']
+            longit = text_data_json['player_longitude']
+            timestamp = text_data_json['timestamp']
+            outbounds_timestamp = text_data_json['outbounds_timestamp']
+
+            if not self.check_if_player_inbounds(latit, longit):
+                if (timestamp - outbounds_timestamp) > 20000:
+                    self.send(text_data=json.dumps({
+                        'msg_type': 'outbounds_kick'
+                    }))
+                    # To end game if last hider is kicked
+                    self.check_found_hiders()
+            else:
+                self.send(text_data=json.dumps({
+                    'msg_type': 'inbounds_alert'
+                }))
 
     # Final method that will be called upon the game finishing
     def game_finish(self, event):
@@ -292,5 +319,4 @@ class GameConsumer(WebsocketConsumer):
         c = 2*math.asin(math.sqrt(a))
         player_distance = 6371000*c
         # Compare player_distance to radius
-        if player_distance > game_radius:
-            return "Player out of bounds!"
+        return player_distance < game_radius
