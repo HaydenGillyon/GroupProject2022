@@ -42,7 +42,7 @@ def signup(request):
 def signin(request):
     if request.session.has_key('login'):
         return redirect("/home")
-    else:    
+    else:
         if request.POST:
             email = request.POST['email']
             passw = request.POST['pass']
