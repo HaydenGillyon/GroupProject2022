@@ -39,6 +39,7 @@ def signup(request):
         else:
             return render(request, 'welcome/signup.html')
 
+
 def signin(request):
     if 'login' in request.session:
         return redirect("/home/")
