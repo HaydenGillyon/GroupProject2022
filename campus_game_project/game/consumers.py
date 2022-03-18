@@ -219,7 +219,7 @@ class GameConsumer(WebsocketConsumer):
             latit = text_data_json['player_latitude']
             longit = text_data_json['player_longitude']
 
-            if not self.check_if_player_inbounds(latit, longit):
+            if not check_if_player_inbounds(self.lobby_code, latit, longit):
                 self.send(text_data=json.dumps({
                     'msg_type': 'outbounds_alert'
                 }))
@@ -230,7 +230,7 @@ class GameConsumer(WebsocketConsumer):
             timestamp = text_data_json['timestamp']
             outbounds_timestamp = text_data_json['outbounds_timestamp']
 
-            if not self.check_if_player_inbounds(latit, longit):
+            if not check_if_player_inbounds(self.lobby_code, latit, longit):
                 if (timestamp - outbounds_timestamp) > 20000:
                     self.send(text_data=json.dumps({
                         'msg_type': 'outbounds_kick'
@@ -305,18 +305,19 @@ class GameConsumer(WebsocketConsumer):
             event
         )
 
-    # Checks if a player is inbounds or not
-    def check_if_player_inbounds(self, player_latitude, player_longitude):
-        game = Game.objects.get(lobby_code=self.lobby_code)
-        # Get game radius and coordinates of game
-        game_radius = game.radius
-        lobby_latitude = game.lobby_latitude
-        lobby_longitude = game.lobby_longitude
-        # calculate player distance from centre of game
-        dlon = player_longitude - lobby_longitude
-        dlat = player_latitude - lobby_latitude
-        a = math.sin(dlat/2)**2 + math.cos(lobby_latitude)*math.cos(player_latitude)*math.sin(dlon/2)**2
-        c = 2*math.asin(math.sqrt(a))
-        player_distance = 6371000*c
-        # Compare player_distance to radius
-        return player_distance < game_radius
+
+# Checks if a player is inbounds or not
+def check_if_player_inbounds(lobby_code, player_latitude, player_longitude):
+    game = Game.objects.get(lobby_code=lobby_code)
+    # Get game radius and coordinates of game
+    game_radius = game.radius
+    lobby_latitude = game.lobby_latitude
+    lobby_longitude = game.lobby_longitude
+    # calculate player distance from centre of game
+    dlon = player_longitude - lobby_longitude
+    dlat = player_latitude - lobby_latitude
+    a = math.sin(dlat/2)**2 + math.cos(lobby_latitude)*math.cos(player_latitude)*math.sin(dlon/2)**2
+    c = 2*math.asin(math.sqrt(a))
+    player_distance = 6371000*c
+    # Compare player_distance to radius
+    return player_distance < game_radius
