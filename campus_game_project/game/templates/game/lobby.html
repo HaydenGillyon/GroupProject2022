@@ -13,6 +13,17 @@
     {% load static %}
     <link rel="stylesheet" href="{% static 'game/app.css' %}">
     <link rel="stylesheet" href="{% static 'game/create.css'%}">
+    <link rel="stylesheet" href="https://js.arcgis.com/4.22/esri/themes/light/main.css">
+    <script src="https://js.arcgis.com/4.22/"></script>
+
+    <style>
+        #map {
+            position: absolute;
+            height: 25%;
+            width: 25%;
+        }
+    </style>
+
   </head>
 
   <body>
@@ -29,9 +40,7 @@
             <label id="hiding-time-label">Hiding Time:</label><br>
             <label id="seeking-time-label">Seeking Time:</label><br>
             <label id="seeker-num-label">Number of Seekers:</label><br>
-            <label id="map">{Display Map Here}</label><br>
-            <label id="starting-longitude-label">Starting longitude:</label><br>
-            <label id="starting-latitude-label">Starting latitude:</label>
+            <div id="map"></div>
         </div>
     </div>
     {{ lobby_code|json_script:"lobby-code" }}
@@ -53,8 +62,6 @@
         document.getElementById('hiding-time-label').innerText += ' ' + hiding_time;
         document.getElementById('seeking-time-label').innerText += ' ' + seeking_time;
         document.getElementById('seeker-num-label').innerText += ' ' + seeker_num;
-        document.getElementById('starting-latitude-label').innerText += ' ' + lobby_latitude;
-        document.getElementById('starting-longitude-label').innerText += ' ' + lobby_longitude;
 
 
         document.title = code;
@@ -146,6 +153,86 @@
                 'username':username,
             }));
         };
+    </script>
+    <script>
+
+        const long = JSON.parse(document.getElementById('lobby-longitude').textContent);
+        const lat = JSON.parse(document.getElementById('lobby-latitude').textContent);
+
+        require([
+          "esri/config",
+          "esri/Map",
+          "esri/views/MapView",
+          "esri/widgets/Locate",
+
+          "esri/widgets/Track",
+          "esri/Graphic"
+
+        ], function(
+            esriConfig,
+            Map,
+            MapView,
+            Locate,
+
+            Track,
+            Graphic
+
+        ) {
+
+            esriConfig.apiKey = "AAPKaa849a30bba54d82bd5ed0003c6adc27kS5-ZFgUiX98pw--6E5-HMGUyhqgQqfB1ha6nY5FZD8Rp-DtLWmWQGjmn7eNCigt";
+
+            const map = new Map({
+                basemap: "arcgis-navigation"
+            });
+
+            const view = new MapView({
+                container: "map",
+                map: map,
+                center: [long, lat],
+                zoom: 10
+            })
+
+            const locate = new Locate({
+                view: view,
+                useHeadingEnabled: false,
+                goToOverride: function(view, options) {
+                    options.target.scale = 1000;
+                    return view.goTo(options.target);
+                }
+            });
+
+            view.goTo({
+                center: [long, lat],
+                scale: 1500
+            })
+
+            //locate.goToOverride(view, );
+
+            /*const track = new Track({
+                view: view,
+                graphic: new Graphic({
+                  symbol: {
+                    type: "simple-marker",
+                    size: "12px",
+                    color: "green",
+                    outline: {
+                      color: "#efefef",
+                      width: "1.5px"
+                    }
+                  }
+                }),
+                useHeadingEnabled: false
+              });
+
+            let trackWidget = new Track({
+                viewModel: {
+                  view: view,
+                }
+            });
+
+            trackWidget.viewModel.start();*/
+
+        });
     </script>
 </body>
 </html>
