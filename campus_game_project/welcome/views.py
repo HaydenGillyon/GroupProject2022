@@ -35,13 +35,13 @@ def signup(request):
                     user.save()
                     request.session['login'] = 1
                     request.session['user'] = uname
-                    return redirect('signin')
+                    return redirect('/signin')
         else:
             return render(request, 'welcome/signup.html')
 
 def signin(request):
     if request.session.has_key('login'):
-        return redirect("/home")
+        return redirect("/home/")
     else:
         if request.POST:
             email = request.POST['email']
