@@ -15,7 +15,7 @@ def home(request):
             'email': user_det.email,
             'id': user_det.id,
         }
-        return render(request,'home/landingPage.html', context)
+        return render(request, 'home/landingPage.html', context)
     else:
         if 'logerror' in request.session:
             messages.error(request, 'Invalid credentials!')
@@ -38,7 +38,7 @@ def leaderboard(request):
             'email': user_det.email,
             'id': user_det.id,
         }
-        return render(request,"home/leaderboard.html", context)
+        return render(request, "home/leaderboard.html", context)
     else:
         if 'logerror' in request.session:
             messages.error(request, 'Invalid credentials!')
@@ -61,7 +61,7 @@ def shop(request):
             'email': user_det.email,
             'id': user_det.id,
         }
-        return render(request,"home/shop.html", context)
+        return render(request, "home/shop.html", context)
     else:
         if 'logerror' in request.session:
             messages.error(request, 'Invalid credentials!')
@@ -84,12 +84,12 @@ def profile(request):
             'email': user_det.email,
             'id': user_det.id,
         }
-        return render(request,"home/profile.html", context)
+        return render(request, "home/profile.html", context)
     else:
-        if request.session.has_key('logerror'):
+        if 'logerror' in request.session:
             messages.error(request, 'Invalid credentials!')
             del request.session['logerror']
-        elif request.session.has_key('blockerror'):
+        elif 'blockerror' in request.session:
             messages.error(request, 'user blocked!')
             del request.session['blockerror']
     return redirect("/signin")
