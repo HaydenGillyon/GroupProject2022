@@ -305,6 +305,7 @@ class GameConsumer(WebsocketConsumer):
             event
         )
 
+
 # Checks if a player is inbounds or not
 def check_if_player_inbounds(lobby_code, player_latitude, player_longitude):
     game = Game.objects.get(lobby_code=lobby_code)
