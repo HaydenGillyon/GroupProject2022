@@ -223,6 +223,12 @@ class GameConsumer(WebsocketConsumer):
                 self.send(text_data=json.dumps({
                     'msg_type': 'outbounds_alert'
                 }))
+            else:
+                self.send(text_data=json.dumps({
+                    'msg_type': 'position_update',
+                    'latitude': latit,
+                    'longitude': longit,
+                }))
         elif text_data_json['msg_type'] == 'outbounds_update':
             # Check if player is still out of bounds after countdown
             latit = text_data_json['player_latitude']
@@ -239,7 +245,7 @@ class GameConsumer(WebsocketConsumer):
                     self.check_found_hiders()
             else:
                 self.send(text_data=json.dumps({
-                    'msg_type': 'inbounds_alert'
+                    'msg_type': 'inbounds_alert',
                 }))
 
     # Final method that will be called upon the game finishing

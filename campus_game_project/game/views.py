@@ -82,6 +82,8 @@ def running(request, lobby_code):
         'start_time': game.game_start_time,
         'hiding_time': game.hiding_time,
         'seeking_time': game.seeking_time,
+        'lobby_longitude': game.lobby_longitude,
+        'lobby_latitude': game.lobby_latitude
     }
 
     if (not player.seeker) and (player.hider_code is None):

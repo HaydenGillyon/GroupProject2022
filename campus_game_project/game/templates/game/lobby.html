@@ -185,54 +185,22 @@
                 basemap: "arcgis-navigation"
             });
 
-            const view = new MapView({
+            window.view = new MapView({
                 container: "map",
                 map: map,
                 center: [long, lat],
                 zoom: 10
             })
 
-            const locate = new Locate({
-                view: view,
-                useHeadingEnabled: false,
-                goToOverride: function(view, options) {
-                    options.target.scale = 1000;
-                    return view.goTo(options.target);
-                }
-            });
-
-            view.goTo({
-                center: [long, lat],
-                scale: 1500
-            })
-
-            //locate.goToOverride(view, );
-
-            /*const track = new Track({
-                view: view,
-                graphic: new Graphic({
-                  symbol: {
-                    type: "simple-marker",
-                    size: "12px",
-                    color: "green",
-                    outline: {
-                      color: "#efefef",
-                      width: "1.5px"
-                    }
-                  }
-                }),
-                useHeadingEnabled: false
-              });
-
-            let trackWidget = new Track({
-                viewModel: {
-                  view: view,
-                }
-            });
-
-            trackWidget.viewModel.start();*/
-
         });
+
+        function track() {
+            window.view.goTo({
+            center: [long, lat],
+            scale: 1500
+            })
+        }
+        
     </script>
 </body>
 </html>

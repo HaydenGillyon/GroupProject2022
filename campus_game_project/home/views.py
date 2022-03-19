@@ -9,7 +9,7 @@ def home(request):
             messages.error(request, 'Invalid password!')
             del request.session['error']
         user = request.session['user']
-        user_det = User.objects.get(name=user)
+        user_det = User.objects.get(email=user)
         context = {
             'user': user_det.name,
             'email': user_det.email,
