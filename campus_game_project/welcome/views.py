@@ -10,7 +10,7 @@ def welcome(request):
 
 def signup(request):
     if 'login' in request.session:
-        return redirect('home/')
+        return redirect('../home/')
     else:
         if request.POST:
             uname = request.POST['uname']
@@ -42,6 +42,7 @@ def signup(request):
 
 
 def signin(request):
+    logout(request)
     if 'login' in request.session:
         return redirect("/home/")
     else:

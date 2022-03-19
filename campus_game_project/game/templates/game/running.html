@@ -13,8 +13,18 @@
         {% load static %}
         <link rel="stylesheet" href="{% static 'game/app.css' %}">
         <link rel="stylesheet" href="{% static 'game/create.css'%}">
+
+        <style>
+            #map {
+                position: absolute;
+                height: 25%;
+                width: 25%;
+            }
+        </style>
     </head>
+
     <body>
+        <script src="https://js.arcgis.com/4.22/"></script>
         <h1 id="content"></h1>
         <h1 id="time" style="color: crimson;"></h1>
         <h2 id="player-msg"></h2>
@@ -26,6 +36,7 @@
             <h2 id="code-result"></h2>
         {% endif %}
         <h2 id="warningbox-outbounds"></h2>
+        <div id="map"></div>
 
         {{ lobby_code|json_script:"lobby-code" }}
         {{ username|json_script:"username" }}
@@ -34,6 +45,58 @@
         {{ start_time|json_script:"start-time"}}
         {{ hiding_time|json_script:"hiding-time" }}
         {{ seeking_time|json_script:"seeking-time" }}
+        {{ lobby_longitude|json_script:"lobby-longitude"}}
+        {{ lobby_latitude|json_script:"lobby-latitude"}}
+        <script>
+            const long = JSON.parse(document.getElementById('lobby-longitude').textContent);
+            const lat = JSON.parse(document.getElementById('lobby-latitude').textContent);
+
+            require([
+            "esri/config",
+            "esri/Map",
+            "esri/views/MapView",
+            "esri/widgets/Locate",
+
+            "esri/widgets/Track",
+            "esri/Graphic"
+
+            ], function(
+                esriConfig,
+                Map,
+                MapView,
+                Locate,
+
+                Track,
+                Graphic
+
+            ) {
+
+                esriConfig.apiKey = "AAPKaa849a30bba54d82bd5ed0003c6adc27kS5-ZFgUiX98pw--6E5-HMGUyhqgQqfB1ha6nY5FZD8Rp-DtLWmWQGjmn7eNCigt";
+
+                const map = new Map({
+                    basemap: "arcgis-navigation"
+                });
+
+                window.view = new MapView({
+                    container: "map",
+                    map: map,
+                    center: [long, lat],
+                    zoom: 10
+                })
+
+                track(long, lat);
+
+            });
+
+            function track(long, lat) {
+                console.log(window.view);
+                window.view.goTo({
+                    center: [long, lat],
+                    scale: 1500
+                })
+            }
+        </script>
+
         <script>
             const code = JSON.parse(document.getElementById('lobby-code').textContent);
             const username = JSON.parse(document.getElementById('username').textContent);
@@ -91,7 +154,7 @@
                 if (elapsed > total_duration) {
                     // End game, seeker loses, inform other clients
                     lobbySocket.send(JSON.stringify({
-                    'msg_type' : 'seeking_over',
+                        'msg_type' : 'seeking_over',
                     }));
                 } else if (elapsed > hiding_duration) {
                     player_msg.innerText = username + ', you are ' + player_type
@@ -137,6 +200,7 @@
 
             // Wait for socket to open before sending position updates
             lobbySocket.onopen = () => {
+                navigator.geolocation.getCurrentPosition(showPosition);
                 navigator.geolocation.watchPosition(showPosition, positionError, {enableHighAccuracy : true});
             }
 
@@ -146,6 +210,10 @@
                     current_position.latitude = position.coords.latitude;
                     current_position.longitude = position.coords.longitude;
                     current_position.timestamp = position.timestamp;
+
+                    if (typeof window.view !== 'undefined') {
+                        track(current_position.longitude, current_position.latitude);
+                    }
 
                     if (current_position.outbounds_timestamp) {
                         // Checks if player is still out of bounds
