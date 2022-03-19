@@ -35,6 +35,7 @@ def signup(request):
                     user.save()
                     request.session['login'] = 1
                     request.session['user'] = uname
+                    request.session['email'] = email
                     return redirect('/signin')
         else:
             return render(request, 'welcome/signup.html')
@@ -55,7 +56,7 @@ def signin(request):
                 user = User.objects.get(email=email)
                 if user.status == 1:
                     request.session['login'] = 1
-                    request.session['user'] = email
+                    request.session['email'] = email
                     return redirect("/home")
                 else:
                     request.session['blockerror'] = 1
