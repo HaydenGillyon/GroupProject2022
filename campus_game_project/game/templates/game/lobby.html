@@ -155,7 +155,6 @@
         };
     </script>
     <script>
-
         const long = JSON.parse(document.getElementById('lobby-longitude').textContent);
         const lat = JSON.parse(document.getElementById('lobby-latitude').textContent);
 
@@ -191,6 +190,8 @@
                 center: [long, lat],
                 zoom: 10
             })
+
+            track(long, lat);
 
         });
 

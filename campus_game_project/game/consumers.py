@@ -197,6 +197,7 @@ class GameConsumer(WebsocketConsumer):
     # Behaviour when the websocket receives a message
     def receive(self, text_data):
         text_data_json = json.loads(text_data)
+        print(text_data_json['msg_type'])
         if text_data_json['msg_type'] == 'hider_code_attempt':
             result = self.check_code(text_data_json['attempt_code'])
             self.send(text_data=json.dumps({

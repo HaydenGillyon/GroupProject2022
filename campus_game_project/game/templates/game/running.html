@@ -48,6 +48,56 @@
         {{ lobby_longitude|json_script:"lobby-longitude"}}
         {{ lobby_latitude|json_script:"lobby-latitude"}}
         <script>
+            const long = JSON.parse(document.getElementById('lobby-longitude').textContent);
+            const lat = JSON.parse(document.getElementById('lobby-latitude').textContent);
+
+            require([
+            "esri/config",
+            "esri/Map",
+            "esri/views/MapView",
+            "esri/widgets/Locate",
+
+            "esri/widgets/Track",
+            "esri/Graphic"
+
+            ], function(
+                esriConfig,
+                Map,
+                MapView,
+                Locate,
+
+                Track,
+                Graphic
+
+            ) {
+
+                esriConfig.apiKey = "AAPKaa849a30bba54d82bd5ed0003c6adc27kS5-ZFgUiX98pw--6E5-HMGUyhqgQqfB1ha6nY5FZD8Rp-DtLWmWQGjmn7eNCigt";
+
+                const map = new Map({
+                    basemap: "arcgis-navigation"
+                });
+
+                window.view = new MapView({
+                    container: "map",
+                    map: map,
+                    center: [long, lat],
+                    zoom: 10
+                })
+
+                track(long, lat);
+
+            });
+
+            function track(long, lat) {
+                console.log(window.view);
+                window.view.goTo({
+                    center: [long, lat],
+                    scale: 1500
+                })
+            }
+        </script>
+
+        <script>
             const code = JSON.parse(document.getElementById('lobby-code').textContent);
             const username = JSON.parse(document.getElementById('username').textContent);
             const seeker = JSON.parse(document.getElementById('seeker').textContent);
@@ -137,12 +187,6 @@
                         // If out of bounds for too long
                         window.location="../../error/";
                         break;
-                    case 'position_update':
-                        // Standard player move
-                        player_lat = data.latitude;
-                        player_long = data.longitude;
-                        track(long, lat);
-                        break;
                 }
             }
 
@@ -156,6 +200,7 @@
 
             // Wait for socket to open before sending position updates
             lobbySocket.onopen = () => {
+                navigator.geolocation.getCurrentPosition(showPosition);
                 navigator.geolocation.watchPosition(showPosition, positionError, {enableHighAccuracy : true});
             }
 
@@ -165,6 +210,10 @@
                     current_position.latitude = position.coords.latitude;
                     current_position.longitude = position.coords.longitude;
                     current_position.timestamp = position.timestamp;
+
+                    if (typeof window.view !== 'undefined') {
+                        track(current_position.longitude, current_position.latitude);
+                    }
 
                     if (current_position.outbounds_timestamp) {
                         // Checks if player is still out of bounds
@@ -199,53 +248,6 @@
             function positionError(err) {
                 // If location permission revoked
                 window.location= "../../error/";
-            }
-        </script>
-
-        <script>
-            const long = JSON.parse(document.getElementById('lobby-longitude').textContent);
-            const lat = JSON.parse(document.getElementById('lobby-latitude').textContent);
-
-            require([
-            "esri/config",
-            "esri/Map",
-            "esri/views/MapView",
-            "esri/widgets/Locate",
-
-            "esri/widgets/Track",
-            "esri/Graphic"
-
-            ], function(
-                esriConfig,
-                Map,
-                MapView,
-                Locate,
-
-                Track,
-                Graphic
-
-            ) {
-
-                esriConfig.apiKey = "AAPKaa849a30bba54d82bd5ed0003c6adc27kS5-ZFgUiX98pw--6E5-HMGUyhqgQqfB1ha6nY5FZD8Rp-DtLWmWQGjmn7eNCigt";
-
-                const map = new Map({
-                    basemap: "arcgis-navigation"
-                });
-
-                window.view = new MapView({
-                    container: "map",
-                    map: map,
-                    center: [long, lat],
-                    zoom: 10
-                })
-
-            });
-
-            function track(long, lat) {
-                window.view.goTo({
-                    center: [long, lat],
-                    scale: 1500
-                })
             }
         </script>
     </body>
