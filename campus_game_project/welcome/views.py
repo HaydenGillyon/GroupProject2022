@@ -1,3 +1,4 @@
+from traceback import print_tb
 from django.shortcuts import redirect, render
 from .models import User
 from hashlib import sha256
@@ -56,7 +57,7 @@ def signin(request):
                 if user.status == 1:
                     request.session['login'] = 1
                     request.session['email'] = email
-                    return redirect("/home")
+                    return redirect("/home/")
                 else:
                     request.session['blockerror'] = 1
                     return redirect("/")
