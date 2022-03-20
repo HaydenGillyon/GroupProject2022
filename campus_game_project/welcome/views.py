@@ -7,9 +7,8 @@ from django.contrib import messages
 def welcome(request):
     return render(request, 'welcome/welcome.html')
 
+
 def signup(request):
-
-
     if 'login' in request.session:
         return redirect('home/')
     else:
