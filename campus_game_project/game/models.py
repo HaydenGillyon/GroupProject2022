@@ -1,6 +1,7 @@
 from django.db import models
 from welcome.models import User
 
+
 class Game(models.Model):
 
     lobby_code = models.IntegerField()
@@ -27,6 +28,7 @@ class Game(models.Model):
 
 
 class Player(models.Model):
+
     username = models.CharField(max_length=20)
     game = models.ForeignKey(Game, on_delete=models.CASCADE)
     user = models.ForeignKey(User, on_delete=models.CASCADE, default=None)
