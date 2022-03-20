@@ -6,21 +6,34 @@
 </head>
 <body>
     <h1 id="winner"></h1>
+    <h2 id="player-msg"></h2>
     <input id="return" type="button" value="return">
     {{ lobby_code|json_script:"lobby-code" }}
     {{ result|json_script:"result" }}
+    {{ seeker|json_script:"seeker"}}
     <script>
         const code = JSON.parse(document.getElementById('lobby-code').textContent);
         const result = JSON.parse(document.getElementById('result').textContent);
-
+        const seeker = JSON.parse(document.getElementById('seeker').textContent);
+        const player_type = seeker ? 'seeking!' : 'hiding!';
         document.title = code;
 
         switch(result){
             case 'seeker':
                 document.getElementById('winner').innerText = "Seekers Win!";
+                if (player_type == 'seeking!'){
+                    document.getElementById('player-msg').innerText = "You Win! Congratulations!"
+                } else {
+                    document.getElementById('player-msg').innerText = "You Lose! Try again next time!"
+                }
                 break;
             case 'hiders':
                 document.getElementById('winner').innerText = "Hiders Win!";
+                if (player_type == 'hiding!'){
+                    document.getElementById('player-msg').innerText = "You Win! Congratulations!"
+                } else {
+                    document.getElementById('player-msg').innerText = "You Lose! Try again next time!"
+                }
                 break;
         }
 
