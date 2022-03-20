@@ -8,13 +8,12 @@
     integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3"
     crossorigin="anonymous">
     <link rel="stylesheet"
-      href="https://static2.sharepointonline.com/files/fabric/office-ui-fabric-core/11.0.0/css/fabric.min.css"
-    />
+      href="https://static2.sharepointonline.com/files/fabric/office-ui-fabric-core/11.0.0/css/fabric.min.css">
     {% load static %}
     <link rel="stylesheet" href="{% static 'home/app.css' %}">
   </head>
 
-  <body class="pt-5">
+  <body class="pt-5" style="background-color:#363a3e;color:#ffffff">
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top main-navigation">
       <div class="container-fluid">
         <a href="{% url 'home:home' %}" class="font-monospace navbar-brand order-lg-1 mr-auto mr-lg-3 ml-3 ml-lg-0">Hide and Seek</a>
@@ -23,64 +22,25 @@
         </button>
         <div class="overlay" d-flex d-lg-none></div>
 
-        <div class="order-lg-2 bg-dark d-lg-flex w-100 sidebar pb-3 pb-lg-0" id="navbarCollapse">
+        <div class="order-lg-2 bg-dark d-lg-flex w-100 sidebar pb-3 pb-lg-0" id="navbar-collapse">
           <ul class="navbar-nav mr-lg-auto mb-2 mb-lg-0 ">
             <li class="nav-item" data-turbolinks="false">
-              <a class="nav-link px-3 px-lg-2 active" href={% url 'home:profile' %}>Profile</a>
+              <a class="nav-link px-3 px-lg-2 active" href="{% url 'home:profile' %}"> Profile </a>
             </li>
           </ul>
           <ul class="navbar-nav mr-lg-auto mb-2 mb-lg-0 ">
             <li class="nav-item" data-turbolinks="false">
-              <a class="nav-link px-3 px-lg-2 active" href={% url 'home:shop' %}>Shop</a>
+              <a class="nav-link px-3 px-lg-2 active" href="{% url 'home:leaderboard' %}"> Leaderboard </a>
             </li>
           </ul>
           <ul class="navbar-nav mr-lg-auto mb-2 mb-lg-0 ">
             <li class="nav-item" data-turbolinks="false">
-              <a class="nav-link px-3 px-lg-2 active" href={% url 'home:leaderboard' %}>Leaderboard</a>
+              <a class="nav-link px-3 px-lg-2 active" href="{% url 'home:logout' %}"> Logout </a>
             </li>
-        </ul>
-        <ul class="navbar-nav mr-lg-auto mb-2 mb-lg-0 ">
-          <li class="nav-item" data-turbolinks="false">
-            <a class="nav-link px-3 px-lg-2 active" href={% url 'home:logout' %}>Logout</a>
-          </li>
-      </ul>
-          <ul class="navbar-nav justify-content-end mr-lg-auto mb-2 mb-lg-0 ">
-            {% if user.is_authenticated %}
-              <li class="nav-item dropdown">
-                <a class="nav-link avatar-link px-3 px-lg-2 dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
-                  {% if user.avatar %}
-                    <img src="{{ user.avatar }}" class="rounded-circle align-self-center mr-2" style="width: 32px;">
-                  {% else %}
-                    <img src="{% static 'frontend/no-profile-photo.png' %}" class="rounded-circle align-self-center mr-2" style="width: 32px;">
-                  {% endif %}
-                </a>
-                <div class="dropdown-menu dropdown-menu-right">
-                  <h5 class="dropdown-item-text mb-0">{{ user.name }}</h5>
-                  <p class="dropdown-item-text text-muted mb-0">{{ user.email }}</p>
-                  <div class="dropdown-divider"></div>
-                  <a href="{% url 'signout' %}" class="dropdown-item px-3 px-lg-2">Sign Out</a>
-                </div>
-              </li>
-            {% else %}
-
-            {% endif %}
-          </ul>
+           </ul>
         </div>
       </div>
     </nav>
-    <main role="main" class="container">
-      {% if errors %}
-        {% for error in errors %}
-          <div class="alert alert-danger" role="alert">
-            <p class="mb-3">{{ error.message }}</p>
-            {% if error.debug %}
-              <pre class="alert-pre border bg-light p-2"><code>{{ error.debug }}</code></pre>
-            {% endif %}
-          </div>
-        {% endfor %}
-      {% endif %}
-      {% block content %}{% endblock %}
-    </main>
 
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
       integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>

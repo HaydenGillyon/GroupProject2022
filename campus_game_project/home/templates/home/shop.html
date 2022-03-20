@@ -4,7 +4,7 @@
 {% block content %}
 <div class="jumbotron">
   <p class="lead"></p>
-    <h4>Welcome {{ user.name }}!</h4>
+    <h4>Welcome {% if user %}{{user}}{% endif %}</h4>
     <p>Welcome to the Shop</p>
 </div>
 {% endblock %}

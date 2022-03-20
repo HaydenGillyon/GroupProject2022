@@ -8,15 +8,60 @@
     <h4>Welcome {{ user.name }}!</h4>
     <p>Use the navigation bar at the top of the page to get started.</p>
   {% else %}
-  <div class ="text-center font-monospace"> 
-    
-    <div classname="display-1"><h1>Welcome<br>To<br>Exeter University!</h1></div> 
-      <img src="{% static 'welcome/University_of_Exeter_areal_view.png' %}" alt="Exeter University Campus" class="rounded mx-auto d-block img-fluid">
-    
-    <!--<br><a href="https://login.microsoftonline.com/common/oauth2/authorize?client_id=00000002-0000-0ff1-ce00-000000000000&redirect_uri=https%3a%2f%2foutlook.office.com%2fowa%2f&resource=00000002-0000-0ff1-ce00-000000000000&response_mode=form_post&response_type=code+id_token&scope=openid&msafed=1&msaredir=1&client-request-id=09b06b5e-09a2-d16b-0d8d-88391ea7a2d1&protectedtoken=true&claims=%7b%22id_token%22%3a%7b%22xms_cc%22%3a%7b%22values%22%3a%5b%22CP1%22%5d%7d%7d%7d&domain_hint=exeter.ac.uk&nonce=637817877981971477.52c9e331-eb6d-4c27-81b4-142eaaf7b1c4&state=DcsxFoAgDATRoM_jRAhENhwHEFtLr2-KP90EItrd5kLyEGqBCQxoJg2iwHnl2VYpwmvUm3VmsMlQFs2r9wdDpgZ_j_h-Pf4" class="btn btn-dark btn-primary btn-large text-center">Click here to Sign in</a></br>-->
-    <br><a href="{% url 'welcome:signin' %}" class="btn btn-dark btn-primary btn-large text-center">Sign in</a><br>
-    <br><a href="{% url 'welcome:signup' %}" class="btn btn-dark btn-primary btn-large text-center">Sign up</a><br>
+  <div class ="text-center font-monospace panel">
+    <div classname="display-1"><h1>Welcome To<br></h1></div> 
+      <img style="width:100%;" src="{% static 'welcome/banner1.png' %}" alt="Hide To Survive" class="rounded mx-auto d-block img-fluid img-responsive">
+
+    <!--<br><a href="https://login.microsoftonline.com/common/oau
+      th2/authorize?client_id=00000002-0000-0ff1-ce00-00000000000
+      0&redirect_uri=https%3a%2f%2foutlook.office.com%2fowa%2f&re
+      source=00000002-0000-0ff1-ce00-000000000000&response_mode=f
+      orm_post&response_type=code+id_token&scope=openid&msafed=1&
+      msaredir=1&client-request-id=09b06b5e-09a2-d16b-0d8d-88391e
+      a7a2d1&protectedtoken=true&claims=%7b%22id_token%22%3a%7b%2
+      2xms_cc%22%3a%7b%22values%22%3a%5b%22CP1%22%5d%7d%7d%7d&dom
+      ain_hint=exeter.ac.uk&nonce=637817877981971477.52c9e331-eb6
+      d-4c27-81b4-142eaaf7b1c4&state=DcsxFoAgDATRoM_jRAhENhwHEFtL
+      r2-KP90EItrd5kLyEGqBCQxoJg2iwHnl2VYpwmvUm3VmsMlQFs2r9wdDpgZ
+      _j_h-Pf4" class="btn btn-dark btn-primary btn-large text-ce
+      nter">Click here to Sign in</a></br>-->
+
+      <div class="jumbotron">
+        <br>
+        <a href="{% url 'welcome:signin' %}" class="btn btn-dark btn-large btn-block">Sign in</a>
+        <a href="{% url 'welcome:signup' %}" class="btn btn-dark btn-primary btn-large text-center pull-left">Sign up</a>
+      </div>
+      <br>
+      <p style="font-size:20px;">
+        Welcome to Exeter University's  campus Zombie themed hide and seek game! An online game to encourage interaction between exeter students!
+        Come and join your friends in  an epic game of suspense and wit. We have an easy lobby join system that will allow you to play as quickly as you want. Join end play now!
+
+        <ul style="font-size:20px;">
+          <li>
+            Join a lobby using your friends code, and create a lobby with your own set rules!
+          </li>
+          <li>
+            Enjoy a different Hide and Seek experience with your friends!
+          </li>
+          <li>
+            Connect to other people you haven’t met yet at the university!
+          </li>
+          <li>
+            Explore the campus with our integrated in game map!
+          </li>
+        </ul>
+      </p>
+      <br>
+      <p style="font-size:20px;">
+        And its free to play, you can play with friends today!, So why the delay!
+      </p>
+      <div class="jumbotron">
+        <br>
+        <a href="{% url 'welcome:legal' %}" class="btn btn-dark btn-primary btn-large text-center pull-left">Legal Information</a>
+      </div>
+    </div>
+
   </div>
-</div>
+
   {% endif %}
 {% endblock %}

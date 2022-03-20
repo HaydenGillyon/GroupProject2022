@@ -1,6 +1,6 @@
 from html import escape
-from django.views.decorators.csrf import csrf_exempt
-from django.shortcuts import redirect, render
+# from django.views.decorators.csrf import csrf_exempt ????
+from django.shortcuts import render
 
 from game.models import Game, Player
 from welcome.models import User
@@ -27,7 +27,7 @@ def join(request):
 
 
 # Code for enabling lobby functionality, the part of hide and seek before the game
-@csrf_exempt
+# @csrf_exempt
 def lobby(request, lobby_code):
     if 'login' not in request.session:
         return redirect('../../signin/')
