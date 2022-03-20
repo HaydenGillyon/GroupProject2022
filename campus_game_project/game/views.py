@@ -1,7 +1,9 @@
+from html import escape
 # from django.views.decorators.csrf import csrf_exempt ????
-from django.shortcuts import render
+from django.shortcuts import redirect, render
 
 from game.models import Game, Player
+from welcome.models import User
 
 from random import choice
 from secrets import token_hex
@@ -9,19 +11,26 @@ from secrets import token_hex
 
 # Renders html templates
 def create(request):
-    code = generate_code()
-    return render(request, 'game/create.html', {
-        "lobby_code": code,
-    })
+
+    if 'login' in request.session:
+        code = generate_code()
+        return render(request, 'game/create.html', {
+            "lobby_code": code,
+        })
+    return redirect('../../signin/')
 
 
 def join(request):
-    return render(request, 'game/join.html')
+    if 'login' in request.session:
+        return render(request, 'game/join.html')
+    return redirect('../../signin/')
 
 
 # Code for enabling lobby functionality, the part of hide and seek before the game
 # @csrf_exempt
 def lobby(request, lobby_code):
+    if 'login' not in request.session:
+        return redirect('../../signin/')
     if request.POST['create'] == "True":
 
         if not (create_game(request.POST, lobby_code)):
@@ -41,12 +50,12 @@ def lobby(request, lobby_code):
         if not exists:
             return render(request, 'game/error.html')
 
-    username = request.POST['uname']
+    username = escape(request.POST['uname'])
     request.session['username'] = username
 
     # Add the player to the database
     game = Game.objects.get(lobby_code=lobby_code)
-    if not create_player(game, username):
+    if not create_player(game, username, request.session['email']):
         return render(request, 'game/error.html')
 
     return render(request, 'game/lobby.html', {
@@ -63,6 +72,8 @@ def lobby(request, lobby_code):
 # Enables the player of a lobby to play the hide and seek game
 # Represents the actual game functionality of hide and seek
 def running(request, lobby_code):
+    if 'login' not in request.session:
+        return redirect('../../signin/')
     username = request.session['username']
     game = Game.objects.get(lobby_code=lobby_code)
     player = Player.objects.filter(username=username, game=game).first()
@@ -100,6 +111,8 @@ def running(request, lobby_code):
 
 # Ends the lobby of the game being played
 def end(request, lobby_code):
+    if 'login' not in request.session:
+        return redirect('../../signin/')
     g = Game.objects.filter(lobby_code=lobby_code).first()
     if g:   # Keep for None safety as game could already be deleted
         result = g.winner
@@ -213,13 +226,15 @@ def create_game(post, code):
     return True
 
 
-def create_player(game, username):
-    if len(Player.objects.filter(game=game)) > 0:
-        for x in Player.objects.filter(game=game):
-            if x.username == username:
-                return False
+def create_player(game, username, email):
 
-    Player(username=username, game=game, seeker=False, ready=False).save()
+    for x in Player.objects.filter(game=game):
+        if x.username == username:
+            return False
+
+    user = User.objects.get(email=email)
+
+    Player(username=username, game=game, seeker=False, ready=False, user=user).save()
     game.player_num += 1
     game.save()
 

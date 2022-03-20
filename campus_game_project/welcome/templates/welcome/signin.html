@@ -2,7 +2,7 @@
 {% extends "welcome/layout.html" %}
 {% load static %}
 {% block content %}
-
+{{ error_message|json_script:"error_message" }}
 <div class="text-center font-monospace">
 <br>
 <form method="POST" action="" name="signin-form" id="signin-form">
@@ -13,5 +13,11 @@
   <input type="password" id="pass" name="pass"><br><br>
   <input type="submit" value="Sign in" class ="btn btn-dark btn-primary btn-large text-center">
 </form>
+<div id="error" style="color: red"></div>
 </div>
+<script>
+  const error = JSON.parse(document.getElementById('error_message').textContent);
+
+  document.getElementById('error').innerText = error;
+</script>
 {% endblock %}
