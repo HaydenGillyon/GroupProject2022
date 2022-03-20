@@ -1,6 +1,6 @@
 from html import escape
 # from django.views.decorators.csrf import csrf_exempt ????
-from django.shortcuts import render
+from django.shortcuts import redirect, render
 
 from game.models import Game, Player
 from welcome.models import User
