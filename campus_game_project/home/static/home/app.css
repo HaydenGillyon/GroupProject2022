@@ -64,7 +64,11 @@ body {
   }
 }
 
-.main-heading {
-  position: relative;
-  z-index: 100;
+#lottie-bg {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 500px;
+  transform: translate(-50%, -50%);
+  z-index: -10;
 }
