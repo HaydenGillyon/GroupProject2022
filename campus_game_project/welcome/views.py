@@ -8,6 +8,8 @@ def welcome(request):
     return render(request, 'welcome/welcome.html')
 
 def signup(request):
+    
+    
     if 'login' in request.session:
         return redirect('home/')
     else:
@@ -69,6 +71,8 @@ def signin(request):
 def logout(request):
     request.session.flush()
     return redirect("/")
+
+
 
 def legal(request):
     if not request.POST:
