@@ -42,7 +42,6 @@ def signup(request):
 
 
 def signin(request):
-    logout(request)
     if 'login' in request.session:
         return redirect("/home/")
     else:
