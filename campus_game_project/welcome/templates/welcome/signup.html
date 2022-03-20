@@ -14,13 +14,12 @@
     <input type="email" name="email" id="email" placeholder="xyzq@exeter.ac.uk" required pattern=".+@exeter.ac.uk"/><br>
         <label for="password">Password  </label><br>
     <input type="password" name="pass" id="pass" placeholder="**********" required/><br>
-
     <label for="confirm password">Confirm Password  </label><br>
-    <input type="password" name="pass1" id="pass1" placeholder="**********"required/><br>
-    <br>
+    <input type="password" name="pass1" id="pass1" placeholder="**********"required><br><br>
     <input type="submit" class="btn btn-dark btn-primary btn-large text-center" value="Signup"><br>
 </form>
 <div id="error" style="color: red"></div>
+</div>
 <script>
     const error = JSON.parse(document.getElementById('error_message').textContent);
 
