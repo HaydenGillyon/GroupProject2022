@@ -68,3 +68,9 @@ body {
   position: relative;
   z-index: 100;
 }
+
+.form-container {
+  padding: 30px;
+  border-radius: 10px;  
+  background: #201d1dad;
+}
