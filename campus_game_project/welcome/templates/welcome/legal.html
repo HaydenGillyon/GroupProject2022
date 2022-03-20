@@ -1,8 +1,10 @@
 <!DOCTYPE html>
 {% extends "welcome/layout.html" %}
+{% load static %}
 {% block content %}
 <centre>
-  <div style="height:px;width:1200px;border:2px solid #ccc;font:16px/26px Georgia, Garamond, Serif;overflow:auto;">
+  <div style="padding-top:5%;">
+    <h1>Legal Terms and Conditions</h1>
     <p></p>
     <p></p>
     <p></p>
@@ -131,6 +133,10 @@
         </ul>
       </li>
     </ul>
+    <form method="POST" action="" name="exit-legal" id="exit-legal">
+      {% csrf_token%}
+      <input type="submit" value="Return" class ="btn btn-dark btn-primary btn-large text-center"/>
+    </form>
   </div>
 </centre>
 {% endblock %}

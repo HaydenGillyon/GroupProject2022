@@ -2,22 +2,27 @@
 {% extends "welcome/layout.html" %}
 {% load static %}
 {% block content %}
+{{ error_message|json_script:"error_message" }}
 <div class="text-center font-monospace">
 <br>
 <h2>Sign up</h2>
 <form method="POST" action="" name="signup-form" id="signup-form">
 {% csrf_token%} 
-    <label for="name"> Username </label><br>
+    <label for="name"> Username</label><br>
     <input type="text" name="uname" id="uname" placeholder="xyzq" required><br>
-    <label for="email">Email  </label><br>
+    <label for="email">Email</label><br>
     <input type="email" name="email" id="email" placeholder="xyzq@exeter.ac.uk" required pattern=".+@exeter.ac.uk"/><br>
-        <label for="password">Password  </label><br>
-    <input type="password" name="pass" id="pass" placeholder="**********" required/><br>
-
-    <label for="confirm password">Confirm Password  </label><br>
-    <input type="password" name="pass1" id="pass1" placeholder="**********"required/><br>
-    <br>
+    <label for="password">Password</label><br>
+    <input type="password" name="pass" id="pass" placeholder="**********" required><br>
+    <label for="pass1">Confirm Password</label><br>
+    <input type="password" name="pass1" id="pass1" placeholder="**********" required><br>
     <input type="submit" class="btn btn-dark btn-primary btn-large text-center" value="Signup"><br>
 </form>
+<div id="error" style="color: red"></div>
 </div>
+<script>
+    const error = JSON.parse(document.getElementById('error_message').textContent);
+
+    document.getElementById('error').innerText = error;
+</script>
 {% endblock %}

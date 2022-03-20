@@ -14,7 +14,7 @@
     <link rel="stylesheet" href="{% static 'welcome/app.css' %}">
   </head>
 
-  <body class="pt-5">
+  <body class="pt-5" style="background-color:#363a3e;color:#ffffff">
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top main-navigation">
       <div class="container-fluid">
         <a href="{% url 'welcome:welcome' %}" class="font-monospace navbar-brand order-lg-1 mr-auto mr-lg-3 ml-3 ml-lg-0">Hide and Seek</a>
@@ -22,37 +22,6 @@
           <span class="navbar-toggler-icon"></span>
         </button>
         <div class="overlay" d-flex d-lg-none></div>
-
-        <div class="order-lg-2 bg-dark d-lg-flex w-100 sidebar pb-3 pb-lg-0" id="navbarCollapse">
-          <ul class="navbar-nav mr-lg-auto mb-2 mb-lg-0 ">
-            {% if user.is_authenticated %}
-              <li class="nav-item" data-turbolinks="false">
-                <a class="nav-link{% if request.resolver_match.view_name == 'calendar' %} px-3 px-lg-2 active{% endif %}" href="{% url 'calendar' %}">Calendar</a>
-              </li>
-            {% endif %}
-          </ul>
-          <ul class="navbar-nav justify-content-end mr-lg-auto mb-2 mb-lg-0 ">
-            {% if user.is_authenticated %}
-              <li class="nav-item dropdown">
-                <a class="nav-link avatar-link px-3 px-lg-2 dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
-                  {% if user.avatar %}
-                    <img src="{{ user.avatar }}" class="rounded-circle align-self-center mr-2" style="width: 32px;">
-                  {% else %}
-                    <img src="{% static 'frontend/no-profile-photo.png' %}" class="rounded-circle align-self-center mr-2" style="width: 32px;">
-                  {% endif %}
-                </a>
-                <div class="dropdown-menu dropdown-menu-right">
-                  <h5 class="dropdown-item-text mb-0">{{ user.name }}</h5>
-                  <p class="dropdown-item-text text-muted mb-0">{{ user.email }}</p>
-                  <div class="dropdown-divider"></div>
-                  <a href="{% url 'welcome:signout' %}" class="dropdown-item px-3 px-lg-2">Sign Out</a>
-                </div>
-              </li>
-            {% else %}
-
-            {% endif %}
-          </ul>
-        </div>
       </div>
     </nav>
     <main role="main" class="container">
