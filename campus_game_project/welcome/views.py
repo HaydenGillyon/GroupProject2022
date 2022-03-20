@@ -7,10 +7,9 @@ from django.contrib import messages
 def welcome(request):
     return render(request, 'welcome/welcome.html')
 
-
 def signup(request):
     if 'login' in request.session:
-        return redirect('../home/')
+        return redirect('home/')
     else:
         if request.POST:
             uname = request.POST['uname']
@@ -70,3 +69,9 @@ def signin(request):
 def logout(request):
     request.session.flush()
     return redirect("/")
+
+def legal(request):
+    if not request.POST:
+        return render(request, 'welcome/legal.html')
+    elif request.POST:
+        return redirect("/")
