@@ -2,6 +2,8 @@
 {% extends "welcome/layout.html" %}
 {% load static %}
 {% block content %}
+{{ origin|json_script:"origin" }}
+
 <centre>
   <div style="padding-top:5%;">
     <h1>Legal Terms and Conditions</h1>
@@ -133,10 +135,31 @@
         </ul>
       </li>
     </ul>
+    <!-- 
     <form method="POST" action="" name="exit-legal" id="exit-legal">
       {% csrf_token%}
       <input type="submit" value="Return" class ="btn btn-dark btn-primary btn-large text-center"/>
-    </form>
+    </form>-->
+    
+    <input type="button" class="btn btn-dark btn-large btn-block" id="exit" value="Return"></input>
   </div>
 </centre>
+<script> 
+  const long = JSON.parse(document.getElementById('origin').textContent);
+
+  document.querySelector('#exit').onclick = function(e) {
+
+    if (long == "welcome") {
+      window.location = "../";
+    } else if (long == "signup") {
+      window.location = "../signup/";
+    } else {
+      window.location = "../";
+    }
+
+  };
+
+</script>
+
 {% endblock %}
+
