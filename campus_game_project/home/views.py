@@ -25,7 +25,7 @@ def home(request):
         elif 'blockerror' in request.session:
             messages.error(request, 'user blocked!')
             del request.session['blockerror']
-    return redirect("/signin")
+    return redirect("../signin/")
 
 
 def leaderboard(request):
@@ -44,7 +44,7 @@ def leaderboard(request):
         elif 'blockerror' in request.session:
             messages.error(request, 'user blocked!')
             del request.session['blockerror']
-    return redirect("/signin")
+    return redirect("../../signin/")
 
 
 def shop(request):
@@ -67,7 +67,7 @@ def shop(request):
         elif 'blockerror' in request.session:
             messages.error(request, 'user blocked!')
             del request.session['blockerror']
-    return redirect("/signin")
+    return redirect("../../signin/")
 
 
 def profile(request):
@@ -91,7 +91,7 @@ def profile(request):
         elif 'blockerror' in request.session:
             messages.error(request, 'user blocked!')
             del request.session['blockerror']
-    return redirect("/signin")
+    return redirect("../../signin/")
 
 
 def logout(request):
