@@ -56,6 +56,7 @@ def signin(request):
             if user:
                 user = User.objects.get(email=email)
                 if user.status == 1:
+                    print(email)
                     request.session['login'] = 1
                     request.session['email'] = email
                     return redirect("/home/")
