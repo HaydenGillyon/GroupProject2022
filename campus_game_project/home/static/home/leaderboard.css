@@ -1,0 +1,37 @@
+table {
+    width: 90%;
+    margin: auto;
+    text-align: center;
+}
+
+thead {
+    font-size: larger;
+    color: orange;
+    background-color: #14141f;
+}
+
+tbody{
+    text-align: center;
+    color: black;
+    background-color: wheat;
+    padding: 2px;
+}
+
+table tr:first-child td{
+    background-color: gold;
+    color: #262673;
+    font-weight: 700;
+}
+
+table tr:nth-child(2) td{
+    background-color: silver;
+    color: #262673;
+    font-weight: 600;
+}
+
+table tr:nth-child(3) td{
+    background-color: #CD7F32;
+    color: #262673;
+    font-weight: 500;
+}
+
