@@ -127,6 +127,8 @@ def end(request, lobby_code):
     if 'login' not in request.session:
         return redirect('../../signin/')
     g = Game.objects.filter(lobby_code=lobby_code).first()
+    username = request.session['username']
+    player = Player.objects.filter(username=username, game=g).first()
     if g:   # Keep for None safety as game could already be deleted
         result = g.winner
 
@@ -140,6 +142,7 @@ def end(request, lobby_code):
     return render(request, 'game/end.html', {
         'lobby_code': lobby_code,
         'result': result,
+        'seeker': player.seeker,
     })
 
 

@@ -1,10 +1,27 @@
 <!DOCTYPE html>
-{% extends "home/layout.html" %}
+{% include "home/layout.html" %}
 {% load static %}
 {% block content %}
 <div class="jumbotron">
   <p class="lead"></p>
     <h4>Welcome {% if user %}{{user}}{% endif %}</h4>
     <p>TO the Leaderboard.</p>
+    <table class="table table-dark">
+      <thead>
+          <tr>
+              {% for k in header %}
+              <th>{{k}}</th>
+              {% endfor %}
+          </tr>
+      </thead>
+      <tbody>
+          {% for r in rows %}
+              <tr>
+                  <td>{{r.user}}</td>
+                  <td>{{r.score}}</td>                  
+              </tr>
+          {% endfor %}
+      </tbody>
+  </table>
 </div>
 {% endblock %}
