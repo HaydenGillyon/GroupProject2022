@@ -263,13 +263,13 @@ class GameConsumer(WebsocketConsumer):
         # Checks if player has won or lost and sends points to player
         for x in Player.objects.filter(game=g):
             user = x.user
-            if x.seeker == True:
+            if x.seeker is True:
                 player_team = 'seeker'
                 if result == player_team:
                     user.points += 100
                     user.save()
                 else:
-                    user.points +=20
+                    user.points += 20
                     user.save()
             else:
                 player_team = 'hider'
