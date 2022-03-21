@@ -190,8 +190,39 @@
                 center: [long, lat],
                 zoom: 10
             })
+            
+            // Add circular boundary to map
+            window.addMapCircleBoundary = function(long,
+                                                   lat,
+                                                   fill_colour = [255,128,128,0.5], // RGBA
+                                                   outline_colour = "red",
+                                                   outline_width = 3) {
+                //  Only run once so no check for pre-existing circle needed
+                
+                const circleGeometry = new Circle({
+                    center: [long, lat],
+                    geodesic: true,
+                    numberOfPoints: 100, 
+                    radius: radius,
+                    radiusUnit: "meters"
+                });
+
+                window.view.graphics.add(new Graphic({
+                    geometry: circleGeometry,
+                    symbol: {
+                        type: "simple-fill",
+                        style: "solid",
+                        color: fill_colour,
+                        outline: {
+                            width: outline_width,
+                            color: outline_colour
+                        }
+                    }
+                }));
+            }
 
             track(long, lat);
+            window.addMapCircleBoundary(long, lat);
 
         });
 
