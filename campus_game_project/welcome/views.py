@@ -80,5 +80,5 @@ def legal(request):
         return render(request, 'welcome/legal.html')
     elif request.POST:
         return render(request, 'welcome/legal.html', {
-            "origin":request.POST["origin"]
+            "origin": request.POST["origin"]
         })
