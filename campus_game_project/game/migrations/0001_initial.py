@@ -41,7 +41,8 @@ class Migration(migrations.Migration):
                 ('hider_code', models.CharField(max_length=4, null=True)),
                 ('found', models.BooleanField(default=False)),
                 ('game', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='game.game')),
-                ('user', models.ForeignKey(default=None, on_delete=django.db.models.deletion.CASCADE, to='welcome.user')),
+                ('user', models.ForeignKey(
+                    default=None, on_delete=django.db.models.deletion.CASCADE, to='welcome.user')),
             ],
         ),
     ]

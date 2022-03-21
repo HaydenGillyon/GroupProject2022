@@ -1,5 +1,4 @@
 from html import escape
-from django.views.decorators.csrf import csrf_exempt
 from django.shortcuts import redirect, render
 
 from game.models import Game, Player
@@ -27,14 +26,18 @@ def join(request):
 
 
 # Code for enabling lobby functionality, the part of hide and seek before the game
-@csrf_exempt
 def lobby(request, lobby_code):
     if 'login' not in request.session:
         return redirect('../../signin/')
     if request.POST['create'] == "True":
 
-        if not (create_game(request.POST, lobby_code)):
-            return render(request, 'game/error.html')
+        status = create_game(request.POST, lobby_code)
+
+        if not status[0]:
+            return render(request, 'game/create.html', {
+                'error_message': status[1],
+                'lobby_code': lobby_code,
+            })
 
     else:
         exists = False
@@ -44,19 +47,29 @@ def lobby(request, lobby_code):
 
                 # Error page if lobby already in-game
                 if x.running:
-                    return render(request, 'game/error.html')
+                    return render(request, 'game/join.html', {
+                        'error_message': "This game has already started!",
+                    })
 
         # Error page if lobby doesn't exist
         if not exists:
-            return render(request, 'game/error.html')
+            return render(request, 'game/join.html', {
+                'error_message': "This game doesn't exist!",
+            })
 
     username = escape(request.POST['uname'])
     request.session['username'] = username
 
-    # Add the player to the database
     game = Game.objects.get(lobby_code=lobby_code)
-    if not create_player(game, username, request.session['email']):
-        return render(request, 'game/error.html')
+
+    if not check_rejoin(game, request.session['email']):
+        # Add the player to the database
+        if not create_player(game, username, request.session['email']):
+            return render(request, 'game/join.html', {
+                'error_message': 'That name already exists in the lobby!'
+            })
+    else:
+        request.session['rejoin'] = 1
 
     return render(request, 'game/lobby.html', {
         'lobby_code': lobby_code,
@@ -94,7 +107,8 @@ def running(request, lobby_code):
         'hiding_time': game.hiding_time,
         'seeking_time': game.seeking_time,
         'lobby_longitude': game.lobby_longitude,
-        'lobby_latitude': game.lobby_latitude
+        'lobby_latitude': game.lobby_latitude,
+        'radius': game.radius
     }
 
     if (not player.seeker) and (player.hider_code is None):
@@ -157,39 +171,45 @@ def validate_inputs(post):
     # Input not a number
     if not ((h_time.isdigit() or len(h_time) == 0) and (s_time.isdigit() or len(s_time) == 0)
             and (s_num.isdigit() or len(s_num) == 0) and (radius.isdigit() or len(radius) == 0)):
-        return False
+        return (False, "Settings must be digits!")
 
     if len(h_time) > 0:
         h_time = int(h_time)
         # Range for hiding time between 20 and 120 seconds
         if h_time < 20 or h_time > 120:
-            return False
+            return (False, "Hiding time must be between 20 and 120 seconds!")
 
     if len(s_time) > 0:
         s_time = int(s_time)
         # Range for seeking time between 120 and 1200 seconds
         if s_time < 120 or s_time > 1200:
-            return False
+            return (False, "Seeking time must be between 120 and 1200 seconds!")
 
     if len(s_num) > 0:
         s_num = int(s_num)
         # Range for number of seekers between 1 and 8
         if s_num < 1 or s_num > 8:
-            return False
+            return (False, "Seekers must be between 1 and 8!")
 
     if len(radius) > 0:
         radius = int(radius)
         # Range for radius between 50 and 1000 meters
         if radius < 50 or radius > 1000:
-            return False
+            return (False, "Radius must be between 50 and 1000 meters!")
 
-    return True
+    return [True]
 
 
 def create_game(post, code):
 
-    if not validate_inputs(post):
-        return False
+    game = Game.objects.filter(lobby_code=code)
+
+    if game:
+        return True
+
+    status = validate_inputs(post)
+    if not status[0]:
+        return status
 
     h_time = post['hiding_time']
     s_time = post['seeking_time']
@@ -226,7 +246,7 @@ def create_game(post, code):
     Game(lobby_code=code, player_num=0, hiding_time=h_time, seeking_time=s_time, seeker_num=s_num,
          radius=radius, lobby_latitude=latit, lobby_longitude=longit).save()
 
-    return True
+    return [True]
 
 
 def create_player(game, username, email):
@@ -242,3 +262,10 @@ def create_player(game, username, email):
     game.save()
 
     return True
+
+
+def check_rejoin(game, email):
+    for x in Player.objects.filter(game=game):
+        if x.user.email == email:
+            return True
+    return False

@@ -79,4 +79,6 @@ def legal(request):
     if not request.POST:
         return render(request, 'welcome/legal.html')
     elif request.POST:
-        return redirect("/")
+        return render(request, 'welcome/legal.html', {
+            "origin": request.POST["origin"]
+        })

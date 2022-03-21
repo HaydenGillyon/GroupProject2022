@@ -66,10 +66,15 @@ class PlayerConsumer(WebsocketConsumer):
             )
 
             # Deletes the user from the database
-            g = Game.objects.get(lobby_code=self.lobby_code)
-            Player.objects.get(game=g, username=self.scope['session']['username']).delete()
-            g.player_num -= 1
-            g.save()
+            if 'rejoin' not in self.scope['session']:
+                g = Game.objects.get(lobby_code=self.lobby_code)
+                Player.objects.get(game=g, username=self.scope['session']['username']).delete()
+                g.player_num -= 1
+                g.save()
+                if g.player_num == 0:
+                    g.delete()
+            else:
+                del self.scope['session']['rejoin']
 
         # Leaves the group
         async_to_sync(self.channel_layer.group_discard)(
@@ -185,6 +190,7 @@ class GameConsumer(WebsocketConsumer):
             self.lobby_code,
             self.channel_name
         )
+
         # Deletes the user from the database
         try:
             g = Game.objects.get(lobby_code=self.lobby_code)
@@ -197,7 +203,6 @@ class GameConsumer(WebsocketConsumer):
     # Behaviour when the websocket receives a message
     def receive(self, text_data):
         text_data_json = json.loads(text_data)
-        print(text_data_json['msg_type'])
         if text_data_json['msg_type'] == 'hider_code_attempt':
             result = self.check_code(text_data_json['attempt_code'])
             self.send(text_data=json.dumps({
@@ -258,13 +263,13 @@ class GameConsumer(WebsocketConsumer):
         # Checks if player has won or lost and sends points to player
         for x in Player.objects.filter(game=g):
             user = x.user
-            if x.seeker == True:
+            if x.seeker is True:
                 player_team = 'seeker'
                 if result == player_team:
                     user.points += 100
                     user.save()
                 else:
-                    user.points +=20
+                    user.points += 20
                     user.save()
             else:
                 player_team = 'hider'

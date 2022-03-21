@@ -29,7 +29,7 @@
     <script src="https://js.arcgis.com/4.22/"></script>
     <div id="wrapper">
         <div id="content">
-            <textarea id="log" cols="100" rows="20" style="resize:none;background-color:#f2ffe6;color:#000000";></textarea><br>
+            <textarea id="log" cols="100" rows="20" style="resize: none; background-color: #f2ffe6; color: #000000;"></textarea><br>
             <input id="ready" type="button" value="Ready"><br><br>
             Players:
             <ul id="players">
@@ -146,12 +146,15 @@
 
         // Send a message to the socket when the player is ready
         document.querySelector('#ready').onclick = function(e) {
-            ready = document.getElementById('ready').value
-            lobbySocket.send(JSON.stringify({
-                'msg_type': "ready",
-                'ready':ready,
-                'username':username,
-            }));
+            navigator.geolocation.getCurrentPosition((position) => {
+                ready = document.getElementById('ready').value
+                lobbySocket.send(JSON.stringify({
+                    'msg_type': "ready",
+                    'ready':ready,
+                    'username':username,
+                }));
+            },
+            () => {alert("Please enable location tracking.");});
         };
     </script>
     <script>
@@ -191,7 +194,38 @@
                 zoom: 10
             })
 
+            // Add circular boundary to map
+            window.addMapCircleBoundary = function(long,
+                                                   lat,
+                                                   fill_colour = [255,128,128,0.5], // RGBA
+                                                   outline_colour = "red",
+                                                   outline_width = 3) {
+                //  Only run once so no check for pre-existing circle needed
+
+                const circleGeometry = new Circle({
+                    center: [long, lat],
+                    geodesic: true,
+                    numberOfPoints: 100,
+                    radius: radius,
+                    radiusUnit: "meters"
+                });
+
+                window.view.graphics.add(new Graphic({
+                    geometry: circleGeometry,
+                    symbol: {
+                        type: "simple-fill",
+                        style: "solid",
+                        //color: fill_colour, // Not working for now
+                        outline: {
+                            width: outline_width,
+                            color: outline_colour
+                        }
+                    }
+                }));
+            }
+
             track(long, lat);
+            window.addMapCircleBoundary(long, lat);
 
         });
 
