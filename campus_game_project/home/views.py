@@ -82,6 +82,7 @@ def profile(request):
             'email': user_det.email,
             'id': user_det.id,
             'points': user_det.points,
+            'profile': user_det.profile,
         }
         return render(request, "home/profile.html", context)
     else:

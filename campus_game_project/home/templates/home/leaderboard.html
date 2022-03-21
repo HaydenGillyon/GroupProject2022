@@ -1,23 +1,24 @@
 <!DOCTYPE html>
 {% include "home/layout.html" %}
 {% load static %}
+<link rel="stylesheet" href="{% static 'home/leaderboard.css' %}">
 {% block content %}
 <br>
 <h4 style="font-size:200%;text-align:center">Leaderboard</h4>
 <br>
-<div class="jumbotron">
-    <table style ="width:90%;margin-left:auto;margin-right:auto" class="table table-dark">
-      <thead style="font-size:larger;color:orange;text-align:center">
+<div>
+    <table>
+      <thead>
           <tr>
                 <th style="width:10%"></th>
                 <th style="width:30%">Name</th>
                 <th>Points</th>
           </tr>
       </thead>
-      <tbody style="text-align:center;color:gold">
+      <tbody>
         {% for k in data %}
             <tr>
-                <td style="width:10%"></td>
+                <td style="width:10%">{{k.profile}}</td>
                 <td style="width:30%">{{k.name}}</td>
                 <td>{{k.points}}</td>                  
             </tr>
