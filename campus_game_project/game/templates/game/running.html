@@ -41,15 +41,17 @@
         {{ lobby_code|json_script:"lobby-code" }}
         {{ username|json_script:"username" }}
         {{ seeker|json_script:"seeker" }}
-        {{ hider_code|json_script:"hider-code"}}
-        {{ start_time|json_script:"start-time"}}
+        {{ hider_code|json_script:"hider-code" }}
+        {{ start_time|json_script:"start-time" }}
         {{ hiding_time|json_script:"hiding-time" }}
         {{ seeking_time|json_script:"seeking-time" }}
-        {{ lobby_longitude|json_script:"lobby-longitude"}}
-        {{ lobby_latitude|json_script:"lobby-latitude"}}
+        {{ lobby_longitude|json_script:"lobby-longitude" }}
+        {{ lobby_latitude|json_script:"lobby-latitude" }}
+        {{ radius|json_script:"radius" }}
         <script>
             const long = JSON.parse(document.getElementById('lobby-longitude').textContent);
             const lat = JSON.parse(document.getElementById('lobby-latitude').textContent);
+            const radius = JSON.parse(document.getElementById('radius').textContent);
 
             require([
             "esri/config",
@@ -58,7 +60,9 @@
             "esri/widgets/Locate",
 
             "esri/widgets/Track",
-            "esri/Graphic"
+            "esri/Graphic",
+            "esri/geometry/Circle",
+            "esri/geometry/Point"
 
             ], function(
                 esriConfig,
@@ -67,7 +71,9 @@
                 Locate,
 
                 Track,
-                Graphic
+                Graphic,
+                Circle,
+                Point
 
             ) {
 
@@ -83,9 +89,85 @@
                     center: [long, lat],
                     zoom: 10
                 })
+                
+                // Add circular boundary to map
+                window.addMapCircleBoundary = function(long,
+                                                       lat,
+                                                       fill_colour = [255,128,128,0.5], // RGBA
+                                                       outline_colour = "red",
+                                                       outline_width = 3) {
+                    if (window.view.graphics.find((graphic) => {
+                        // Checks if a circle already exists as a graphic in the MapView
+                        return graphic.geometry.declaredClass === 'esri.geometry.Circle';
+                    })) {
+                        // Only create circular boundary once
+                        return;
+                    }
 
+                    const circleGeometry = new Circle({
+                        center: [long, lat],
+                        geodesic: true,
+                        numberOfPoints: 100, 
+                        radius: radius,
+                        radiusUnit: "meters"
+                    });
+
+                    window.view.graphics.add(new Graphic({
+                        geometry: circleGeometry,
+                        symbol: {
+                            type: "simple-fill",
+                            style: "solid",
+                            //color: fill_colour, // Not working for now
+                            outline: {
+                                width: outline_width,
+                                color: outline_colour
+                            }
+                        }
+                    }));
+                }
+
+                // Player location point constructor for showing multiple
+                function PlayerLocationPoint(username, graphic) {
+                    this.username = username;
+                    this.graphic = graphic;
+                }
+
+                // Array of player location points
+                window.playerLocationPoints = [];
+
+                // Add player location icon to map
+                window.addOrUpdateMapPlayerLocation = function(long, lat, username){
+                    const existingPlayerPoint = window.playerLocationPoints.find((playerPoint) => {
+                        // Checks if player location icon already exists with this username
+                        return playerPoint.username === username;
+                    });
+                    if (existingPlayerPoint) {
+                        // Update location
+                        existingPlayerPoint.graphic.latitude = lat;
+                        existingPlayerPoint.graphic.longitude = long;
+                    } else {
+                        // Create new player location icon
+                        const pointGeometry = new Point({
+                            latitude: lat,
+                            longitude: long
+                        });
+                        const pointSymbol = {
+                            type: "picture-marker",
+                            url: "{% static 'game/zombie1_icon.png' %}",
+                            width: "32px",
+                            height: "32px"
+                        };
+                        const pointGraphic = {
+                            geometry: pointGeometry,
+                            symbol: pointSymbol
+                        };
+                        window.view.graphics.add(pointGraphic);
+                        window.playerLocationPoints.push(new PlayerLocationPoint(username, pointGraphic));
+                    }
+                }
+
+                // Initially zoom in to centre of circular boundary
                 track(long, lat);
-
             });
 
             function track(long, lat) {
@@ -190,7 +272,7 @@
                 }
             }
 
-            // Tracker Code
+            // Player current location tracker
             const current_position = {
                 latitude: 0,
                 longitude: 0,
@@ -210,9 +292,12 @@
                     current_position.latitude = position.coords.latitude;
                     current_position.longitude = position.coords.longitude;
                     current_position.timestamp = position.timestamp;
-
+                    
+                    // Track on map
                     if (typeof window.view !== 'undefined') {
                         track(current_position.longitude, current_position.latitude);
+                        window.addOrUpdateMapPlayerLocation(current_position.longitude, current_position.latitude);
+                        window.addMapCircleBoundary(long, lat, username);
                     }
 
                     if (current_position.outbounds_timestamp) {
@@ -235,6 +320,7 @@
                 }
             }
             function outboundsWarning(display_warning) {
+                // Styled message for out of bounds warning
                 if (display_warning) {
                     warningbox_outbounds.style.backgroundColor = "Yellow";
                     warningbox_outbounds.innerText
