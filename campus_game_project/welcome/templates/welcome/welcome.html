@@ -2,6 +2,7 @@
 {% extends "welcome/layout.html" %}
 {% load static %}
 {% block content %}
+
 <div class="jumbotron">
   <p class="lead"></p>
   {% if user.is_authenticated %}
@@ -57,7 +58,11 @@
       </p>
       <div class="jumbotron">
         <br>
-        <a href="{% url 'welcome:legal' %}" class="btn btn-dark btn-primary btn-large text-center pull-left">Legal Information</a>
+        <form method="POST" action="{% url 'welcome:legal' %}" >
+          {%csrf_token%}
+          <input type="submit" class="btn btn-dark btn-primary btn-large text-center" value="Terms and Conditions"><br>
+          <input type="hidden" value="welcome" name="origin">
+          </form>
       </div>
     </div>
 
