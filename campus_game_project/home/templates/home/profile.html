@@ -5,9 +5,9 @@
 <div class="jumbotron container-fluid" style="margin:auto;width:90%;text-align:center">
   <p class="lead" style="text-align:center"></p>
     <br>
-    <img style="width:200px" src="{% static 'home/zombie1.png' %}">
+    <img style="width:200px" src="{% static 'home/zombie1.png' %}" alt="Zombie">
     <br><br>
-    <h4 style="font-size:300%">{% if user %}{{user}}{% endif %}</h5>
+    <h4 style="font-size:300%">{% if user %}{{user}}{% endif %}</h4>
     <br><br>
     <p>Email: {% if email %}{{email}}{%endif%}</p>
     <p>Points: {% if points %}{{points}}{%endif%}</p>
