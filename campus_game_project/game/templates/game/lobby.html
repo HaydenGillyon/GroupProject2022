@@ -146,12 +146,15 @@
 
         // Send a message to the socket when the player is ready
         document.querySelector('#ready').onclick = function(e) {
-            ready = document.getElementById('ready').value
-            lobbySocket.send(JSON.stringify({
-                'msg_type': "ready",
-                'ready':ready,
-                'username':username,
-            }));
+            navigator.geolocation.getCurrentPosition((position) => {
+                ready = document.getElementById('ready').value
+                lobbySocket.send(JSON.stringify({
+                    'msg_type': "ready",
+                    'ready':ready,
+                    'username':username,
+                }));
+            },
+            () => {alert("Please enable location tracking.");});
         };
     </script>
     <script>
