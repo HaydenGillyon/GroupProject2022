@@ -210,7 +210,6 @@ def create_game(post, code):
     if not status[0]:
         return status
 
-
     h_time = post['hiding_time']
     s_time = post['seeking_time']
     s_num = post['seeker_num']
