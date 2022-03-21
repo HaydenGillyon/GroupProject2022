@@ -1,4 +1,3 @@
-import email
 from django.shortcuts import redirect, render
 from welcome.models import User
 from django.contrib import messages
@@ -34,7 +33,7 @@ def leaderboard(request):
             messages.error(request, 'Invalid password!')
             del request.session['error']
         context = {
-            'data': User.objects.all().order_by('-points')[:10] 
+            'data': User.objects.all().order_by('-points')[:10]
         }
         return render(request, "home/leaderboard.html", context)
     else:
