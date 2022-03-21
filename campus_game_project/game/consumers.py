@@ -259,8 +259,26 @@ class GameConsumer(WebsocketConsumer):
         # IMPLEMENT POST-GAME PAGE SWITCH FROM HERE
         result = event['who_won']
         g = Game.objects.get(lobby_code=self.lobby_code)
-        # player = Player.objects.get() // get to update
         g.winner = result
+        # Checks if player has won or lost and sends points to player
+        for x in Player.objects.filter(game=g):
+            user = x.user
+            if x.seeker is True:
+                player_team = 'seeker'
+                if result == player_team:
+                    user.points += 100
+                    user.save()
+                else:
+                    user.points += 20
+                    user.save()
+            else:
+                player_team = 'hider'
+                if result == player_team:
+                    user.points += 100
+                    user.save()
+                else:
+                    user.points += 20
+                    user.save()
         g.save()
         self.send(text_data=json.dumps({
                 'msg_type': 'end',

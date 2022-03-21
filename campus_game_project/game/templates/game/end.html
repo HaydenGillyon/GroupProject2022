@@ -20,19 +20,19 @@
 
         switch(result){
             case 'seeker':
-                document.getElementById('winner').innerText = "Seekers Win!";
+                document.getElementById('winner').innerText = "Zombies Win!";
                 if (player_type == 'seeking!'){
                     document.getElementById('player-msg').innerText = "You Win! Congratulations!"
                 } else {
-                    document.getElementById('player-msg').innerText = "You Lose! Try again next time!"
+                    document.getElementById('player-msg').innerText = "You Lose... Try again next time..."
                 }
                 break;
             case 'hiders':
-                document.getElementById('winner').innerText = "Hiders Win!";
+                document.getElementById('winner').innerText = "Humans Win!";
                 if (player_type == 'hiding!'){
                     document.getElementById('player-msg').innerText = "You Win! Congratulations!"
                 } else {
-                    document.getElementById('player-msg').innerText = "You Lose! Try again next time!"
+                    document.getElementById('player-msg').innerText = "You Lose... Try again next time..."
                 }
                 break;
         }

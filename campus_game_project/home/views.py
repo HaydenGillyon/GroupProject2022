@@ -32,12 +32,8 @@ def leaderboard(request):
         if 'error' in request.session:
             messages.error(request, 'Invalid password!')
             del request.session['error']
-        email = request.session['email']
-        user_det = User.objects.get(email=email)
         context = {
-            'user': user_det.name,
-            'email': user_det.email,
-            'id': user_det.id,
+            'data': User.objects.all().order_by('-points')[:10]
         }
         return render(request, "home/leaderboard.html", context)
     else:
@@ -84,6 +80,7 @@ def profile(request):
             'user': user_det.name,
             'email': user_det.email,
             'id': user_det.id,
+            'points': user_det.points,
         }
         return render(request, "home/profile.html", context)
     else:
