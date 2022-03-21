@@ -2,11 +2,10 @@
 {% include "home/layout.html" %}
 {% load static %}
 {% block content %}
-<script src='http://use.edgefonts.net/butcherman.js'></script>
 <div class="jumbotron container-fluid">
   <p class="lead"></p>
     <h4>Welcome {% if user %}{{user}}{% endif %}</h4>
-    <p style="font-family:butcherman">To Profile</p>
+    <p>To Profile</p>
     <p>Username: {% if user %}{{user}}{%endif%}</p>
     <p>Email: {% if email %}{{email}}{%endif%}</p>
     <p>Points: {% if points %}{{points}}{%endif%}</p>

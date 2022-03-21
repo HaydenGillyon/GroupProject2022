@@ -5,6 +5,7 @@ import math
 from asgiref.sync import async_to_sync
 from channels.generic.websocket import WebsocketConsumer
 from game.models import Game, Player
+from welcome.models import User
 from random import randint
 
 
@@ -255,26 +256,30 @@ class GameConsumer(WebsocketConsumer):
         result = event['who_won']
         g = Game.objects.get(lobby_code=self.lobby_code)
         g.winner = result
+        # Checks if player has won or lost and sends points to player
+        for x in Player.objects.get(game=g):
+            user = x.user
+            if x.seeker == True:
+                player_team = 'seeker'
+                if result == player_team:
+                    user.points += 100
+                    user.save()
+                else:
+                    user.points +=20
+                    user.save()
+            else:
+                player_team = 'hider'
+                if result == player_team:
+                    user.points += 100
+                    user.save()
+                else:
+                    user.points += 20
+                    user.save()
         g.save()
         self.send(text_data=json.dumps({
                 'msg_type': 'end',
                 'lobby_code': self.lobby_code
         }))
-        # Checks if player has won or lost and sends points to player
-        for x in Player.objects.get(game=g):
-            if x.seeker == True:
-                player_team = 'seeker'
-            else:
-                player_team = 'hider'
-            if player_team == result:
-                user = x.user
-                user.points += 100
-                user.save()
-            else:
-                user = x.user
-                user.points += 20
-                user.save()
-
 
     # Checks if a current game should be aborted due to time limit
     def check_code(self, attempt_code):
