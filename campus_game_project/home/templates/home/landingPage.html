@@ -4,10 +4,11 @@
 {% block content %}
 <div class="jumbotron text-center">
   <p class="lead"></p>
-    <h3>Welcome {% if user %}{{user}}{% endif %}</h3>
-    <h4>Click on the link below to begin to play!</h4>
-    
-
+    <br>
+    <h3>Welcome {% if user %}{{user}}{% endif %}!</h3>
+    <br>
+    <h4>Click on the buttons below to begin!</h4>
+    <br>
     <div class="text-center">
       <a class="btn btn-dark " href="{% url 'game:create' %}" >Create Lobby</a>
       <br>
