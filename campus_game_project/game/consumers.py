@@ -5,7 +5,6 @@ import math
 from asgiref.sync import async_to_sync
 from channels.generic.websocket import WebsocketConsumer
 from game.models import Game, Player
-from welcome.models import User
 from random import randint
 
 
