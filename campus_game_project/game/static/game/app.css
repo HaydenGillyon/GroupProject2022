@@ -74,3 +74,18 @@ body {
   border-radius: 10px;  
   background: #201d1dad;
 }
+
+input[type=text] {
+  width: 20%;
+  padding: 10px, 20px;
+  height: 35px;
+  margin: 10px, 0;
+  border: 2px solid grey;
+  border-radius: 5px;
+}
+
+.center-block {
+  display: block;
+  margin-right: auto;
+  margin-left: auto;
+}
