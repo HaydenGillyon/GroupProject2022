@@ -5,7 +5,9 @@ from hashlib import sha256
 from html import escape
 
 '''
+
 Main page for website 
+
 '''
 def welcome(request):
     if 'login' in request.session:
@@ -13,7 +15,9 @@ def welcome(request):
     return render(request, 'welcome/welcome.html')
 
 '''
+
 creates an entry in the database for user and logs the user in when successful
+
 '''
 def signup(request):
     if 'login' in request.session:
@@ -47,7 +51,9 @@ def signup(request):
             return render(request, 'welcome/signup.html')
 
 '''
+
 signs user in to the app and redirects to home page if sucessful
+
 '''
 def signin(request):
     if 'login' in request.session:
@@ -76,14 +82,18 @@ def signin(request):
             return render(request, 'welcome/signin.html')
 
 '''
+
 delete session data to log users out and then redirects to welcome page
+
 '''
 def logout(request):
     request.session.flush()
     return redirect("/")
 
 '''
+
 displays legal page, also redirects from both welcome and signup
+
 '''
 def legal(request):
     if not request.POST:
