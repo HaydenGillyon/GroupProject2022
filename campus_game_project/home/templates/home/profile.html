@@ -5,10 +5,10 @@
 <div class="jumbotron container-fluid" style="margin:auto;width:90%;text-align:center">
   <p class="lead" style="text-align:center"></p>
     <br>
-    <img id="profile_pic" style="width:200px" src="{%static profile %}">
+    <img alt="my_avatar" style="width:200px" src="{%static profile %}">
     <br>
     <br>
-    <h4 style="font-size:300%">{% if user %}{{user}}{% endif %}</h5>
+    <h4 style="font-size:300%">{% if user %}{{user}}{% endif %}</h4>
     <br>
     <button type="" onclick="change_avatar()">Change Avatar</button>
     <br><br><br>
