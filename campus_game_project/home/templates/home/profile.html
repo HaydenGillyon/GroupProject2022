@@ -4,15 +4,16 @@
 <link rel="stylesheet" href="{% static 'home/profile.css' %}">
 {% block content %}
 {{ profile|json_script:"profile" }}
+{{ points|json_script:"points" }}
 <div class="jumbotron container-fluid" style="margin:auto;width:90%;text-align:center">
   <p class="lead" style="text-align:center"></p>
-    <br>
+    <br><br>
     <img alt="Profile" style="width:200px" src="{%static profile %}">
     <br>
     <br>
     <h4 style="font-size:300%">{% if user %}{{user}}{% endif %}</h4>
     <br>
-    <br><br><br>
+    <br><br>
     <p>Email: {% if email %}{{email}}{%endif%}</p>
     <p>Points: {{points}}</p><br>
 
@@ -21,9 +22,11 @@
 
     <div id="profile-buttons">
       <input alt="Human 1" id="home/Human1.png" class="profile-image" type="image" onclick="set_avatar('home/Human1.png')" src="{% static 'home/Human1.png' %}">
-      <input alt="Human 2" id="home/Human2.png" class="profile-image" type="image" onclick="set_avatar('home/Human2.png')" src="{% static 'home/Human2.png' %}">
       <input alt="Zombie 1" id="home/Zombie1.png" class="profile-image" type="image" onclick="set_avatar('home/Zombie1.png')" src="{% static 'home/Zombie1.png' %}">
+      <input alt="Human 2" id="home/Human2.png" class="profile-image" type="image" onclick="set_avatar('home/Human2.png')" src="{% static 'home/Human2.png' %}">
       <input alt="Zombie 2" id="home/Zombie2.png" class="profile-image" type="image" onclick="set_avatar('home/Zombie2.png')" src="{% static 'home/Zombie2.png' %}">
+      <br>
+      <input alt="Sans" id="home/sans_head.png" class="profile-image" type="image" onclick="set_avatar('home/sans_head.png')" src="{% static 'home/sans_head.png'%}">
     </div>
 
     <form method="POST" action="">
@@ -32,19 +35,49 @@
       <input class="btn btn-dark btn-large btn-block" type="submit" value="Select">
     </form>
 
+    <br>
+    <div id="error" style="color:yellow;font-size:x-large"></div>
+
 </div>
 <script>
   const profile = JSON.parse(document.getElementById('profile').textContent);
+  const points = parseInt(JSON.parse(document.getElementById('points').textContent));
 
   document.getElementById(profile).className = "selected-profile-image";
   document.getElementById('selected-profile-pic').value = profile;
 
   function set_avatar(avatar) {
+    if (avatar == "home/Human1.png" || avatar == "home/Zombie1.png"){
+      document.getElementById('error').innerText = " ";
+    }
+
+    if (avatar == "home/Human2.png"){
+      if (points < 200){
+        document.getElementById('error').innerText = "You need 200 points for this avatar";
+        return;
+      } else{
+        document.getElementById('error').innerText = " ";
+      }
+    }
+
+    if (avatar == "home/Zombie2.png"){
+      if (points < 400){
+        document.getElementById('error').innerText = "You need 400 points for this avatar";
+        return;
+      }
+    }
+
+    if (avatar == "home/sans_head.png"){
+      if (points < 800){
+        document.getElementById('error').innerText = "You need 800 points for this avatar";
+        return;
+      }
+    }
 
     let buttons = document.getElementById('profile-buttons').children;
 
     for (var i = 0; i < buttons.length; i++) {
-      buttons[i].className = "profile-image";
+        buttons[i].className = "profile-image";
     }
 
     document.getElementById(avatar).className = "selected-profile-image";
