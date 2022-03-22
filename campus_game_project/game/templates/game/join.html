@@ -37,10 +37,10 @@
           <input class="btn btn-dark center-block" id="join" type="submit" value="Join">
           <input type="hidden" name="create" value="False">
     </form>
-    <div id="error" style="color: red"></div>
+    <br>
+    <div id="error" style="color: red; text-align: center; font-family: monospace;"></div>
     <script>
       const error = JSON.parse(document.getElementById('error_message').textContent);
-    
       document.getElementById('error').innerText = error;
     </script>
     <center>
