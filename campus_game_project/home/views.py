@@ -1,4 +1,3 @@
-import email
 from django.shortcuts import redirect, render
 from welcome.models import User
 from django.contrib import messages
@@ -25,7 +24,7 @@ def home(request):
         elif 'blockerror' in request.session:
             messages.error(request, 'user blocked!')
             del request.session['blockerror']
-    return redirect("/signin")
+    return redirect("../signin/")
 
 
 def leaderboard(request):
@@ -34,7 +33,7 @@ def leaderboard(request):
             messages.error(request, 'Invalid password!')
             del request.session['error']
         context = {
-            'data': User.objects.all().order_by('-points')[:10] 
+            'data': User.objects.all().order_by('-points')[:10]
         }
         return render(request, "home/leaderboard.html", context)
     else:
@@ -44,7 +43,7 @@ def leaderboard(request):
         elif 'blockerror' in request.session:
             messages.error(request, 'user blocked!')
             del request.session['blockerror']
-    return redirect("/signin")
+    return redirect("../../signin/")
 
 
 def shop(request):
@@ -67,7 +66,7 @@ def shop(request):
         elif 'blockerror' in request.session:
             messages.error(request, 'user blocked!')
             del request.session['blockerror']
-    return redirect("/signin")
+    return redirect("../../signin/")
 
 
 def profile(request):
@@ -92,7 +91,7 @@ def profile(request):
         elif 'blockerror' in request.session:
             messages.error(request, 'user blocked!')
             del request.session['blockerror']
-    return redirect("/signin")
+    return redirect("../../signin/")
 
 
 def logout(request):

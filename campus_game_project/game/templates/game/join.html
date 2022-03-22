@@ -14,7 +14,7 @@
     <link rel="stylesheet" href="{% static 'game/app.css' %}">
     <link rel="stylesheet" href="{% static 'game/create.css'%}">
   </head>
-
+  {{ error_message|json_script:"error_message" }}
   <body style="background-color:#264d00;color:#ffffff">
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top main-navigation">
       <div class="container-fluid">
@@ -26,10 +26,17 @@
       </div>
     </nav>
     <form id="form" method="post">
+        {% csrf_token %}
         <input required name="uname" type="text" placeholder="Username">
         <input required id="lobby-code" type="text" placeholder="Code" onchange="document.getElementById('form').action = '/game/' + this.value + '/';">
         <input class="btn btn-dark" id="join" type="submit" value="Join">
         <input type="hidden" name="create" value="False">
     </form>
-</body>
+    <div id="error" style="color: red"></div>
+    <script>
+      const error = JSON.parse(document.getElementById('error_message').textContent);
+    
+      document.getElementById('error').innerText = error;
+    </script>
+  </body>
 </html>

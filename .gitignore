@@ -6,3 +6,6 @@ db.sqlite3
 
 # Environment
 env/
+
+# IDE
+.idea/

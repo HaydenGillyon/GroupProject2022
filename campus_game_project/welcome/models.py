@@ -1,5 +1,4 @@
-from email.policy import default
-import profile
+# from email.policy import default
 from django.db import models
 
 # Create your models here.
@@ -11,7 +10,7 @@ class User(models.Model):
     status = models.IntegerField(default=1)
     points = models.PositiveIntegerField(default=0)
     profile_image_url = models.CharField(default='home/Human1.png', max_length=100)
-    
+
 
 class Admin(models.Model):
 
