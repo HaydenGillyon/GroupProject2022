@@ -1,7 +1,9 @@
 <!DOCTYPE html>
 {% include "home/layout.html" %}
 {% load static %}
+<link rel="stylesheet" href="{% static 'home/profile.css' %}">
 {% block content %}
+{{ profile|json_script:"profile" }}
 <div class="jumbotron container-fluid" style="margin:auto;width:90%;text-align:center">
   <p class="lead" style="text-align:center"></p>
     <br>
@@ -10,10 +12,43 @@
     <br>
     <h4 style="font-size:300%">{% if user %}{{user}}{% endif %}</h4>
     <br>
-    <button type="" onclick="change_avatar()">Change Avatar</button>
     <br><br><br>
     <p>Email: {% if email %}{{email}}{%endif%}</p>
-    <p>Points: {{points}}</p>
-    </div>
-{% endblock %}
+    <p>Points: {{points}}</p><br>
 
+
+    <h5>Change Profile Picture</h5>
+
+    <div id="profile-buttons">
+      <input alt="Human 1" id="home/Human1.png" class="profile-image" type="image" onclick="set_avatar('home/Human1.png')" src="{% static 'home/Human1.png' %}">
+      <input alt="Human 2" id="home/Human2.png" class="profile-image" type="image" onclick="set_avatar('home/Human2.png')" src="{% static 'home/Human2.png' %}">
+      <input alt="Zombie 1" id="home/Zombie1.png" class="profile-image" type="image" onclick="set_avatar('home/Zombie1.png')" src="{% static 'home/Zombie1.png' %}">
+      <input alt="Zombie 2" id="home/Zombie2.png" class="profile-image" type="image" onclick="set_avatar('home/Zombie2.png')" src="{% static 'home/Zombie2.png' %}">
+    </div>
+
+    <form method="POST" action="">
+      {% csrf_token %}
+      <input id="selected-profile-pic" type="hidden" value="" name="profile_pic">
+      <input class="btn btn-dark btn-large btn-block" type="submit" value="Select">
+    </form>
+
+</div>
+<script>
+  const profile = JSON.parse(document.getElementById('profile').textContent);
+
+  document.getElementById(profile).className = "selected-profile-image";
+  document.getElementById('selected-profile-pic').value = profile;
+
+  function set_avatar(avatar) {
+
+    let buttons = document.getElementById('profile-buttons').children;
+
+    for (var i = 0; i < buttons.length; i++) {
+      buttons[i].className = "profile-image";
+    }
+
+    document.getElementById(avatar).className = "selected-profile-image";
+    document.getElementById('selected-profile-pic').value = avatar;
+  }
+</script>
+{% endblock %}

@@ -48,10 +48,14 @@
         {{ lobby_longitude|json_script:"lobby-longitude" }}
         {{ lobby_latitude|json_script:"lobby-latitude" }}
         {{ radius|json_script:"radius" }}
+        {{ profile_pic|json_script:"profile-pic" }}
         <script>
             const long = JSON.parse(document.getElementById('lobby-longitude').textContent);
             const lat = JSON.parse(document.getElementById('lobby-latitude').textContent);
             const radius = JSON.parse(document.getElementById('radius').textContent);
+            const profile = JSON.parse(document.getElementById('profile-pic').textContent).slice(5);
+
+            console.log(profile);
 
             require([
             "esri/config",
@@ -151,12 +155,18 @@
                             latitude: lat,
                             longitude: long
                         });
-                        const pointSymbol = {
+
+
+                        console.log(profile)
+
+                        let pointSymbol = pointSymbol = {
                             type: "picture-marker",
-                            url: "{% static 'game/zombie1_icon.png' %}",
+                            url: "{% static 'game/Human1.png' %}", 
                             width: "32px",
                             height: "32px"
-                        };
+                        }
+
+
                         const pointGraphic = {
                             geometry: pointGeometry,
                             symbol: pointSymbol

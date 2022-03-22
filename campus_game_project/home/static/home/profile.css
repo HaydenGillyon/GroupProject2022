@@ -1,0 +1,12 @@
+.profile-image {
+    padding: 1vmin;
+    width: 10vmin;
+    height: 10vmin;
+}
+
+.selected-profile-image {
+    margin: 1vmin;
+    width: 8vmin;
+    height: 8vmin;
+    border: 5px solid rgb(58, 174, 35);
+}
