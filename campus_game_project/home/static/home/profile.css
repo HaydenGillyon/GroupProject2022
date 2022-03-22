@@ -1,10 +1,10 @@
-.profile_image {
+.profile-image {
     padding: 1vmin;
     width: 10vmin;
     height: 10vmin;
 }
 
-.selected_profile_image {
+.selected-profile-image {
     margin: 1vmin;
     width: 8vmin;
     height: 8vmin;
