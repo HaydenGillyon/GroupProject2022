@@ -2,7 +2,7 @@ from django.shortcuts import redirect, render
 from welcome.models import User
 from django.contrib import messages
 
-''' main home page when user logs into the app'''
+''' main home page when user logs into the app '''
 def home(request):
     if 'login' in request.session:
         if 'error' in request.session:
@@ -26,7 +26,7 @@ def home(request):
             del request.session['blockerror']
     return redirect("../signin/")
 
-''' displays the top 10 players of hide to survive'''
+''' displays the top 10 players of hide to survive '''
 def leaderboard(request):
     if 'login' in request.session:
         if 'error' in request.session:
@@ -45,7 +45,10 @@ def leaderboard(request):
             del request.session['blockerror']
     return redirect("../../signin/")
 
-'''shop for items with points won , deprecated until further notice following realization that we can raise serious money switching to this into an nft marketplace'''
+''' shop for items with points won , 
+    deprecated until further notice following 
+    realization that we can raise serious money 
+    switching to this into an nft marketplace '''
 def shop(request):
     if 'login' in request.session:
         if 'error' in request.session:
@@ -68,7 +71,7 @@ def shop(request):
             del request.session['blockerror']
     return redirect("../../signin/")
 
-''' shows up the profile page that contains all the information of user'''
+''' shows up the profile page that contains all the information of user '''
 def profile(request):
     if 'login' in request.session:
 
@@ -97,7 +100,7 @@ def profile(request):
             del request.session['blockerror']
     return redirect("../../signin/")
 
-'''delete session data to log users out and then redirects to welcome page'''
+''' delete session data to log users out and then redirects to welcome page '''
 def logout(request):
     request.session.flush()
     return redirect("/")
