@@ -42,6 +42,23 @@
     <script>
       const error = JSON.parse(document.getElementById('error_message').textContent);
       document.getElementById('error').innerText = error;
+
+      document.getElementById('form').onsubmit = function() {
+        return isValidForm();
+      };
+
+      function isValidForm() {
+        let code = document.getElementById('lobby-code').value;
+
+        let isnum = /^\d+$/.test(code)
+
+        if (isnum == false) {
+          document.getElementById('error').innerText = "Lobby code must be digits";
+        }
+
+        return isnum;
+      }
+
     </script>
     <center>
       <div>
