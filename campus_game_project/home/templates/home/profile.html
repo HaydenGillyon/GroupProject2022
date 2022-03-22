@@ -7,25 +7,25 @@
 {{ points|json_script:"points" }}
 <div class="jumbotron container-fluid" style="margin:auto;width:90%;text-align:center">
   <p class="lead" style="text-align:center"></p>
-    <br><br>
+    <br><br><br>
     <img alt="Profile" style="width:200px" src="{%static profile %}">
-    <br>
-    <br>
+    <br><br>
     <h4 style="font-size:300%">{% if user %}{{user}}{% endif %}</h4>
     <br>
-    <br><br>
-    <p>Email: {% if email %}{{email}}{%endif%}</p>
-    <p>Points: {{points}}</p><br>
+    <p style="font-size:200%">Email: {% if email %}{{email}}{%endif%}</p>
+    <p style="font-size:200%">Points: {{points}}</p><br>
 
 
     <h5>Change Profile Picture</h5>
 
     <div id="profile-buttons">
-      <input alt="Human 1" id="home/human1.png" class="profile-image" type="image" onclick="set_avatar('home/human1.png')" src="{% static 'home/Human1.png' %}">
-      <input alt="Zombie 1" id="home/zombie1.png" class="profile-image" type="image" onclick="set_avatar('home/zombie1.png')" src="{% static 'home/Zombie1.png' %}">
-      <input alt="Human 2" id="home/human2.png" class="profile-image" type="image" onclick="set_avatar('home/human2.png')" src="{% static 'home/Human2.png' %}">
-      <input alt="Zombie 2" id="home/zombie2.png" class="profile-image" type="image" onclick="set_avatar('home/zombie2.png')" src="{% static 'home/Zombie2.png' %}">
+      <input alt="Human 1" id="home/human1.png" class="profile-image" type="image" onclick="set_avatar('home/human1.png')" src="{% static 'home/human1.png' %}">
+      <input alt="Zombie 1" id="home/zombie1.png" class="profile-image" type="image" onclick="set_avatar('home/zombie1.png')" src="{% static 'home/zombie1.png' %}">
+      <input alt="Human 2" id="home/human2.png" class="profile-image" type="image" onclick="set_avatar('home/human2.png')" src="{% static 'home/human2.png' %}">
+      <input alt="Zombie 2" id="home/zombie2.png" class="profile-image" type="image" onclick="set_avatar('home/zombie2.png')" src="{% static 'home/zombie2.png' %}">
       <br>
+      <input alt="Sans" id="home/human3.png" class="profile-image" type="image" onclick="set_avatar('home/human3.png')" src="{% static 'home/human3.png'%}">
+      <input alt="Sans" id="home/zombie3.png" class="profile-image" type="image" onclick="set_avatar('home/zombie3.png')" src="{% static 'home/zombie3.png'%}">
       <input alt="Sans" id="home/sans_head.png" class="profile-image" type="image" onclick="set_avatar('home/sans_head.png')" src="{% static 'home/sans_head.png'%}">
     </div>
 
@@ -64,13 +64,35 @@
       if (points < 400){
         document.getElementById('error').innerText = "You need 400 points for this avatar";
         return;
+      } else{
+        document.getElementById('error').innerText = " ";
+      }
+    }
+
+    if (avatar == "home/human3.png"){
+      if (points < 800){
+        document.getElementById('error').innerText = "You need 800 points for this avatar";
+        return;
+      } else{
+        document.getElementById('error').innerText = " ";
+      }
+    }
+
+    if (avatar == "home/zombie3.png"){
+      if (points < 1400){
+        document.getElementById('error').innerText = "You need 1400 points for this avatar";
+        return;
+      } else{
+        document.getElementById('error').innerText = " ";
       }
     }
 
     if (avatar == "home/sans_head.png"){
-      if (points < 800){
-        document.getElementById('error').innerText = "You need 800 points for this avatar";
+      if (points < 2000){
+        document.getElementById('error').innerText = "You need more determination to use this avatar";
         return;
+      } else{
+        document.getElementById('error').innerText = "Choosing this avatar fills you with determination ";
       }
     }
 
