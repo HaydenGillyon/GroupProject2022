@@ -5,6 +5,7 @@ import math
 from asgiref.sync import async_to_sync
 from channels.generic.websocket import WebsocketConsumer
 from game.models import Game, Player
+from welcome.models import User
 from random import randint
 
 
@@ -261,24 +262,19 @@ class GameConsumer(WebsocketConsumer):
         g = Game.objects.get(lobby_code=self.lobby_code)
         g.winner = result
         # Checks if player has won or lost and sends points to player
-        for x in Player.objects.filter(game=g):
-            user = x.user
-            if x.seeker is True:
-                player_team = 'seeker'
-                if result == player_team:
-                    user.points += 100
-                    user.save()
-                else:
-                    user.points += 20
-                    user.save()
-            else:
-                player_team = 'hider'
-                if result == player_team:
-                    user.points += 100
-                    user.save()
-                else:
-                    user.points += 20
-                    user.save()
+        user = User.objects.get(email = self.scope['session']['email'])
+        player = Player.objects.get(game=g, user=user)
+        if player.seeker:
+            team = "seeker"
+        else:
+            team = "hider"
+
+        if result == team:
+            user.points += 100
+            user.save()
+        else:
+            user.points += 20
+            user.save()
         g.save()
         self.send(text_data=json.dumps({
                 'msg_type': 'end',
