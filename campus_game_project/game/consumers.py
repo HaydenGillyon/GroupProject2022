@@ -262,7 +262,7 @@ class GameConsumer(WebsocketConsumer):
         g = Game.objects.get(lobby_code=self.lobby_code)
         g.winner = result
         # Checks if player has won or lost and sends points to player
-        user = User.objects.get(email = self.scope['session']['email'])
+        user = User.objects.get(email=self.scope['session']['email'])
         player = Player.objects.get(game=g, user=user)
         if player.seeker:
             team = "seeker"
