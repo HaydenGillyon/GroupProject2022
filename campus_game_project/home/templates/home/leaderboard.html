@@ -18,8 +18,8 @@
       <tbody>
         {% for k in data %}
             <tr>
-                <td style="width:10%"><img src="{{k.profile}}"></td>
-                <td style="width:30%">{{k.name}}</td>
+                <td style="width:20%;text-align:right;padding:0.2%"><img src="{%static k.profile_image_url %}" style="height:auto;width:40%"></td>
+                <td style="width:40%">{{k.name}}</td>
                 <td>{{k.points}}</td>                  
             </tr>
         {% endfor %}

@@ -5,33 +5,36 @@ table {
 }
 
 thead {
-    font-size: larger;
+    font-size: x-large;
     color: orange;
     background-color: #14141f;
+    height: 50px;
 }
 
 tbody{
+    font-size: xx-large;
     text-align: center;
     color: black;
     background-color: wheat;
-    padding: 2px;
+    font-weight: 500;
+    font-family: 'Franklin Gothic Medium';
 }
 
 table tr:first-child td{
     background-color: gold;
     color: #262673;
-    font-weight: 700;
+    font-weight: 800;
 }
 
 table tr:nth-child(2) td{
     background-color: silver;
     color: #262673;
-    font-weight: 600;
+    font-weight: 700;
 }
 
 table tr:nth-child(3) td{
     background-color: #CD7F32;
     color: #262673;
-    font-weight: 500;
+    font-weight: 600;
 }
 
