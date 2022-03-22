@@ -21,10 +21,10 @@
     <h5>Change Profile Picture</h5>
 
     <div id="profile-buttons">
-      <input alt="Human 1" id="home/Human1.png" class="profile-image" type="image" onclick="set_avatar('home/Human1.png')" src="{% static 'home/Human1.png' %}">
-      <input alt="Zombie 1" id="home/Zombie1.png" class="profile-image" type="image" onclick="set_avatar('home/Zombie1.png')" src="{% static 'home/Zombie1.png' %}">
-      <input alt="Human 2" id="home/Human2.png" class="profile-image" type="image" onclick="set_avatar('home/Human2.png')" src="{% static 'home/Human2.png' %}">
-      <input alt="Zombie 2" id="home/Zombie2.png" class="profile-image" type="image" onclick="set_avatar('home/Zombie2.png')" src="{% static 'home/Zombie2.png' %}">
+      <input alt="Human 1" id="home/human1.png" class="profile-image" type="image" onclick="set_avatar('home/human1.png')" src="{% static 'home/Human1.png' %}">
+      <input alt="Zombie 1" id="home/zombie1.png" class="profile-image" type="image" onclick="set_avatar('home/zombie1.png')" src="{% static 'home/Zombie1.png' %}">
+      <input alt="Human 2" id="home/human2.png" class="profile-image" type="image" onclick="set_avatar('home/human2.png')" src="{% static 'home/Human2.png' %}">
+      <input alt="Zombie 2" id="home/zombie2.png" class="profile-image" type="image" onclick="set_avatar('home/zombie2.png')" src="{% static 'home/Zombie2.png' %}">
       <br>
       <input alt="Sans" id="home/sans_head.png" class="profile-image" type="image" onclick="set_avatar('home/sans_head.png')" src="{% static 'home/sans_head.png'%}">
     </div>
@@ -47,11 +47,11 @@
   document.getElementById('selected-profile-pic').value = profile;
 
   function set_avatar(avatar) {
-    if (avatar == "home/Human1.png" || avatar == "home/Zombie1.png"){
+    if (avatar == "home/human1.png" || avatar == "home/zombie1.png"){
       document.getElementById('error').innerText = " ";
     }
 
-    if (avatar == "home/Human2.png"){
+    if (avatar == "home/human2.png"){
       if (points < 200){
         document.getElementById('error').innerText = "You need 200 points for this avatar";
         return;
@@ -60,7 +60,7 @@
       }
     }
 
-    if (avatar == "home/Zombie2.png"){
+    if (avatar == "home/zombie2.png"){
       if (points < 400){
         document.getElementById('error').innerText = "You need 400 points for this avatar";
         return;
