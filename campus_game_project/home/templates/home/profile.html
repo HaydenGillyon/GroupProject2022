@@ -5,11 +5,15 @@
 <div class="jumbotron container-fluid" style="margin:auto;width:90%;text-align:center">
   <p class="lead" style="text-align:center"></p>
     <br>
-    <img alt="Zombie" style="width:200px" src="{% static 'home/zombie1.png' %}">
-    <br><br>
+    <img alt="Profile" style="width:200px" src="{%static profile %}">
+    <br>
+    <br>
     <h4 style="font-size:300%">{% if user %}{{user}}{% endif %}</h4>
-    <br><br>
+    <br>
+    <button type="" onclick="change_avatar()">Change Avatar</button>
+    <br><br><br>
     <p>Email: {% if email %}{{email}}{%endif%}</p>
     <p>Points: {{points}}</p>
-</div>
+    </div>
 {% endblock %}
+
