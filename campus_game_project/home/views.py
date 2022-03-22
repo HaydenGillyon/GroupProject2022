@@ -71,11 +71,15 @@ def shop(request):
 
 def profile(request):
     if 'login' in request.session:
+
         if 'error' in request.session:
             messages.error(request, 'Invalid password!')
             del request.session['error']
         email = request.session['email']
         user_det = User.objects.get(email=email)
+        if request.POST:
+            user_det.profile_image_url = request.POST['profile_pic']
+            user_det.save()
         context = {
             'user': user_det.name,
             'email': user_det.email,

@@ -108,7 +108,8 @@ def running(request, lobby_code):
         'seeking_time': game.seeking_time,
         'lobby_longitude': game.lobby_longitude,
         'lobby_latitude': game.lobby_latitude,
-        'radius': game.radius
+        'radius': game.radius,
+        'profile_pic': player.user.profile_image_url,
     }
 
     if (not player.seeker) and (player.hider_code is None):
