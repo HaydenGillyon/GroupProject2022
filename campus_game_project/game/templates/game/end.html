@@ -33,8 +33,8 @@
                     document.getElementById('player-msg').innerText = "Congratulations!"
                 } else {
                     document.getElementById('player-msg').innerText = "Try again next time..."
-                    document.getElementById('player-msg').style.color = "#b30000"
-                    document.getElementById('winner').style.color = "#b30000"
+                    document.getElementById('player-msg').style.color = "#e60000"
+                    document.getElementById('winner').style.color = "#e60000"
                 }
                 break;
             case 'hiders':
@@ -44,10 +44,12 @@
                 document.getElementById('imggg').src = src + srcc
                 if (player_type == 'hiding!'){
                     document.getElementById('player-msg').innerText = "Congratulations!"
+                    document.getElementById('player-msg').style.color = "#ffbf00"
+                    document.getElementById('winner').style.color = "#ffbf00"
                 } else {
                     document.getElementById('player-msg').innerText = "Try again next time..."
-                    document.getElementById('player-msg').style.color = "#b30000"
-                    document.getElementById('winner').style.color = "#b30000"
+                    document.getElementById('player-msg').style.color = "#e60000"
+                    document.getElementById('winner').style.color = "#e60000"
                 }
                 break;
         }
