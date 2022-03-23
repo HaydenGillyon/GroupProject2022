@@ -106,7 +106,6 @@ class PlayerConsumer(WebsocketConsumer):
             }
         )
 
-
     def disconnect(self, close_code):
         """Runs whenever a user leaves a specific lobby through any means. Removes the socket
         from the group and the user from the database the database if the user isn't refreshing.
@@ -148,7 +147,6 @@ class PlayerConsumer(WebsocketConsumer):
             self.lobby_code,
             self.channel_name
         )
-
 
     def receive(self, text_data):
         """Whenever the websocket receives a message of any kind from the channel layer,
@@ -215,7 +213,6 @@ class PlayerConsumer(WebsocketConsumer):
                 }
             )
 
-
     def lobby_event(self, event):
         """Sends a message to all the websockets in the channel layer when
         a new player joins or a player leaves. Tells the webpage to remove the
@@ -238,7 +235,6 @@ class PlayerConsumer(WebsocketConsumer):
             'username': username,
             'players': players
         }))
-
 
     def ready_event(self, event):
         """Sends a message to all the websockets in the channel layer when
@@ -263,7 +259,6 @@ class PlayerConsumer(WebsocketConsumer):
             'ready_user': ready_user,
             'ready': ready
         }))
-
 
     def start_game(self, event):
         """Sends a message to all websockets in the channel layer to tell them
@@ -324,7 +319,6 @@ class GameConsumer(WebsocketConsumer):
             Checks if all hiders have been found.
     """
 
-
     def connect(self):
         """Whenever a user connects to a running game, this function will run and complete
         the setup for the websocket. It adds the specific socket to the group allowing it to
@@ -340,7 +334,6 @@ class GameConsumer(WebsocketConsumer):
         )
 
         self.accept()
-
 
     def disconnect(self, close_code):
         """Runs whenever a user leaves a game through any means. Removes the socket from the group
@@ -366,7 +359,6 @@ class GameConsumer(WebsocketConsumer):
             g.save()
         except Game.DoesNotExist:
             pass
-
 
     def receive(self, text_data):
         """Whenever the websocket receives a message of any kind from the channel layer,
@@ -433,7 +425,6 @@ class GameConsumer(WebsocketConsumer):
                 self.send(text_data=json.dumps({
                     'msg_type': 'inbounds_alert',
                 }))
-
 
     def game_finish(self, event):
         """Updates the database depending on which team wins, doing things such as
@@ -521,7 +512,6 @@ class GameConsumer(WebsocketConsumer):
                 matched.save()
                 self.check_found_hiders()
                 return "You found " + matched.username
-
 
     def check_found_hiders(self):
         """Checks if there are any unfound hiders. If all hiders have been found,
