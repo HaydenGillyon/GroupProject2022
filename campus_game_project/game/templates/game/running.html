@@ -53,7 +53,7 @@
             <button style="font-size: larger;" id="do-attempt">Try Code</button>
             <h2 id="code-result"></h2>
         {% endif %}
-        <h2 id="warningbox-outbounds" style="font-color:black"></h2>
+        <h2 id="warningbox-outbounds" style="color:black"></h2>
         <div id="map"></div>
 
         {{ lobby_code|json_script:"lobby-code" }}
@@ -179,7 +179,7 @@
 
                         console.log(profile)
 
-                        let pointSymbol = pointSymbol = {
+                        let pointSymbol = {
                             type: "picture-marker",
                             url: "{% static 'game/Human1.png' %}", 
                             width: "32px",
