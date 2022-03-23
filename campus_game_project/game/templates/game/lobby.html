@@ -39,7 +39,7 @@
     <script src="https://js.arcgis.com/4.22/"></script>
     <div id="wrapper" class="container-fluid text-center" >
         <div id="content" class="container-fluid" >
-            <textarea id="log" cols="50" rows="20" style="resize: none; background-color: #292B2E; color: #F47373;"></textarea>
+            <textarea id="log" cols="50" rows="20" style="resize: none; background-color: #292B2E; color: #F47373;" readonly></textarea>
             <br>
             <br>
             <input id="ready" type="button" value="Ready" class="btn btn-dark input-center">
@@ -47,10 +47,10 @@
             <br>
             <div id="map" class="container-fluid"></div>
             Players:
-            <ul id="players">
+            <ul id="players" style="text-align:center">
             </ul>
         </div>
-        <div id="settings">
+        <div id="settings" style="position:absolute;right:10%">
             <h1> Settings</h1><br>
             <label id="hiding-time-label">Hiding Time:</label><br>
             <label id="seeking-time-label">Seeking Time:</label><br>

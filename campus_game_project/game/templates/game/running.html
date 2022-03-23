@@ -23,13 +23,15 @@
         <style>
             #map {
                 position: absolute;
-                height: 25%;
-                width: 25%;
+                left: 15%;
+                top: 40%;
+                height: 50%;
+                width: 70%;
             }
         </style>
     </head>
 
-    <body style="background-color:#363a3e; color:#ffffff">
+    <body style="background-color:#363a3e; color:#ffffff; text-align:center">
         <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top main-navigation">
             <div class="container-fluid">
               <a href="{% url 'home:home' %}" class="font-monospace navbar-brand order-lg-1 mr-auto mr-lg-3 ml-3 ml-lg-0">Hide and Seek</a>
@@ -40,17 +42,18 @@
             </div>
           </nav>
         <script src="https://js.arcgis.com/4.22/"></script>
-        <h1 id="content"></h1>
-        <h1 id="time" style="color: crimson;"></h1>
-        <h2 id="player-msg"></h2>
-        <h2 id="hcode"></h2>
+        <h1 id="content" style="text-align:center"></h1>
+        <h1 id="time" style="color: crimson; text-align:center"></h1>
+        <h2 id="player-msg" style="text-align:center"></h2>
+        <br>
+        <h2 id="hcode" style="text-align:center"></h2>
         {% if not hider_code %}
             <h2>Enter a Hider Code:</h2>
             <input style="border: 1px solid black; font-size: larger;" type="text" id="code-attempt-box">
             <button style="font-size: larger;" id="do-attempt">Try Code</button>
             <h2 id="code-result"></h2>
         {% endif %}
-        <h2 id="warningbox-outbounds"></h2>
+        <h2 id="warningbox-outbounds" style="font-color:black"></h2>
         <div id="map"></div>
 
         {{ lobby_code|json_script:"lobby-code" }}
