@@ -44,6 +44,14 @@ class WelcomeTestCase(TestCase):
         response = self.client.get('')
         self.assertEqual(response.status_code, 200)
 
+    def test_welcome_redirect(self):
+        session = self.client.session
+        session['login'] = True
+        session.save()
+        response = self.client.get('')
+        self.assertEqual(response.status_code, 302)
+        self.client.session.flush()
+
 
 class SignupTestCase(TestCase):
 
