@@ -11,11 +11,11 @@ Functions:
 """
 from django.shortcuts import redirect, render
 from welcome.models import User
-from django.contrib import messages
 
 
 def home(request):
     """Runs when a user goes to the home page, the main page of the app.
+    Allows the user to go to the create or join pages.
 
 
     Parameters:
@@ -48,7 +48,8 @@ def home(request):
 
 
 def leaderboard(request):
-    """Runs when a user goes to the leaderboard page.
+    """Runs when a user goes to the leaderboard page. Displays the top players
+    in order based on their points gained from playing games.
 
 
     Parameters:
@@ -76,7 +77,9 @@ def leaderboard(request):
 
 
 def profile(request):
-    """Runs when a user goes to the profile page.
+    """Runs when a user goes to the profile page. Displays all necessary information about the user,
+    including profile picture, email, username, points. Also allows the user to change their profile
+    picture depending on the number of points they've obtained.
 
 
     Parameters:

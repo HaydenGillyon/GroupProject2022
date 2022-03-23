@@ -135,19 +135,20 @@
         </ul>
       </li>
     </ul>
-    <!-- 
-      <form method="POST" action="" name="exit-legal" id="exit-legal">
-      {% csrf_token%}
-      <input type="submit" value="Return" class ="btn btn-dark btn-primary btn-large text-center"/>
-    </form> 
-    -->  
   <input type="button" class="btn btn-dark btn-large btn-block" id="exit" value="Return"/>
   </div>
   </centre>
-<script> 
+<script>
+  // This script defines the behaviour for the return button.
+
   const long = JSON.parse(document.getElementById('origin').textContent);
 
-  document.querySelector('#exit').onclick = function(e) {
+  /**
+   * This function runs on the click of the return button. It changes the window location
+   * depending on what page you came from. Eg. if you went to legal from the signup page,
+   * then return send you to the signup page.
+   */
+  document.querySelector('#exit').onclick = function() {
 
     if (long == "welcome") {
       window.location = "../";
