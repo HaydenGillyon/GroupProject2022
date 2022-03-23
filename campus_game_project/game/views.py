@@ -280,7 +280,7 @@ def error(request):
 
 
     Returns:
-    
+
         return : HttpResponse
             The rendered error html page.
     """
