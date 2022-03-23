@@ -32,7 +32,7 @@ def create(request):
 
 
     Parameters:
-    
+
         request : ASGIRequest
             The HTTP request.
 
@@ -62,7 +62,7 @@ def join(request):
         request : ASGIRequest
             The HTTP request.
 
-    
+
     Returns:
 
         return : HttpResponse
@@ -90,7 +90,7 @@ def lobby(request, lobby_code):
         lobby_code : int
             The code for the game you are trying to join.
 
-        
+
     Returns:
 
         return : HttpResponse
@@ -160,7 +160,7 @@ def lobby(request, lobby_code):
 def running(request, lobby_code):
     """Sends the player from the lobby to the main game page when everyone is ready.
     Collects all the necessary data for the running of the game and passes it to the template.
-    
+
 
     Parameters:
 
@@ -175,7 +175,7 @@ def running(request, lobby_code):
 
         return : HttpResponse
             Either the lobby page.
-        
+
         return : HttpResponseRedirect
             Returns a redirect to the signin page if the user isn't logged in or the homepage if there's an error.
     """
@@ -259,7 +259,7 @@ def end(request, lobby_code):
             g.delete()
 
     # If game has already been deleted
-    else:   
+    else:
         result = 'unknown'
 
     return render(request, 'game/end.html', {
@@ -278,7 +278,7 @@ def error(request):
         request : ASGIRequest
             The HTTP request.
 
-    
+
     Returns:
     
         return : HttpResponse
@@ -317,7 +317,7 @@ def validate_inputs(post):
 
 
     Returns:
-    
+
         return : tuple
             If it is invalid, returns a tuple containing the value FALSE and the error message.
 
@@ -443,7 +443,7 @@ def create_player(game, username, email):
 
 
     Parameters:
-    
+
         game : Game
             The game that the user is participating in.
 
