@@ -66,6 +66,19 @@ def signup(request):
             uname = escape(request.POST['uname'])
             email = escape(request.POST['email'])
             passw = request.POST['pass']
+            confirm = request.POST['pass1']
+
+            # Checks password matching confirm password
+            if passw != confirm:
+                return render(request, 'welcome/signup.html', {
+                    'error_message': "Password and confirm password don't match!",
+                })
+
+            if len(passw) < 8:
+                return render(request, 'welcome/signup.html', {
+                    'error_message': "Password must be at least 8 characters long!",
+                })
+
             hashpass = sha256(passw.encode()).hexdigest()
 
             # Checks if username is taken
