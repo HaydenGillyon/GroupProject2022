@@ -155,6 +155,7 @@ def lobby(request, lobby_code):
         'seeker_num': game.seeker_num,
         'lobby_longitude': game.lobby_longitude,
         'lobby_latitude': game.lobby_latitude,
+        'radius': game.radius,
     })
 
 

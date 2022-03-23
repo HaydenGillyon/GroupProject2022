@@ -39,7 +39,7 @@
     <script src="https://js.arcgis.com/4.22/"></script>
     <div id="wrapper" class="container-fluid text-center" >
         <div id="content" class="container-fluid" >
-            <textarea id="log" cols="50" rows="20" style="resize: none; background-color: #292B2E; color: #F47373;"></textarea>
+            <textarea id="log" cols="50" rows="20" style="resize: none; background-color: #292B2E; color: #F47373;" readonly></textarea>
             <br>
             <br>
             <input id="ready" type="button" value="Ready" class="btn btn-dark input-center">
@@ -47,10 +47,10 @@
             <br>
             <div id="map" class="container-fluid"></div>
             Players:
-            <ul id="players">
+            <ul id="players" style="text-align:center">
             </ul>
         </div>
-        <div id="settings">
+        <div id="settings" style="position:absolute;right:10%">
             <h1> Settings</h1><br>
             <label id="hiding-time-label">Hiding Time:</label><br>
             <label id="seeking-time-label">Seeking Time:</label><br>
@@ -64,6 +64,7 @@
     {{ seeker_num|json_script:"seeker-num" }}
     {{ lobby_longitude|json_script:"lobby-longitude"}}
     {{ lobby_latitude|json_script:"lobby-latitude"}}
+    {{ radius|json_script:"radius" }}
     <script>
         // This script handles all the connections and messages going to and from the websockets
 
@@ -74,6 +75,7 @@
         const seeker_num = JSON.parse(document.getElementById('seeker-num').textContent);
         const lobby_longitude = JSON.parse(document.getElementById('lobby-longitude').textContent);
         const lobby_latitude = JSON.parse(document.getElementById('lobby-latitude').textContent);
+        const radius = JSON.parse(document.getElementById('radius').textContent);
 
         document.getElementById('hiding-time-label').innerText += ' ' + hiding_time;
         document.getElementById('seeking-time-label').innerText += ' ' + seeking_time;
@@ -82,9 +84,15 @@
         document.title = code;
 
         // Establishes the websocket connection
+        const loc = window.location;
+        let ws_start = 'ws://';
+        if (loc.protocol == 'https:') {
+            // Security cannot be downgraded so use WebSocket Secure
+            ws_start = 'wss://'
+        }
         const lobbySocket = new WebSocket(
-            'ws://'
-            + window.location.host
+            ws_start
+            + loc.host
             + '/ws/game/'
             + code
             + '/'
@@ -192,7 +200,8 @@
           "esri/widgets/Locate",
 
           "esri/widgets/Track",
-          "esri/Graphic"
+          "esri/Graphic",
+          "esri/geometry/Circle"
 
         ], function(
             esriConfig,
@@ -201,7 +210,8 @@
             Locate,
 
             Track,
-            Graphic
+            Graphic,
+            Circle
 
         ) {
 
