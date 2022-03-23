@@ -40,12 +40,19 @@
 
 </div>
 <script>
+  // This script allows the user to change their profile picture from the profile page.
+
   const profile = JSON.parse(document.getElementById('profile').textContent);
   const points = parseInt(JSON.parse(document.getElementById('points').textContent));
 
   document.getElementById(profile).className = "selected-profile-image";
   document.getElementById('selected-profile-pic').value = profile;
 
+  /**
+   * The function checks if the user has enough points for the profile picture they are selecting
+   * and it returns an error message if not. If they do, it highlights the profile picture they have
+   * selected while dehighlighting the previous one. The then passes the pfp through the post request.
+   */
   function set_avatar(avatar) {
     if (avatar == "home/human1.png" || avatar == "home/zombie1.png"){
       document.getElementById('error').innerText = " ";
@@ -96,12 +103,15 @@
       }
     }
 
+    // Gets all profile picture elements
     let buttons = document.getElementById('profile-buttons').children;
 
+    // Dehighlights all elements
     for (var i = 0; i < buttons.length; i++) {
         buttons[i].className = "profile-image";
     }
 
+    // Highlights the selected element and makes it the hidden post value
     document.getElementById(avatar).className = "selected-profile-image";
     document.getElementById('selected-profile-pic').value = avatar;
   }
