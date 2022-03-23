@@ -3,11 +3,19 @@
 <head>
     <meta charset="utf-8"/>
     <title>End</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'game/end.css' %}">
 </head>
 <body>
-    <h1 id="winner"></h1>
-    <h2 id="player-msg"></h2>
-    <input id="return" type="button" value="return">
+    <div class="container">
+        <h1 id="winner"></h1>
+        <h2 id="player-msg"></h2>
+        <img id="imggg" alt="imgg" class="imggg" src="{%static 'game/zombie-dance.gif'%}">
+        <br>
+        <div class="center">
+            <input id="return" class="return" type="button" value="Return">
+        </div>
+    </div>
     {{ lobby_code|json_script:"lobby-code" }}
     {{ result|json_script:"result" }}
     {{ seeker|json_script:"seeker"}}
@@ -24,19 +32,34 @@
         // Checks the data to display the page.
         switch(result){
             case 'seeker':
-                document.getElementById('winner').innerText = "Zombies Win!";
+                document.getElementById('winner').innerText = "Zombies Win!"
                 if (player_type == 'seeking!'){
-                    document.getElementById('player-msg').innerText = "You Win! Congratulations!"
+                    document.getElementById('player-msg').innerText = "Congratulations!"
                 } else {
-                    document.getElementById('player-msg').innerText = "You Lose... Try again next time..."
+                    document.getElementById('player-msg').innerText = "Try again next time..."
+                    document.getElementById('player-msg').style.color = "#e60000"
+                    document.getElementById('winner').style.color = "#e60000"
+                    var src = "{% get_static_prefix %}"
+                    var srcc = "game/villager-lose.gif" 
+                    document.getElementById('imggg').src = src + srcc
                 }
                 break;
             case 'hiders':
-                document.getElementById('winner').innerText = "Humans Win!";
+                document.getElementById('winner').innerText = "Humans Win!"
                 if (player_type == 'hiding!'){
-                    document.getElementById('player-msg').innerText = "You Win! Congratulations!"
+                    document.getElementById('player-msg').innerText = "Congratulations!"
+                    document.getElementById('player-msg').style.color = "#ffbf00"
+                    document.getElementById('winner').style.color = "#ffbf00"
+                    var src = "{% get_static_prefix %}"
+                    var srcc = "game/villager-win.gif" 
+                    document.getElementById('imggg').src = src + srcc
                 } else {
-                    document.getElementById('player-msg').innerText = "You Lose... Try again next time..."
+                    document.getElementById('player-msg').innerText = "Try again next time..."
+                    document.getElementById('player-msg').style.color = "#e60000"
+                    document.getElementById('winner').style.color = "#e60000"
+                    var src = "{% get_static_prefix %}"
+                    var srcc = "game/zombie-lose.gif" 
+                    document.getElementById('imggg').src = src + srcc
                 }
                 break;
         }
