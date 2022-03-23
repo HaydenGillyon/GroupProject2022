@@ -81,7 +81,7 @@
           </form>
         </div>
     </div>
-    <div id="error" style="color: red"></div>
+    <div id="error" style="color: red; text-align: center; font-family: monospace;"></div>
     <script>
       const code = JSON.parse(document.getElementById('lobby-code').textContent);
       document.getElementById('form').action = "/game/" + code + "/";
