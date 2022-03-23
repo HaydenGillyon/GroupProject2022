@@ -38,15 +38,17 @@
     
     <script src="https://js.arcgis.com/4.22/"></script>
     <div id="wrapper" class="container-fluid text-center" >
-        <div id="code-display"></div>
+        <h2 id="code-display"></h2>
+        <br>
         <div id="content" class="container-fluid" >
-            <textarea id="log" cols="50" rows="20" style="resize: none; background-color: #292B2E; color: #F47373;" readonly></textarea>
+            <textarea id="log" cols="50" rows="15" style="resize: none; background-color: #292B2E; color: #F47373;" readonly></textarea>
+            <br>
+            <div id="map" class="container-fluid"></div>
             <br>
             <br>
             <input id="ready" type="button" value="Ready" class="btn btn-dark input-center">
             <br>
             <br>
-            <div id="map" class="container-fluid"></div>
             Players:
             <ul id="players" style="text-align:center">
             </ul>
@@ -83,7 +85,7 @@
         document.getElementById('seeker-num-label').innerText += ' ' + seeker_num;
 
         document.title = code;
-        document.getElementById('code-display').innerText = code;
+        document.getElementById('code-display').innerText = ("Join Code: " + code);
 
         // Establishes the websocket connection
         const loc = window.location;
