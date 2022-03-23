@@ -1,16 +1,21 @@
 <!DOCTYPE html>
 {% extends "welcome/layout.html" %}
 {% load static %}
+<link rel="stylesheet" href="{% static 'welcome/app.css' %}">
 {% block content %}
 {{ error_message|json_script:"error_message" }}
 <div class="text-center font-monospace">
 <br>
 <form method="POST" action="" name="signin-form" id="signin-form">
 {% csrf_token%}
-  <label for="email">Enter Email</label><br>
-  <input type="email" id="email" name="email" required pattern=".+@exeter.ac.uk"><br>
-  <label for="password">Enter Password</label><br>
-  <input type="password" id="pass" name="pass"><br><br>
+  <label class="label" for="email">Enter Email:</label>
+  <input class="input" type="email" placeholder="Email" id="email" name="email" required pattern=".+@exeter.ac.uk">
+  <br>
+  <br>
+  <label class="label" for="password">Enter Password:</label>
+  <input class="input" type="password" placeholder="Password" id="pass" name="pass">
+  <br>
+  <br>
   <input type="submit" value="Sign in" class ="btn btn-dark btn-primary btn-large text-center">
 </form>
 <div id="error" style="color: red"></div>

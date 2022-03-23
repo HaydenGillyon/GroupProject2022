@@ -65,6 +65,8 @@
     {{ lobby_longitude|json_script:"lobby-longitude"}}
     {{ lobby_latitude|json_script:"lobby-latitude"}}
     <script>
+        // This script handles all the connections and messages going to and from the websockets
+
         const code = JSON.parse(document.getElementById('lobby-code').textContent);
         const username = JSON.parse(document.getElementById('username').textContent);
         const hiding_time = JSON.parse(document.getElementById('hiding-time').textContent);
@@ -77,7 +79,6 @@
         document.getElementById('seeking-time-label').innerText += ' ' + seeking_time;
         document.getElementById('seeker-num-label').innerText += ' ' + seeker_num;
 
-
         document.title = code;
 
         // Establishes the websocket connection
@@ -89,10 +90,15 @@
             + '/'
         );
 
-        // When the websocket receives a message
+        /**
+         * When the browser websocket receives a message.
+         *
+         * @param {object} e Contains the data passed from the backend websocket handling.
+         */
         lobbySocket.onmessage = function(e) {
             const data = JSON.parse(e.data);
 
+            // Changes the behaviour
             switch(data.msg_type) {
                 case "join":
                     var list = document.getElementById('players');
@@ -145,6 +151,7 @@
                     break;
 
                 case "start":
+                    // If all users are ready then the games starts
                     lobbySocket.send(JSON.stringify({
                         'msg_type': "playing",
                     }))
@@ -160,6 +167,7 @@
 
         // Send a message to the socket when the player is ready
         document.querySelector('#ready').onclick = function(e) {
+            // Promps the user for location tracking when they click ready. Only works if they allow it.
             navigator.geolocation.getCurrentPosition((position) => {
                 ready = document.getElementById('ready').value
                 lobbySocket.send(JSON.stringify({
@@ -172,6 +180,8 @@
         };
     </script>
     <script>
+        // This script loads the map onto the screen.
+
         const long = JSON.parse(document.getElementById('lobby-longitude').textContent);
         const lat = JSON.parse(document.getElementById('lobby-latitude').textContent);
 
@@ -243,6 +253,12 @@
 
         });
 
+        /**
+         * Centres the map on the user location.
+         *
+         * @param {number} long The user longitude.
+         * @param {number} lat  The user latitutde.
+         */
         function track(long, lat) {
             window.view.goTo({
             center: [long, lat],

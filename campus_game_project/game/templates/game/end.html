@@ -37,12 +37,16 @@
     {{ result|json_script:"result" }}
     {{ seeker|json_script:"seeker"}}
     <script>
+        // This script uses the django context variables to dynamically change the end page.
+        // The end page displayed depends on your team and which team won.
+
         const code = JSON.parse(document.getElementById('lobby-code').textContent);
         const result = JSON.parse(document.getElementById('result').textContent);
         const seeker = JSON.parse(document.getElementById('seeker').textContent);
         const player_type = seeker ? 'seeking!' : 'hiding!';
         document.title = code;
 
+        // Checks the data to display the page.
         switch(result){
             case 'seeker':
                 document.getElementById('winner').innerText = "Zombies Win!"
@@ -77,6 +81,7 @@
                 break;
         }
 
+        // Binds the return button to go to home.
         document.querySelector('#return').onclick = function(e) {
             window.location= "../../../home/";
         };
