@@ -5,17 +5,26 @@
 {{ error_message|json_script:"error_message" }}
 <div class="text-center font-monospace">
 <br>
+<br>
 <h2>Sign up</h2>
+<br>
 <form method="POST" action="" name="signup-form" id="signup-form">
 {% csrf_token%} 
-    <label for="name"> Username</label><br>
-    <input type="text" name="uname" id="uname" placeholder="xyzq" required><br>
-    <label for="email">Email</label><br>
-    <input type="email" name="email" id="email" placeholder="xyzq@exeter.ac.uk" required pattern=".+@exeter.ac.uk"/><br>
-    <label for="password">Password</label><br>
-    <input type="password" name="pass" id="pass" placeholder="**********" required><br>
-    <label for="pass1">Confirm Password</label><br>
-    <input type="password" name="pass1" id="pass1" placeholder="**********" required><br>
+    <label class="label" for="name"> Enter Username:</label>
+    <input class="input" type="text" name="uname" id="uname" placeholder="Username" required>
+    <br>
+    <br>
+    <label class="label" for="email">Enter Email:</label>
+    <input class="input" type="email" name="email" id="email" placeholder="xyz@exeter.ac.uk" required pattern=".+@exeter.ac.uk"/>
+    <br>
+    <br>
+    <label class="label" for="password">Enter Password:</label>
+    <input class="input" type="password" name="pass" id="pass" placeholder="**********" required>
+    <br>
+    <br>
+    <label class="label" for="pass1">Confirm Password:</label>
+    <input class="input" type="password" name="pass1" id="pass1" placeholder="**********" required>
+    <br>
     <br>
     <input type="submit" class="btn btn-dark btn-primary btn-large text-center" value="Signup"><br>
     <br>

@@ -25,8 +25,9 @@
         <div class="overlay" d-flex d-lg-none></div>
       </div>
     </nav>
-
     <script>
+      // This script gets the user's location using the inbuilt functions.
+
       current_position = {
         latitude: 0.0,
         longitude: 0.0
@@ -34,16 +35,31 @@
       navigator.geolocation.getCurrentPosition(showPosition);
       navigator.geolocation.watchPosition(showPosition);
 
+      /**
+       * Puts the latitude and longitude of the user in the form.
+       *
+       * @param {object} position The current position of the user.
+       */
       function showPosition(position) {
         showPositionLatitude(position.coords.latitude);
         showPositionLongitude(position.coords.longitude);
       }
 
+      /**
+       * Puts the current latitude in the form.
+       *
+       * @param {number} latitude The current latitude of the user.
+       */
       function showPositionLatitude(latitude) {
         current_position.latitude = latitude;
         document.getElementById("form").lobby_latitude.value = latitude;
       }
 
+      /**
+       * Puts the current longitude in the form.
+       *
+       * @param {number} longitude The current latitude of the user.
+       */
       function showPositionLongitude(longitude) {
         current_position.longitude = longitude;
         document.getElementById("form").lobby_longitude.value = longitude;
@@ -84,12 +100,12 @@
     </div>
     <div id="error" class="label" style="color: red;"></div>
     <script>
+      // This script loads the context data from django into the corresponding elements.
+  
       const code = JSON.parse(document.getElementById('lobby-code').textContent);
-      document.getElementById('form').action = "/game/" + code + "/";
-    </script>
-    <script>
       const error = JSON.parse(document.getElementById('error_message').textContent);
-    
+
+      document.getElementById('form').action = "/game/" + code + "/";
       document.getElementById('error').innerText = error;
     </script>
       <div class="center">

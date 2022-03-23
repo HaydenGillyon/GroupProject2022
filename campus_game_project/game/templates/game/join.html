@@ -39,13 +39,20 @@
     <br>
     <div id="error" style="color: red; text-align: center; font-family: monospace;"></div>
     <script>
+      // This script sanitises the input of the code button and dynamically updates the error message.
       const error = JSON.parse(document.getElementById('error_message').textContent);
+
       document.getElementById('error').innerText = error;
 
       document.getElementById('form').onsubmit = function() {
         return isValidForm();
       };
 
+      /**
+       * Checks if the code is a number, and returns a corresponding error.
+       *
+       * @return {boolean} True if it is a num, false if it isn't.
+       */
       function isValidForm() {
         let code = document.getElementById('lobby-code').value;
 
@@ -57,7 +64,6 @@
 
         return isnum;
       }
-
     </script>
       <div class="center">
         <img alt="Zombie" src="{%static 'game/movin_zomb.gif' %}" height="250">
