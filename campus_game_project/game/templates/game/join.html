@@ -44,6 +44,9 @@
 
       document.getElementById('error').innerText = error;
 
+      /**
+       * Runs when the user submits the form. Only allows the form to be submitted if the code is only integers.
+       */
       document.getElementById('form').onsubmit = function() {
         return isValidForm();
       };

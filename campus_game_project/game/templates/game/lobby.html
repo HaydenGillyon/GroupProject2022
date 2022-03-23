@@ -38,6 +38,7 @@
     
     <script src="https://js.arcgis.com/4.22/"></script>
     <div id="wrapper" class="container-fluid text-center" >
+        <div id="code-display"></div>
         <div id="content" class="container-fluid" >
             <textarea id="log" cols="50" rows="20" style="resize: none; background-color: #292B2E; color: #F47373;" readonly></textarea>
             <br>
@@ -82,6 +83,7 @@
         document.getElementById('seeker-num-label').innerText += ' ' + seeker_num;
 
         document.title = code;
+        document.getElementById('code-display').innerText = code;
 
         // Establishes the websocket connection
         const loc = window.location;
