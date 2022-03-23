@@ -3,9 +3,11 @@
 *.pyc
 __pycache__
 db.sqlite3
+campus_game_project/static/
 
 # Environment
 env/
+venv/
 
 # IDE
 .idea/

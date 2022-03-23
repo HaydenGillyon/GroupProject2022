@@ -2,7 +2,9 @@
 
 NOTE: Do not refresh pages while running a lobby or game. The application does not currently support this and it could lead to unexpected errors.
 
-### Follow the steps below to install and run:
+### You can either install and run the app locally, or deploy it to your choice of server for production use. Follow the steps below to install and run:
+
+# Local Deployment
 
 ## Install
 1. Make a python virtual environment in this folder by running this in your console of choice:
@@ -32,6 +34,34 @@ NOTE: Do not refresh pages while running a lobby or game. The application does n
 
 ## Usage
 Go to http://127.0.0.1:8000/.
-From here just explore, using create to start a game and join to join one.
+
+From here just create an account or sign in to an existing one, explore, and enjoy!
+
+NOTE: To test joining with multiple players, use different browsers to ensure sessions do not overwrite each other.
+
+# Production Deployment
+NOTE: These instructions assume a use of the Google App Engine standard environment on Google Cloud Platform.
+
+## Install
+1. Download, install, and initialise the gcloud CLI using the [tutorial](https://cloud.google.com/sdk/docs/install).
+
+2. Ensure instances of PostgreSQL and App Engine standard environment are set up correctly ([this tutorial is a good starting point](https://cloud.google.com/python/django/appengine)).
+
+3. Move into .\campus_game_project\campus_game_project
+
+4. Change the filename of the local settings.py to settings_local.py or remove the file for deployment.
+
+5. Change the filename of settings_deploy.py to settings.py. (This ensures the settings are correct for deploying to the cloud.)
+
+6. Move into .\campus_game_project\
+
+7. Deploy the app with the following command:
+
+        gcloud app deploy
+
+## Usage
+Go to https://hide-to-survive-app.nw.r.appspot.com/.
+
+From here just create an account or sign in to an existing one, explore, and enjoy!
 
 NOTE: To test joining with multiple players, use different browsers to ensure sessions do not overwrite each other.
