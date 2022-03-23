@@ -240,9 +240,15 @@
             document.title = code;
 
             // Establishes the websocket connection
+            const loc = window.location;
+            let ws_start = 'ws://';
+            if (loc.protocol == 'https:') {
+                // Security cannot be downgraded so use WebSocket Secure
+                ws_start = 'wss://'
+            }
             const lobbySocket = new WebSocket(
-                'ws://'
-                + window.location.host
+                ws_start
+                + loc.host
                 + '/ws/game/running/'
                 + code
                 + '/'
