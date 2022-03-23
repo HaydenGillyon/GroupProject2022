@@ -358,7 +358,7 @@ class GameConsumer(WebsocketConsumer):
             g.player_num -= 1
             g.save()
             if g.player_num == 0:
-                    g.delete()
+                g.delete()
         except Game.DoesNotExist:
             pass
 
