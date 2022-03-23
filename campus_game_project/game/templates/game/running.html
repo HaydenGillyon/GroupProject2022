@@ -50,6 +50,8 @@
         {{ radius|json_script:"radius" }}
         {{ profile_pic|json_script:"profile-pic" }}
         <script>
+            // This script displays the map with the radius and player drawn on it.
+
             const long = JSON.parse(document.getElementById('lobby-longitude').textContent);
             const lat = JSON.parse(document.getElementById('lobby-latitude').textContent);
             const radius = JSON.parse(document.getElementById('radius').textContent);
@@ -180,6 +182,12 @@
                 track(long, lat);
             });
 
+            /**
+             * Centres the map on the user location.
+             *
+             * @param {number} long The user longitude.
+             * @param {number} lat  The user latitutde.
+             */
             function track(long, lat) {
                 console.log(window.view);
                 window.view.goTo({
@@ -188,8 +196,9 @@
                 })
             }
         </script>
-
         <script>
+            // This scrips handles the websocket connection.
+
             const code = JSON.parse(document.getElementById('lobby-code').textContent);
             const username = JSON.parse(document.getElementById('username').textContent);
             const seeker = JSON.parse(document.getElementById('seeker').textContent);
@@ -203,6 +212,7 @@
             player_msg.innerText = username + ', you are ' + player_type;
             const warningbox_outbounds = document.getElementById('warningbox-outbounds');
 
+            // If the user is a hider, display their code.
             if (hider_code) {
                 hider_code_element = document.getElementById('hcode')
                 hider_code_element.innerText = 'Secret Hider Code: ' + hider_code;
@@ -222,6 +232,8 @@
             </script>
             {% if not hider_code %}
             <script>
+            // This script allows the seekers to enter hider codes.
+
             document.getElementById('do-attempt').onclick = function(e) {
                 let attempt_code = document.getElementById('code-attempt-box').value
                 lobbySocket.send(JSON.stringify({
@@ -233,11 +245,16 @@
             </script>
             {% endif %}
             <script>
-            // Game Timer
+            // This script handles the game timer and all the websocket messages.
+
             const time_left_text = document.getElementById('time');
             const hiding_duration = parseInt(JSON.parse(document.getElementById('hiding-time').textContent));
             const seeking_duration = parseInt(JSON.parse(document.getElementById('seeking-time').textContent));
             const total_duration = hiding_duration + seeking_duration;
+
+            /**
+             * Gets the current state of the game timer. Checks if hiding and seeking timers are over.
+             */
             (function checkTime() {
                 let time = Date.now() / 1000
                 let elapsed = time - start_time;
@@ -255,28 +272,35 @@
                 setTimeout(checkTime, 500);
             })();
 
+            /**
+             * When the browser websocket receives a message.
+             *
+             * @param {object} e Contains the data passed from the backend websocket handling.
+             */
             lobbySocket.onmessage = function(e) {
                 const data = JSON.parse(e.data);
 
                 switch(data.msg_type) {
                     case 'code_result':
+                        // A result from checking the hider code.
                         document.getElementById('code-result').innerText = data.result;
                         break;
                     case 'end':
+                        // If the game is over.
                         window.location= "../../end/" + code;
                         break;
                     case 'outbounds_alert':
-                        // Alert player they are out of bounds and will be kicked soon
+                        // Alert player they are out of bounds and will be kicked soon.
                         outboundsWarning(true);
                         current_position.outbounds_timestamp = current_position.timestamp;
                         break;
                     case 'inbounds_alert':
-                        // If player returns into the radius of the map
+                        // If player returns into the radius of the map.
                         outboundsWarning(false);
                         current_position.outbounds_timestamp = 0;
                         break;
                     case 'outbounds_kick':
-                        // If out of bounds for too long
+                        // If out of bounds for too long.
                         window.location="../../error/";
                         break;
                 }
@@ -296,6 +320,11 @@
                 navigator.geolocation.watchPosition(showPosition, positionError, {enableHighAccuracy : true});
             }
 
+            /**
+             * Gets the user's current position and sends it to the websocket.
+             *
+             * @param {object} position The user's current position in latitude and longitude.
+             */
             function showPosition(position) {
                 // Do not update position more than once every four seconds
                 if (position.timestamp - current_position.timestamp > 4000) {
@@ -329,8 +358,13 @@
                     }
                 }
             }
+
+            /**
+             * Styles the message for if the player is out of bounds.
+             *
+             * @param {string} display_warning The out of bounds message.
+             */
             function outboundsWarning(display_warning) {
-                // Styled message for out of bounds warning
                 if (display_warning) {
                     warningbox_outbounds.style.backgroundColor = "Yellow";
                     warningbox_outbounds.innerText
@@ -341,6 +375,12 @@
                             = null;
                 }
             }
+
+            /**
+             * If the user turns off their location tracking mid-game.
+             *
+             * @param {object} err The error.
+             */
             function positionError(err) {
                 // If location permission revoked
                 window.location= "../../error/";

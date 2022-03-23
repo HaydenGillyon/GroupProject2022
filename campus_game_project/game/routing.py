@@ -1,3 +1,10 @@
+"""Used to route websockets to the correct consumer class.
+
+
+Variables:
+
+    websocket_urlpatterns
+"""
 from django.urls import re_path
 
 from . import consumers
