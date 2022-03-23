@@ -14,7 +14,7 @@
     <link rel="stylesheet" href="{% static 'game/create.css'%}">
   </head>
   {{ error_message|json_script:"error_message" }}
-  <body style="background-color:#264d00;color:#ffffff">
+  <body style="background-image: url('static/game/villager-walk.gif'); background-color:#363a3e;color:#ffffff">
     {{ lobby_code|json_script:"lobby-code" }}
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top main-navigation">
       <div class="container-fluid">
@@ -51,29 +51,38 @@
     </script>
 
     <div class="container-fluid">
-      <section class="col-12 col-sm-6 col-md-3">
         <div class="decor">
           <form id="form" method="post" action="/game/0/">
             {% csrf_token %}
-            <input required name="uname" type="text" placeholder="Username"><br><br>
-            <label>Settings:</label><br>
-            <label>Hiding Time (seconds): </label>
-            <input name="hiding_time" type="text">
-            <label>Seeking Time (seconds): </label>
-            <input name="seeking_time" type="text">
-            <label>Number of Seekers: </label>
-            <input name="seeker_num" type="text">
-            <label>Radius of Area (meters): </label>
-            <input name="radius" type="text">
+            <br>
+            <br>
+            <input class="input-center" required name="uname" type="text" placeholder="Username">
+            <br>
+            <br>
+            <label class="label" style="font-size: 35px;">Game Settings</label>
+            <br>
+            <label class="label">Hiding Time (seconds): </label>
+            <input class="input-center" name="hiding_time" type="text" placeholder="Hiding Time: 20 - 120">
+            <br>
+            <label class="label">Seeking Time (seconds): </label>
+            <input class="input-center" name="seeking_time" type="text" placeholder="Seeking Time: 120 - 1200">
+            <br>
+            <label class="label">Number of Seekers: </label>
+            <input class="input-center" name="seeker_num" type="text" placeholder="Seeker Number: 1 - 8">
+            <br>
+            <label class="label">Radius of Area (meters): </label>
+            <input class="input-center" name="radius" type="text" placeholder="Radius: 50 - 1000">
+            <br>
             <input name="lobby_longitude" type="hidden">
+            <br>
             <input name="lobby_latitude" type="hidden"> 
-            <input class="btn btn-dark" id="create" type="submit" value="Create">
+            <input class="btn btn-dark input-center" id="create" type="submit" value="Create">
+            <br>
             <input type="hidden" name="create" value="True">
           </form>
         </div>
-      </section>
     </div>
-    <div id="error" style="color: red"></div>
+    <div id="error" class="label" style="color: red;"></div>
     <script>
       const code = JSON.parse(document.getElementById('lobby-code').textContent);
       document.getElementById('form').action = "/game/" + code + "/";
@@ -83,5 +92,8 @@
     
       document.getElementById('error').innerText = error;
     </script>
+      <div class="center">
+        <img alt="Villager" src="{%static 'home/villager-walk.gif' %}" height="200">
+      </div>    
   </body>
 </html>
