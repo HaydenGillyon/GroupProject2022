@@ -68,3 +68,31 @@ body {
   position: relative;
   z-index: 100;
 }
+
+.input {
+  width: 220px;
+  padding: 10px, 20px;
+  height: 35px;
+  margin: 10px, 0;
+  border: 2px solid grey;
+  border-radius: 5px;
+}
+
+.input-center {
+  text-align: center;
+  display: block;
+  margin: 0px auto;
+  margin-bottom: 5px;
+  width: 100%;
+}
+
+.label {
+  font-family: monospace;
+  margin-bottom: 5px;
+  display: block;
+  text-align: center;
+}
+
+input[placeholder] {
+  text-align: center;
+}
