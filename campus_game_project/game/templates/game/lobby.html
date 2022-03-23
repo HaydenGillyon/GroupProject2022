@@ -25,22 +25,36 @@
 
   </head>
 
-  <body style="background-color:#264d00;color:#ffffff">
+  <body style="background-color:#363a3e; color:#ffffff">
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top main-navigation">
+      <div class="container-fluid">
+        <a href="{% url 'home:home' %}" class="font-monospace navbar-brand order-1 order-lg-1 mr-auto mr-lg-3 ml-3 ml-lg-0">Hide and Seek</a>
+        <button class="navbar-toggler" type="button">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="overlay" d-flex d-lg-none></div>
+      </div>
+    </nav>
+    
     <script src="https://js.arcgis.com/4.22/"></script>
-    <div id="wrapper">
-        <div id="content">
-            <textarea id="log" cols="100" rows="20" style="resize: none; background-color: #f2ffe6; color: #000000;"></textarea><br>
-            <input id="ready" type="button" value="Ready"><br><br>
+    <div id="wrapper" class="container-fluid text-center" >
+        <div id="content" class="container-fluid" >
+            <textarea id="log" cols="50" rows="20" style="resize: none; background-color: #292B2E; color: #F47373;"></textarea>
+            <br>
+            <br>
+            <input id="ready" type="button" value="Ready" class="btn btn-dark input-center">
+            <br>
+            <br>
+            <div id="map" class="container-fluid"></div>
             Players:
             <ul id="players">
             </ul>
         </div>
         <div id="settings">
-            <h1>Current Settings</h1><br>
+            <h1> Settings</h1><br>
             <label id="hiding-time-label">Hiding Time:</label><br>
             <label id="seeking-time-label">Seeking Time:</label><br>
             <label id="seeker-num-label">Number of Seekers:</label><br>
-            <div id="map"></div>
         </div>
     </div>
     {{ lobby_code|json_script:"lobby-code" }}
