@@ -18,13 +18,13 @@ Functions:
     check_rejoin(Game, str) -> bool
 """
 from html import escape
-from django.shortcuts import redirect, render
-
-from game.models import Game, Player
-from welcome.models import User
-
 from random import choice
 from secrets import token_hex
+
+from django.shortcuts import redirect, render
+
+from welcome.models import User
+from game.models import Game, Player
 
 
 def create(request):
@@ -78,8 +78,9 @@ def join(request):
 
 def lobby(request, lobby_code):
     """Creates the Game in the database if the player is joining the lobby from 'create'.
-    Creates the Player in the database with a reference to the Game that has the matching lobby code.
-    After creating these, it returns the template for the lobby itself, or a potential error message.
+    Creates the Player in the database with a reference to the Game that has the matching
+    lobby code. After creating these, it returns the template for the lobby itself, or a
+    potential error message.
 
 
     Parameters:
@@ -117,12 +118,12 @@ def lobby(request, lobby_code):
     else:
         exists = False
         # Searches for the game
-        for x in Game.objects.all():
-            if lobby_code == x.lobby_code:
+        for game in Game.objects.all():
+            if lobby_code == game.lobby_code:
                 exists = True
 
                 # Error page if lobby already in-game
-                if x.running:
+                if game.running:
                     return render(request, 'game/join.html', {
                         'error_message': "This game has already started!",
                     })
@@ -177,7 +178,8 @@ def running(request, lobby_code):
             Either the lobby page.
 
         return : HttpResponseRedirect
-            Returns a redirect to the signin page if the user isn't logged in or the homepage if there's an error.
+            Returns a redirect to the signin page if the user isn't logged in or the homepage if
+            there's an error.
     """
     if 'login' not in request.session:
         return redirect('../../../signin/')
@@ -212,7 +214,7 @@ def running(request, lobby_code):
         player.hider_code = hider_code
         player.save()
         data_dict['hider_code'] = hider_code
-    elif (not player.seeker):
+    elif not player.seeker:
         data_dict['hider_code'] = player.hider_code
 
     return render(request, 'game/running.html', data_dict)
@@ -244,19 +246,19 @@ def end(request, lobby_code):
     if 'login' not in request.session:
         return redirect('../../../signin/')
 
-    g = Game.objects.filter(lobby_code=lobby_code).first()
+    game = Game.objects.filter(lobby_code=lobby_code).first()
     username = request.session['username']
-    player = Player.objects.filter(username=username, game=g).first()
+    player = Player.objects.filter(username=username, game=game).first()
 
     # Keep for None safety as game could already be deleted
-    if g:
-        result = g.winner
-        g.players_finished += 1
-        g.save()
+    if game:
+        result = game.winner
+        game.players_finished += 1
+        game.save()
 
         # Player number is decremented upon leaving running stage
-        if g.player_num < 1:
-            g.delete()
+        if game.player_num < 1:
+            game.delete()
 
     # If game has already been deleted
     else:
@@ -299,15 +301,15 @@ def generate_code():
     """
     codes = []
     # Gets all the currently running lobbies
-    for x in Game.objects.all():
-        codes.append(x.lobby_code)
+    for game in Game.objects.all():
+        codes.append(game.lobby_code)
 
     return choice([i for i in range(1000, 10000) if i not in codes])
 
 
 def validate_inputs(post):
-    """Determines whether the input settings for the game lobby are valid. If they are invalid it gives
-    the reason why.
+    """Determines whether the input settings for the game lobby are valid. If they are invalid it
+    gives the reason why.
 
 
     Parameters:
@@ -322,8 +324,8 @@ def validate_inputs(post):
             If it is invalid, returns a tuple containing the value FALSE and the error message.
 
         return : list
-            If it is valid, returns a list of length 1 containing TRUE. This is to prevent the checking
-            from outside the function failing.
+            If it is valid, returns a list of length 1 containing TRUE. This is to prevent the
+            checking from outside the function failing.
     """
     h_time = post['hiding_time']
     s_time = post['seeking_time']
@@ -459,8 +461,8 @@ def create_player(game, username, email):
         return : bool
             False if the username is already in the lobby, True if successful.
     """
-    for x in Player.objects.filter(game=game):
-        if x.username == username:
+    for player in Player.objects.filter(game=game):
+        if player.username == username:
             return False
 
     user = User.objects.get(email=email)
@@ -493,7 +495,7 @@ def check_rejoin(game, email):
             True if the user refreshed, False if they didn't.
     """
     # If the User is already bound to a Player, the user has refreshed the page
-    for x in Player.objects.filter(game=game):
-        if x.user.email == email:
+    for player in Player.objects.filter(game=game):
+        if player.user.email == email:
             return True
     return False
