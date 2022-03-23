@@ -357,6 +357,8 @@ class GameConsumer(WebsocketConsumer):
             Player.objects.get(game=g, username=self.scope['session']['username']).delete()
             g.player_num -= 1
             g.save()
+            if g.player_num == 0:
+                    g.delete()
         except Game.DoesNotExist:
             pass
 
