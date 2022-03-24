@@ -24,9 +24,8 @@
       <input alt="Human 2" id="home/human2.png" class="profile-image" type="image" onclick="set_avatar('home/human2.png')" src="{% static 'home/human2.png' %}">
       <input alt="Zombie 2" id="home/zombie2.png" class="profile-image" type="image" onclick="set_avatar('home/zombie2.png')" src="{% static 'home/zombie2.png' %}">
       <br>
-      <input alt="Sans" id="home/human3.png" class="profile-image" type="image" onclick="set_avatar('home/human3.png')" src="{% static 'home/human3.png'%}">
-      <input alt="Sans" id="home/zombie3.png" class="profile-image" type="image" onclick="set_avatar('home/zombie3.png')" src="{% static 'home/zombie3.png'%}">
-      <input alt="Sans" id="home/sans_head.png" class="profile-image" type="image" onclick="set_avatar('home/sans_head.png')" src="{% static 'home/sans_head.png'%}">
+      <input alt="Human 3" id="home/human3.png" class="profile-image" type="image" onclick="set_avatar('home/human3.png')" src="{% static 'home/human3.png'%}">
+      <input alt="Zombie 3" id="home/zombie3.png" class="profile-image" type="image" onclick="set_avatar('home/zombie3.png')" src="{% static 'home/zombie3.png'%}">
     </div>
 
     <form method="POST" action="">
@@ -59,7 +58,7 @@
     }
 
     if (avatar == "home/human2.png"){
-      if (points < 200){
+      if (points <= 200){
         document.getElementById('error').innerText = "You need 200 points for this avatar";
         return;
       } else{
@@ -68,7 +67,7 @@
     }
 
     if (avatar == "home/zombie2.png"){
-      if (points < 400){
+      if (points <= 400){
         document.getElementById('error').innerText = "You need 400 points for this avatar";
         return;
       } else{
@@ -77,7 +76,7 @@
     }
 
     if (avatar == "home/human3.png"){
-      if (points < 800){
+      if (points <= 800){
         document.getElementById('error').innerText = "You need 800 points for this avatar";
         return;
       } else{
@@ -86,20 +85,11 @@
     }
 
     if (avatar == "home/zombie3.png"){
-      if (points < 1400){
+      if (points <= 1400){
         document.getElementById('error').innerText = "You need 1400 points for this avatar";
         return;
       } else{
         document.getElementById('error').innerText = " ";
-      }
-    }
-
-    if (avatar == "home/sans_head.png"){
-      if (points < 2000){
-        document.getElementById('error').innerText = "You need more determination";
-        return;
-      } else{
-        document.getElementById('error').innerText = "Choosing this avatar fills you with determination ";
       }
     }
 
