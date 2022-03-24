@@ -2,7 +2,7 @@ runtime: python39
 
 # Use daphne as worker to support both HTTP and WebSocket requests
 # Option -b 0.0.0.0 is to bind to all interfaces (not just localhost)
-entrypoint: daphne -b 0.0.0.0 -p $PORT main:app
+entrypoint: daphne -b 0.0.0.0 -p $PORT campus_game_project.asgi:application
 
 env_variables:
   # This setting is used in settings.py to configure your ALLOWED_HOSTS

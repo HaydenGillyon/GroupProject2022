@@ -1,6 +1,7 @@
 # Welcome to University of Exeter Hide and Seek!
 
 NOTE: Do not refresh pages while running a lobby or game. The application does not currently support this and it could lead to unexpected errors.
+NOTE: Because the site was designed for a mobile view, desktop browsers may be too wide, leading the map to cover the hider code. To fix this, resize the screen or zoom out.
 
 ### You can either install and run the app locally, or deploy it to your choice of server for production use. Follow the steps below to install and run:
 
