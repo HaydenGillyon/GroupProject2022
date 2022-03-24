@@ -2,10 +2,9 @@ from django.test import Client, TestCase
 from welcome.models import User
 
 
-def set_login(client, email):
+def set_login(client):
     session = client.session
     session['login'] = True
-    session['email'] = email
     session.save()
 
 
