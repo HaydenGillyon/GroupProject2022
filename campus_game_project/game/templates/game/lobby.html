@@ -38,27 +38,35 @@
     
     <script src="https://js.arcgis.com/4.22/"></script>
     <div id="wrapper" class="container-fluid text-center" >
-        <h2 id="code-display"></h2>
+        <h2 class="h" id="code-display"></h2>
         <br>
         <div id="content" class="container-fluid" >
-            <textarea id="log" cols="50" rows="15" style="resize: none; background-color: #292B2E; color: #F47373;" readonly></textarea>
+            <div id="settings">
+                <h2 class="h" > Settings</h2>
+                <br>
+                <label class="label" id="hiding-time-label">Hiding Time:</label>
+                <label class="label" id="seeking-time-label">Seeking Time:</label>
+                <label class="label" id="seeker-num-label">Number of Seekers:</label><br>
+            </div>
+
+            <textarea id="log" cols="40" rows="8" style="resize: none; background-color: #292B2E; color: #F47373;" readonly></textarea>
             <br>
-            <div id="map" class="container-fluid"></div>
-            <br>
-            <br>
+            
+            
             <input id="ready" type="button" value="Ready" class="btn btn-dark input-center">
+            
             <br>
-            <br>
-            Players:
-            <ul id="players" style="text-align:center">
+
+            <div id="map" class="container-fluid" style="width: 100%; height: 400px; text-align: left;"></div>
+            <p>
+                Players:
+            </p>
+            
+            <ul class="ul" id="players" style="text-align: left;">
             </ul>
+
         </div>
-        <div id="settings" style="position:absolute;right:10%">
-            <h1> Settings</h1><br>
-            <label id="hiding-time-label">Hiding Time:</label><br>
-            <label id="seeking-time-label">Seeking Time:</label><br>
-            <label id="seeker-num-label">Number of Seekers:</label><br>
-        </div>
+        
     </div>
     {{ lobby_code|json_script:"lobby-code" }}
     {{ username|json_script:"username" }}
@@ -80,8 +88,8 @@
         const lobby_latitude = JSON.parse(document.getElementById('lobby-latitude').textContent);
         const radius = JSON.parse(document.getElementById('radius').textContent);
 
-        document.getElementById('hiding-time-label').innerText += ' ' + hiding_time;
-        document.getElementById('seeking-time-label').innerText += ' ' + seeking_time;
+        document.getElementById('hiding-time-label').innerText += ' ' + hiding_time + 's';
+        document.getElementById('seeking-time-label').innerText += ' ' + seeking_time + 's';
         document.getElementById('seeker-num-label').innerText += ' ' + seeker_num;
 
         document.title = code;
