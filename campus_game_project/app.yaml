@@ -1,5 +1,9 @@
 runtime: python39
 
+# Use daphne as worker to support both HTTP and WebSocket requests
+# Option -b 0.0.0.0 is to bind to all interfaces (not just localhost)
+entrypoint: daphne -b 0.0.0.0 -p $PORT main:app
+
 env_variables:
   # This setting is used in settings.py to configure your ALLOWED_HOSTS
   APPENGINE_URL: https://hide-to-survive-app.nw.r.appspot.com
@@ -14,10 +18,12 @@ handlers:
 # This configures Google App Engine to serve the files in the app's static
 # directory.
 - url: /static
+  secure: always
   static_dir: static/
 
 # This handler routes all requests not caught above to your main app. It is
 # required when static routes are defined, but can be omitted (along with
 # the entire handlers section) when there are no static files defined.
 - url: /.*
+  secure: always
   script: auto

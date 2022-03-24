@@ -1,4 +1,7 @@
-from campus_game_project.wsgi import application
+from campus_game_project.asgi import application
+
+# !-- Not using gunicorn or WSGI --!
+# from campus_game_project.wsgi import application
 
 # App Engine by default looks for a main.py file at the root of the app
 # directory with a WSGI-compatible object called app.
@@ -7,4 +10,10 @@ from campus_game_project.wsgi import application
 # App Engine without additional configuration.
 # Alternatively, you can add a custom entrypoint field in your app.yaml:
 # entrypoint: gunicorn -b :$PORT mysite.wsgi
+#
+# !-- Using Daphne and ASGI --!
+# The following documents help describe the method behind using ASGI in Django.
+# https://channels.readthedocs.io/en/latest/asgi.html
+# https://channels.readthedocs.io/en/latest/deploying.html
+
 app = application
