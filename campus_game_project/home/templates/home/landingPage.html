@@ -5,22 +5,22 @@
 <div class="jumbotron text-center">
   <p class="lead"></p>
     <br>
-    <h3>Welcome {% if user %}{{user}}{% endif %}!</h3>
+    <h3 class="h">Welcome {% if user %}{{user}}{% endif %}!</h3>
     <br>
-    <h4>Click on the buttons below to begin!</h4>
+    <h4 class="h">Click on the buttons below to begin!</h4>
     <br>
     <div class="text-center">
-      <a class="btn btn-dark " href="{% url 'game:create' %}" >Create Lobby</a>
+      <a class="btn btn-dark game-font" href="{% url 'game:create' %}">Create Lobby</a>
       <br>
       <br>
-      <a class="btn btn-dark" href="{% url 'game:join' %}" >Join Lobby</a>
+      <a class="btn btn-dark game-font" href="{% url 'game:join' %}" >Join Lobby</a>
       <!--<h5>Rules and Synopsis of the game</h5>-->
     </div>
     <div style="float:left;">
-      <img alt="Zombie" src="{%static 'home/movin_zomb.gif' %}" height="250">
+      <img alt="Zombie" src="{%static 'home/movin_zomb.gif' %}" height="350">
     </div>
     <div style="float:right">
-      <img alt="Villager" src="{%static 'home/villager-walk.gif' %}" height="200">
+      <img alt="Villager" src="{%static 'home/villager-walk.gif' %}" height="350">
     </div>
 </div>
 {% endblock %}
