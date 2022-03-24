@@ -97,6 +97,7 @@ input[placeholder] {
 
 .input-center {
   text-align: center;
+  font-family: monospace;
   display: block;
   margin: 0px auto;
   margin-bottom: 5px;
@@ -107,4 +108,18 @@ input[placeholder] {
   display: block;
   margin-left: auto;
   margin-right: auto;
+}
+
+.ul {
+  -webkit-column-count: 5; /* Chrome, Safari, Opera */
+  -moz-column-count: 5;
+  column-count: 5;
+  margin-top: 400px;
+}
+
+.h {
+  font-family: monospace;
+  margin-bottom: 5px;
+  display: block;
+  text-align: center;
 }
