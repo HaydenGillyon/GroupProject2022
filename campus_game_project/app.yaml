@@ -3,6 +3,12 @@ runtime: python39
 env_variables:
   # This setting is used in settings.py to configure your ALLOWED_HOSTS
   APPENGINE_URL: https://hide-to-survive-app.nw.r.appspot.com
+  REDISHOST: '10.7.118.131'
+  REDISPORT: '6379'
+
+vpc_access_connector:
+  # This setting is used for connecting to the redis instance with the VPC access connector
+  name: projects/hide-to-survive-app/locations/europe-west2/connectors/hide-survive-vpc
 
 handlers:
 # This configures Google App Engine to serve the files in the app's static

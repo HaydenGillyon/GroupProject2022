@@ -126,13 +126,15 @@ STATIC_URL = 'static/'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-# Channels
+# Channels and Redis 
 ASGI_APPLICATION = 'campus_game_project.asgi.application'
+REDIS_HOST = os.environ.get('REDISHOST', 'localhost')   # Default to localhost
+REDIS_PORT = int(os.environ.get('REDISPORT', 6379))
 CHANNEL_LAYERS = {
     'default': {
         'BACKEND': 'channels_redis.core.RedisChannelLayer',
         'CONFIG': {
-            "hosts": [('127.0.0.1', 6379)],
+            "hosts": [(REDIS_HOST, REDIS_PORT)],
         },
     },
 }
