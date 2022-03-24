@@ -66,3 +66,10 @@ Go to https://hide-to-survive-app.nw.r.appspot.com/.
 From here just create an account or sign in to an existing one, explore, and enjoy!
 
 NOTE: To test joining with multiple players, use different browsers to ensure sessions do not overwrite each other.
+
+# GameMaster Mode
+To view the mode of GameMaster, a user with elevated rights who can manage all data, such as games, user accounts, and players, first create the GameMaster's credentials with the following command:
+
+        python manage.py createsuperuser
+
+Next, to log in, simply go to the app's URL followed by '/admin'. This will be either [local](http://127.0.0.1:8000/admin) or [deployed](https://hide-to-survive-app.nw.r.appspot.com/admin).
