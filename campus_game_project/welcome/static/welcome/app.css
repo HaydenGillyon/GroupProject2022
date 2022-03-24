@@ -2,6 +2,10 @@ body {
   padding-top: 4.5rem;
 }
 
+.h1 {
+  font-size: 50px;
+}
+
 .alert-pre {
   word-wrap: break-word;
   word-break: break-all;
@@ -70,9 +74,9 @@ body {
 }
 
 .input {
-  width: 220px;
+  width: 300px;
   padding: 10px, 20px;
-  height: 35px;
+  height: 45px;
   margin: 10px, 0;
   border: 2px solid grey;
   border-radius: 5px;
@@ -88,6 +92,7 @@ body {
 
 .label {
   font-family: monospace;
+  font-size: 28px;
   margin-bottom: 5px;
   display: block;
   text-align: center;

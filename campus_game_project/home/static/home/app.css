@@ -2,6 +2,11 @@ body {
   padding-top: 4.5rem;
 }
 
+.h {
+  font-family: monospace;
+  font-size: 30px;
+}
+
 .alert-pre {
   word-wrap: break-word;
   word-break: break-all;
@@ -67,4 +72,9 @@ body {
 .main-heading {
   position: relative;
   z-index: 100;
+}
+
+.game-font {
+  font-family: monospace;
+  font-size: 28px;
 }
