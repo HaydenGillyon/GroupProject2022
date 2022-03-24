@@ -9,8 +9,8 @@
     <h4>Welcome {{ user.name }}!</h4>
     <p>Use the navigation bar at the top of the page to get started.</p>
   {% else %}
-  <div class ="text-center font-monospace panel">
-    <div classname="display-1"><h1>Welcome To<br></h1></div> 
+  <div class ="text-center font-monospace panel"><br><br>
+    <div classname="display-1"><h1 class="h1" >Welcome To<br></h1></div> 
       <img style="width:100%;" src="{% static 'welcome/banner1.png' %}" alt="Hide To Survive" class="rounded mx-auto d-block img-fluid img-responsive">
 
     <!--<br><a href="https://login.microsoftonline.com/common/oau
@@ -29,15 +29,14 @@
 
       <div class="jumbotron">
         <br>
-        <a href="{% url 'welcome:signin' %}" class="btn btn-dark btn-large btn-block">Sign in</a>
-        <a href="{% url 'welcome:signup' %}" class="btn btn-dark btn-primary btn-large text-center pull-left">Sign up</a>
+        <a href="{% url 'welcome:signin' %}" class="btn btn-dark btn-large btn-block" style="font-size: 25px;">Sign in</a>
+        <a href="{% url 'welcome:signup' %}" class="btn btn-dark btn-primary btn-large text-center pull-left" style="font-size: 25px;">Sign up</a>
       </div>
       <br>
-      <p style="font-size:20px;">
+      <p style="font-size:28px;">
         Welcome to the University of Exeter's Zombie themed hide and seek game! An online multiplayer game to encourage interaction between students!
         Come and play with your friends in an epic game of suspense and wit. We have an easy lobby system that will allow you quickly join and start playing immediately! Join and play now!
-
-        <ul style="font-size:20px;">
+        <ul style="font-size:28px;">
           <li>
             Join a lobby using your friend's code, and create a lobby with your own set rules!
           </li>
@@ -53,14 +52,14 @@
         </ul>
       </p>
       <br>
-      <p style="font-size:20px;">
+      <p style="font-size:28px;">
         And its free to play today, so why the delay?
       </p>
       <div class="jumbotron">
         <br>
         <form method="POST" action="{% url 'welcome:legal' %}" >
           {%csrf_token%}
-          <input type="submit" class="btn btn-dark btn-primary btn-large text-center" value="Terms and Conditions"><br>
+          <input type="submit" class="btn btn-dark btn-primary btn-large text-center" value="Terms and Conditions" style="font-size: 28px;"><br><br><br>
           <input type="hidden" value="welcome" name="origin">
           </form>
       </div>

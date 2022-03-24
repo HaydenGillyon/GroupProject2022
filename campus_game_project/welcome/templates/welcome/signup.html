@@ -6,7 +6,6 @@
 <div class="text-center font-monospace">
 <br>
 <br>
-<h2>Sign up</h2>
 <br>
 <form method="POST" action="" name="signup-form" id="signup-form">
 {% csrf_token%} 
@@ -26,16 +25,18 @@
     <input class="input" type="password" name="pass1" id="pass1" placeholder="**********" required>
     <br>
     <br>
-    <input type="submit" class="btn btn-dark btn-primary btn-large text-center" value="Signup"><br>
+    <input type="submit" class="btn btn-dark btn-primary btn-large text-center" value="Signup" style="font-size: 25px;"><br>
     <br>
     <input class="form-check-input" type="checkbox" id="gridcheck" required>
     <label class="form-check-label" for="gridcheck">
       Agree to Terms and Conditions
     </label>
+    <br>
+    <br>
 </form>
 <form method="POST" action="{% url 'welcome:legal' %}" >
 {%csrf_token%}
-<input type="submit" class="btn btn-dark btn-primary btn-large text-center" value="Terms and Conditions"><br>
+<input type="submit" class="btn btn-dark btn-primary btn-large text-center" value="Terms and Conditions" style="font-size: 25px;"><br>
 <input type="hidden" value="signup" name="origin">
 </form>
 <div id="error" style="color: red"></div>
