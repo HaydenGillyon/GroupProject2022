@@ -8,16 +8,21 @@ https://docs.djangoproject.com/en/4.0/howto/deployment/asgi/
 """
 
 import os
+from django.core.asgi import get_asgi_application
+
+# (From https://channels.readthedocs.io/en/latest/deploying.html)
+# Fetch Django ASGI application early to ensure AppRegistry is populated
+# before importing consumers and AuthMiddlewareStack that may import ORM
+# models.
+os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'campus_game_project.settings')
+django_asgi_app = get_asgi_application() # No need for django.setup() due to this
 
 from channels.auth import AuthMiddlewareStack
 from channels.routing import ProtocolTypeRouter, URLRouter
-from django.core.asgi import get_asgi_application
 import game.routing
 
-os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'campus_game_project.settings')
-
 application = ProtocolTypeRouter({
-    "http": get_asgi_application(),
+    "http": django_asgi_app,
     "websocket": AuthMiddlewareStack(
         URLRouter(
             game.routing.websocket_urlpatterns
